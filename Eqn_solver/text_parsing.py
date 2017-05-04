@@ -12,7 +12,6 @@ example output
 semicolon ; shall denote new line
 
     """
-    count = 0
     tmp_eqn = []
     output_equations = []
     for one_equation in equations:
@@ -37,37 +36,54 @@ def collect_variables(equations):
     split equations by the '=' operator
     store in list for processing
     :param equations:
+        list of equations
     :return:
+        list of variables (without copies)
+        variable dict = {equation:[variables], ..}
     """
     import re
     variables = []
+    variable_dict = {}
     for one_equation in equations:
         # regular expression for splitting strings with given characters
-        split_equations = re.split(r'=|\+|-|\^|\*|/|\\', one_equation)
+        split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
         # print('split equation ->', split_equations)
+        tmp_vars = []
         for i in split_equations:
-
             if i.isnumeric() == 0 and i not in variables:
                 # if the item in list (i) is not numeric append
                 # and it's not already in the list of variables
                 # it to the variables list
                 variables.append(i)
-    return variables
+            if i.isnumeric() == 0:
+                tmp_vars.append(i)
+                variable_dict[one_equation]=tmp_vars
+    return variables, variable_dict
 
 
 def parse_known_equations(equations):
+    '''
+        parses equations into 2 blocks
+        block 1 is solvable with 1 step
+        block 2 requires more steps
+    :param equations: 
+        list of equations
+    :return: 
+        block_1: list with one variable
+        block_2: list with more than one variable
+    '''
     # reorder equations so that python can order them properly
-    variables = collect_variables(equations)
-    print(equations)
-    for line in equations:
-        # print("line:" + line)
-        # for a single equation
-        for var in variables:
-            # print("var: " + var)
-            if var is line:
-                print(var)
-                var = 0
-    return
+    variables, variable_dict = collect_variables(equations)
+    block_1 = []
+    block_2 = []
+    for i in variable_dict:
+        if len(variable_dict[i]) == 0:
+            print("error this equation: " + i + "has no variables")
+        if len(variable_dict[i]) == 1:
+            block_1.append(i)
+        else:
+            block_2.append(i)
+    return block_1, block_2
 
 
 def syntax_checking(equations):
