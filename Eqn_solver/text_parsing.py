@@ -50,15 +50,26 @@ def collect_variables(equations):
         # print('split equation ->', split_equations)
         tmp_vars = []
         for i in split_equations:
-            if i.isnumeric() == 0 and i not in variables:
-                # if the item in list (i) is not numeric append
-                # and it's not already in the list of variables
-                # it to the variables list
-                variables.append(i)
-            if i.isnumeric() == 0:
-                tmp_vars.append(i)
-                variable_dict[one_equation]=tmp_vars
+            if i != '':
+                if i.isnumeric() == 0 and i not in variables:
+                    # if the item in list (i) is not numeric append
+                    # and it's not already in the list of variables
+                    # it to the variables list
+                    variables.append(i)
+                if i.isnumeric() == 0:
+                    tmp_vars.append(i)
+                    variable_dict[one_equation]=tmp_vars
     return variables, variable_dict
+
+
+def equation_dict(equations):
+    # split equations by the equals sign
+    import re
+    equation_dict = {}
+    for i in equations:
+        split_equations = re.split(r"[=]", i)
+        equation_dict[i] = split_equations
+    return equation_dict
 
 
 def parse_known_equations(equations):
@@ -103,12 +114,28 @@ def syntax_checking(equations):
         for text in one_equation:
             # string containing an equation
             count += 1
-            tmp_letter = []
+            # add section for requiring an equals sign
             for i in text:
                 if i in symbols_not_allowed:
                     print("Error in equation " + str(count)
                           + ": \"" + i + "\" is not an allowed character")
                     solve = False
                     # join the characters back into one equation
+
         output_equations.append(tmp_eqn)
     return solve
+
+
+def syntax_correction(equations):
+    # input of equations
+    corrected_equations = []
+    for i in equations:
+        tmp_list2 = []
+        for j in i:
+            if j == "^":
+                j = "**"
+            # make a carrot equal to python power **
+            tmp_list2.append(str(j))
+        tmp_list2 = ''.join(tmp_list2)
+        corrected_equations.append(tmp_list2)
+    return corrected_equations
