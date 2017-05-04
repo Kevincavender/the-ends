@@ -1,7 +1,5 @@
 def preprocess_equations(equations):
     """
-this block of text describes the function
-also called a docstring
 the purpose of this function is to take the list of equations,
 remove spaces and uppercase all characters
 
@@ -14,20 +12,15 @@ example output
 semicolon ; shall denote new line
 
     """
-    solve = True
     count = 0
     tmp_eqn = []
     output_equations = []
-    symbols_not_allowed = ['?','@','&','`','~','#','!','$']
     for one_equation in equations:
         # list containing one string
         for text in one_equation:
             # string containing an equation
             tmp_letter = []
             for i in text:
-                if i in symbols_not_allowed:
-                    print("Error: \"" + i + "\" is not an allowed character")
-                    solve = False
                 # single character/num/operator
                 # if the character is not a space
                 if i.isspace() == 0:
@@ -36,7 +29,7 @@ semicolon ; shall denote new line
             # join the characters back into one equation
             tmp_eqn = ''.join(tmp_letter)
         output_equations.append(tmp_eqn)
-    return output_equations, solve
+    return output_equations
 
 
 def collect_variables(equations):
@@ -46,6 +39,7 @@ def collect_variables(equations):
     :param equations:
     :return:
     """
+    import re
     variables = []
     for one_equation in equations:
         # regular expression for splitting strings with given characters
@@ -63,62 +57,42 @@ def collect_variables(equations):
 
 def parse_known_equations(equations):
     # reorder equations so that python can order them properly
+    variables = collect_variables(equations)
     print(equations)
     for line in equations:
+        # print("line:" + line)
         # for a single equation
         for var in variables:
-            if var in line:
-                #print(var)
+            # print("var: " + var)
+            if var is line:
+                print(var)
                 var = 0
     return
 
 
-import re
-# open file
-f = open('1eqn', mode='r')
-num_line = 0
-line_list = []
-# read in lines
-while True:
-    line = f.readline()
-    if len(line) == 0:
-        break
-    num_line += 1
-    line_list.append([line])
-f.close()
-# close file
-
-# split lines in code
-equations = []
-num_line = 0
-for line in line_list:
-    # go through each line in equations
-    # and append non-empty lines
-    eqin = line[0].splitlines()
-    if eqin != ['']:
-        # only if line is not empty
-        equations.append(eqin)
-        num_line += 1
-
-# collect variables
-equations, solve = preprocess_equations(equations)
-if solve == True:
-    variables = collect_variables(equations)
-    parse_known_equations(equations)
-else:
-    print("solver cannot continue")
-
-# printing output for debuging
-
-# print('\n', equations)
-# print('\n', equations2)
-'''
-
-if solve == 1:
-    print('\n********************************')
-    print('Number of Equations = ', num_line)
-    print('Number of Variables = ', len(variables))
-    print('List of Variables', ', '.join(variables))
-
-
+def syntax_checking(equations):
     '''
+    :param equations: 
+        list of equations 
+    :return:
+        boolean for passing syntax check
+    '''
+    solve = True  # indication for no errors in preprocessing
+    count = 0
+    tmp_eqn = []
+    output_equations = []
+    symbols_not_allowed = ['?', '@', '&', '`', '~', '#', '!', '$']
+    for one_equation in equations:
+        # list containing one string
+        for text in one_equation:
+            # string containing an equation
+            count += 1
+            tmp_letter = []
+            for i in text:
+                if i in symbols_not_allowed:
+                    print("Error in equation " + str(count)
+                          + ": \"" + i + "\" is not an allowed character")
+                    solve = False
+                    # join the characters back into one equation
+        output_equations.append(tmp_eqn)
+    return solve
