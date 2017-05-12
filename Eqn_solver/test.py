@@ -8,16 +8,14 @@ solve = tp.syntax_checking(equations)
 
 if solve == 1:
     equations = tp.preprocess_equations(equations)
-    print("preprocess: " + str(equations))
+    print("Text Cleanup: " + str(equations))
     variables, equation_dict = tp.collect_variables(equations)
-    print("collecting variables: " + str(variables))
-    print("collecting variables reference: " + str(equation_dict))
+    print("Variables: " + str(variables))
+    print("Variables reference: " + str(equation_dict))
     equation_dict2 = tp.equation_dict(equations)
-    print("here:" + str(equation_dict2))
-    equ = tp.syntax_correction(equations)
-    block_1, block_2 = tp.parse_known_equations(equations)
-    print("Block 1: " + str(block_1))
-    print("Block 2: " + str(block_2))
+    print("Equation Dictionary:" + str(equation_dict2))
+    equations = tp.syntax_correction(equations)
+
 else:
     print("solver cannot continue")
 
@@ -27,6 +25,6 @@ if solve == 1:
     print('Number of Equations = ', len(equation_dict))
     print('Number of Variables = ', len(variables))
     print('List of Variables', ', '.join(variables))
-    print("Time Elapsed: {:.2f}s".format(time.time() - start_time))
+    print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
 
 
