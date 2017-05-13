@@ -88,16 +88,25 @@ def syntax_checking(equations):
         # list containing one string
         for text in one_equation:
             # string containing an equation
+            # checks every equation line
             count += 1
-            # add section for requiring an equals sign
+            containsoperator = False
             for i in text:
+                # checks for individual characters in the equations
+                # from symbols_not_allowed variable list
                 if i in symbols_not_allowed:
                     print("Error in equation " + str(count)
                           + ": \"" + i + "\" is not an allowed character")
                     solve = False
                     # join the characters back into one equation
-
+                if i == '=':
+                    # determines if equals sign is present in every line
+                    containsoperator = True
         output_equations.append(tmp_eqn)
+    if containsoperator == False:
+        print("There is a missing '=' sign or a lone variable in the equations list")
+        solve = containsoperator
+
     return solve
 
 
