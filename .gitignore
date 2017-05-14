@@ -2,3 +2,4 @@ Eqn_solver/__pycache__
 .idea
 *.pyc
 .idea/workspace.xml
+*.xml
