@@ -4,7 +4,7 @@ import Eqn_solver.readfile as rf
 import Eqn_solver.text_parsing as tp
 import Eqn_solver.equation_parsing as eq_pars
 
-equations, num_line = rf.readfile('1eqn')
+equations, num_line = rf.readfile('explicit_test_equations')
 solve = tp.syntax_checking(equations)
 
 if solve == 1:
@@ -22,7 +22,7 @@ if solve == 1:
 else:
     print("solver cannot continue")
 
-'''
+
 if solve == 1:
     print('\n********************************')
     print('Number of Equations = ', len(equation_dict))
@@ -30,4 +30,4 @@ if solve == 1:
     print('List of Variables', ', '.join(variables))
     print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
 
-'''
+

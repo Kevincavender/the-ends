@@ -1,4 +1,15 @@
 def readfile(filename):
+    '''
+    
+    :param 
+    filename: 
+        input is a text file for input
+    :return: 
+    Equations: 
+        lines with potential equations on them
+    num_line:
+        number of equation lines
+    '''
     # open file
     f = open(filename, mode='r')
     num_line = 0
