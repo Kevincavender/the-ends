@@ -11,8 +11,8 @@ def solver(equation, known_variables, first_run):
     common_variables = set(variables).difference(known_variables)
     list1 = func(equation, common_variables)
     if first_run == True:
-        import_string = "exec(\"from scipy.optimize import fsolve\")"
-        single_equation_run = import_string + list1
+        import_string = '\"from scipy.optimize import fsolve\"'
+        single_equation_run = import_string + "\n" + list1
     return single_equation_run
 
 
@@ -28,18 +28,14 @@ def func(equation, solved_for_variable):
     initial_guess = 1
     v = str(list(solved_for_variable)[0])
     solver_list = [
-        "exec(",
         "\"" + v + " = fsolve(",
         "equation, ",
-        str(initial_guess), ")"
-        "\")"
-
+        str(initial_guess), ")\""
     ]
     equation_list = [
-        "exec("
         "\"def equation(", v,"):",
         " return (", str(equation),
-        ")\")\n"
+        ")\"\n"
     ]
     list1 = equation_list + solver_list
     list1 = ''.join(list1)
@@ -48,5 +44,4 @@ def func(equation, solved_for_variable):
 
     # print ("The solution is tau = %f" % tau_solution)
     # print ("at which the value of the expression is %f" % func(tau_solution))
-    print(list1)
     return list1
