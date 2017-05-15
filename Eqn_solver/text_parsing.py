@@ -75,6 +75,7 @@ def syntax_processing(equations):
     solve = syntax_checking(equations)
     return equations, solve
 
+
 def syntax_checking(equations):
     '''
     :param equations: 

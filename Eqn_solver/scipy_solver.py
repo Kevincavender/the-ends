@@ -1,20 +1,52 @@
-from scipy.optimize import fsolve
+from Eqn_solver.text_parsing import collect_variables
 
 # Define the expression whose roots we want to find
 # take in an equation that can't be executed by mpmath
 
-a = 0.5
-b = 1
-c = 3
-R = 1.7
 
-# func = lambda tau : R - ((1.0 - np.exp(-tau))/(1.0 - np.exp(-a*tau)))
-func = lambda c : c**2 - (a**2 + b**2)
+def solver(equation, known_variables, first_run):
+    equation = reorder(equation)
+    variables, variable_dict = collect_variables(equation)
+    common_variables = []
+    common_variables = set(variables).difference(known_variables)
+    list1 = func(equation, common_variables)
+    if first_run == True:
+        import_string = "exec(\"from scipy.optimize import fsolve\")"
+        single_equation_run = import_string + list1
+    return single_equation_run
 
-# Use the numerical solver to find the roots
 
-tau_initial_guess = 5
-tau_solution = fsolve(func, tau_initial_guess)
+def reorder(equation):
+    import re
+    left, right = re.split(r"[=]", equation)
+    reordered = [left, '-', right]
+    reordered = ''.join(reordered)
+    return reordered
 
-print ("The solution is tau = %f" % tau_solution)
-print ("at which the value of the expression is %f" % func(tau_solution))
+
+def func(equation, solved_for_variable):
+    initial_guess = 1
+    v = str(list(solved_for_variable)[0])
+    solver_list = [
+        "exec(",
+        "\"" + v + " = fsolve(",
+        "equation, ",
+        str(initial_guess), ")"
+        "\")"
+
+    ]
+    equation_list = [
+        "exec("
+        "\"def equation(", v,"):",
+        " return (", str(equation),
+        ")\")\n"
+    ]
+    list1 = equation_list + solver_list
+    list1 = ''.join(list1)
+    # Use the numerical solver to find the roots
+    # tau_solution = fsolve(funct, initial_guess)
+
+    # print ("The solution is tau = %f" % tau_solution)
+    # print ("at which the value of the expression is %f" % func(tau_solution))
+    print(list1)
+    return list1
