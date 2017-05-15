@@ -1,32 +1,30 @@
 def preprocess_equations(equations):
     """
 the purpose of this function is to take the list of equations,
-remove spaces and uppercase all characters
+- remove spaces 
+- uppercase all characters
 
 example input
-[['x = y+ 1'], ['y = 2'], ['squ = 2'], ['yo = 20']]
+['x = y+ 1', 'y = 2', 'squ = 2', 'yo = 20']
 example output
 ['X=Y+1', 'Y=2', 'SQU=2', 'YO=20']
 *************************
-:future use:
-semicolon ; shall denote new line
 
     """
     tmp_eqn = []
     output_equations = []
-    for one_equation in equations:
-        # list containing one string
-        for text in one_equation:
-            # string containing an equation
-            tmp_letter = []
-            for i in text:
-                # single character/num/operator
-                # if the character is not a space
-                if i.isspace() == 0:
-                    # capitalize all characters and add them to list
-                    tmp_letter.append(i.upper())
-            # join the characters back into one equation
-            tmp_eqn = ''.join(tmp_letter)
+    print(equations)
+    for text in equations:
+        # string containing an equation
+        tmp_letter = []
+        for i in text:
+            # single character/num/operator
+            # if the character is not a space
+            if i.isspace() == 0:
+                # capitalize all characters and add them to list
+                tmp_letter.append(i.upper())
+        # join the characters back into one equation
+        tmp_eqn = ''.join(tmp_letter)
         output_equations.append(tmp_eqn)
     return output_equations
 
@@ -72,6 +70,11 @@ def equation_dict(equations):
     return equation_dict
 
 
+def syntax_processing(equations):
+    equations = syntax_correction(equations)
+    solve = syntax_checking(equations)
+    return equations, solve
+
 def syntax_checking(equations):
     '''
     :param equations: 
@@ -84,25 +87,24 @@ def syntax_checking(equations):
     tmp_eqn = []
     output_equations = []
     symbols_not_allowed = ['?', '@', '&', '`', '~', '#', '!', '$']
-    for one_equation in equations:
-        # list containing one string
-        for text in one_equation:
-            # string containing an equation
-            # checks every equation line
-            count += 1
-            containsoperator = False
-            for i in text:
-                # checks for individual characters in the equations
-                # from symbols_not_allowed variable list
-                if i in symbols_not_allowed:
-                    print("Error in equation " + str(count)
-                          + ": \"" + i + "\" is not an allowed character")
-                    solve = False
-                    # join the characters back into one equation
-                if i == '=':
-                    # determines if equals sign is present in every line
-                    containsoperator = True
-        output_equations.append(tmp_eqn)
+
+    for text in equations:
+        # string containing an equation
+        # checks every equation line
+        count += 1
+        containsoperator = False
+        for i in text:
+            # checks for individual characters in the equations
+            # from symbols_not_allowed variable list
+            if i in symbols_not_allowed:
+                print("Error in equation " + str(count)
+                      + ": \"" + i + "\" is not an allowed character")
+                solve = False
+                # join the characters back into one equation
+            elif i == '=':
+                # determines if equals sign is present in every line
+                containsoperator = True
+    output_equations.append(tmp_eqn)
     if containsoperator == False:
         print("There is a missing '=' sign or a lone variable in the equations list")
         solve = containsoperator
@@ -111,6 +113,17 @@ def syntax_checking(equations):
 
 
 def syntax_correction(equations):
+    '''
+    function intended to change syntax from
+     a more natural math use to an interpretation
+     the solver can understand
+     
+     Current implementation
+     ^ -> **
+     
+    :param equations: 
+    :return: 
+    '''
     # input of equations
     corrected_equations = []
     for i in equations:

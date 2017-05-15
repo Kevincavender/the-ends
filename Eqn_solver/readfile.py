@@ -20,7 +20,7 @@ def readfile(filename):
         if len(line) == 0:
             break
         num_line += 1
-        line_list.append([line])
+        line_list.append(line)
     f.close()
     # close file
 
@@ -30,9 +30,9 @@ def readfile(filename):
     for line in line_list:
         # go through each line in equations
         # and append non-empty lines
-        eqin = line[0].splitlines()
+        eqin = line.splitlines()
         if eqin != ['']:
             # only if line is not empty
-            equations.append(eqin)
+            equations.append(eqin[0])
             num_line += 1
     return equations, num_line
