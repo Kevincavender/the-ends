@@ -15,7 +15,7 @@ if solve == 1:
     print("Variables reference: \n    " + str(equation_dict))
     equation_dict2 = tp.equation_dict(equations)
     print("Equation Dictionary:\n    " + str(equation_dict2))
-    exelist = eq_pars.parse_all_equations(equations, False)
+    exelist = eq_pars.parse_single_unknown_equations(equations, 1)
     for i in exelist:
         exec(i)
 else:

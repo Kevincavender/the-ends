@@ -13,7 +13,6 @@ example output
     """
     tmp_eqn = []
     output_equations = []
-    print(equations)
     for text in equations:
         # string containing an equation
         tmp_letter = []

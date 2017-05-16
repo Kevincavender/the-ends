@@ -1,4 +1,4 @@
-import Eqn_solver.text_parsing as tp
+from Eqn_solver.text_parsing import collect_variables as collectvars
 
 
 def parse_known_equations(equations):
@@ -14,7 +14,7 @@ def parse_known_equations(equations):
         block_2: list with more than one variable
     '''
     # reorder equations so that python can order them properly
-    variables, variable_dict = tp.collect_variables(equations)
+    variables, variable_dict = collectvars(equations)
     block_1 = []
     block_2 = []
     for i in variable_dict:
@@ -25,67 +25,94 @@ def parse_known_equations(equations):
     return block_1, block_2
 
 
-def parse_all_equations(equations, debug):
-    from Eqn_solver.text_parsing import collect_variables as cvars
-    block_1, block_2 = parse_known_equations(equations)
-    solvable_vars, solvable_vars_dict = cvars(block_1)
-    eqn_block = [block_1, block_2]
-
+def parse_single_unknown_equations(equations, debug):
+    eqn_block = list(parse_known_equations(equations))
+    solvable_vars, solvable_vars_dict = collectvars(eqn_block[0])
     parsed = False
     count = 0
     current_block_num = 0
+
     if debug == 1:
-        looplimit = 15
+        looplimit = 10
     else:
         looplimit = 200
     block_vars = [] # current list of block variables
+
     while parsed == False:
         count += 1
         if count > looplimit:
-            break
+            print("Loop Limit reached on block solver")
+            execute_list = ['print("Error: Loop Limit Reached on Solver")']
+            return execute_list
+
+            # break if loop limit is reached
+
         elif eqn_block[current_block_num] == []:
+            # when there are no more equations to sort,
+            # terminate the loop
             eqn_block.remove([])
+            if eqn_block[current_block_num] == []:
+                eqn_block.remove([])
             if debug == 1:
                 print("--------------------------------------------"
+                      "--------------------"
                       "\nFinal Equation Block: " + str(eqn_block))
-
             break
+
+        # by default the block is not solvable
         blockissolvable = False
+        # simplify the reference to the current block
         current_block = eqn_block[current_block_num]
+
         if debug == True:
             print("\nCurrent Block: " + str(current_block))
             print("Block Number: " + str(current_block_num+1))
-        # prints activity for debugging
+            # prints activity for debugging
 
-        current_block_vars, current_block_vars_dict = cvars(current_block)
-        # list variables in the block
-        for i in solvable_vars:
+        current_block_vars, current_block_vars_dict = collectvars(current_block)
+        # collect variables in the current_block
+        for current_variable in solvable_vars:
             # add current block variables to main variable list
-            current_block_vars.append(i)
+            # appends the previously solvable variables
+            current_block_vars.append(current_variable)
+
         block_vars = current_block_vars
         block_vars = list(set(block_vars))
         solvable_vars = list(set(solvable_vars))
         # order and remove duplicates
         if set(block_vars) == set(solvable_vars):
             blockissolvable = True
+            if debug == 1: print("block vars and solvable vars are the same")
             # if variables in block + variables in previous blocks = solvable variables
-        elif block_vars != solvable_vars:
-            for i in current_block:
+        elif set(block_vars) != set(solvable_vars):
+            tmp_solvable_vars = []
+            next_block_equation_list = []
+            print("Current Block: " + str(current_block))
+
+            for current_equation in current_block:
+                print("Current Equation: " + str(current_equation))
                 # check each equation in the current block to see if they are solvable
-                solvable = issolvable(i, solvable_vars, False)
+                solvable = issolvable(current_equation, solvable_vars, False)
                 if solvable == False:
                     # move equation to next block
-                    eqn_block[current_block_num+1].append(i)
-                    eqn_block[current_block_num].remove(i)
-                    if debug == 1: print(str(i) + " is not solvable")
+                    next_block_equation_list.append(current_equation)
+
+                    if debug == 1: print(str(current_equation) + " is not solvable")
                 if solvable == True:
                     # add variables to solvable variables
-                    tmp_eqn_vars, tmp_eqn_vars_dict = cvars([i])
+                    tmp_eqn_vars, tmp_eqn_vars_dict = collectvars([current_equation])
                     for v in tmp_eqn_vars:
-                        solvable_vars.append(v)
-                    if debug == 1: print(str(i) + " is solvable")
+                        tmp_solvable_vars.append(v)
+                    if debug == 1: print(str(current_equation) + " is solvable")
                     # print("variables in equation test" + str(tmp_eqn_vars))
-            if debug == 1:print("block vars and solvable vars are not the same")
+
+            for current_equation in next_block_equation_list:
+                eqn_block[current_block_num + 1].append(current_equation)
+                eqn_block[current_block_num].remove(current_equation)
+
+            for variable in tmp_solvable_vars:
+                solvable_vars.append(variable)
+            if debug == 1: print("block vars and solvable vars are not the same")
             # iterate through current block equations
             # determine if not solvable
         if debug == 1:
@@ -103,14 +130,15 @@ def parse_all_equations(equations, debug):
         # read previous solveable variables (list them)
         # pull out solvable
         # move unsolvable to next level
+
     all_vars = sorted(set(solvable_vars))
     # executable list to be run by python interpreter
     execute_list = []
-    for b in eqn_block:
-        for i in b:
-            execute_list.append(i)
-    for i in all_vars:
-        execute_list.append('print("'+ i + ' = " + str('+i+'))')
+    for current_block in eqn_block:
+        for current_equation in current_block:
+            execute_list.append(current_equation)
+    for current_variable in all_vars:
+        execute_list.append('print("'+ current_variable + ' = " + str(float('+current_variable+')))')
     return execute_list
 
 
@@ -132,7 +160,7 @@ def issolvable(equation, solvablevars, debug):
     if isinstance(equation, str):
         equation = [equation]
         # in case equation is not a list yet
-    vars, var_dict = tp.collect_variables(equation)
+    vars, var_dict = collectvars(equation)
     common_variables = list(set(vars).intersection(solvablevars))
     if debug == True:
         print(vars)

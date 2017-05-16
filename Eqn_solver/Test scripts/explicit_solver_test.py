@@ -16,7 +16,7 @@ if solve == 1:
     equation_dict2 = tp.equation_dict(equations)
     # print("Equation Dictionary:" + str(equation_dict2))
     equations = tp.syntax_correction(equations)
-    elist = eq_pars.parse_all_equations(equations, False)
+    elist = eq_pars.parse_single_unknown_equations(equations, False)
     for i in elist:
         exec(i)
 else:
