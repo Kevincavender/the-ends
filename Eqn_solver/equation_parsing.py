@@ -87,10 +87,10 @@ def parse_single_unknown_equations(equations, debug):
         elif set(block_vars) != set(solvable_vars):
             tmp_solvable_vars = []
             next_block_equation_list = []
-            print("Current Block: " + str(current_block))
+            # print("Current Block: " + str(current_block))
 
             for current_equation in current_block:
-                print("Current Equation: " + str(current_equation))
+                # print("Current Equation: " + str(current_equation))
                 # check each equation in the current block to see if they are solvable
                 solvable = issolvable(current_equation, solvable_vars, False)
                 if solvable == False:

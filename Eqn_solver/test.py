@@ -9,13 +9,17 @@ equations, solve = tp.syntax_processing(equations)
 
 if solve == 1:
     equations = tp.preprocess_equations(equations)
-    print("Text Cleanup Equations: \n   " + str(equations))
+    # print("Text Cleanup Equations: \n   " + str(equations))
     variables, equation_dict = tp.collect_variables(equations)
-    print("Variables: \n    " + str(variables))
-    print("Variables reference: \n    " + str(equation_dict))
+    # print("Variables: \n    " + str(variables))
+    # print("Variables reference: \n    " + str(equation_dict))
     equation_dict2 = tp.equation_dict(equations)
-    print("Equation Dictionary:\n    " + str(equation_dict2))
-    exelist = eq_pars.parse_single_unknown_equations(equations, 1)
+    # print("Equation Dictionary:\n    " + str(equation_dict2))
+    exelist = eq_pars.parse_single_unknown_equations(equations, 0)
+    print("\nEntered Equations: \n")
+    for i in equations:
+        print(i)
+    print("\nResults: \n")
     for i in exelist:
         exec(i)
 else:
