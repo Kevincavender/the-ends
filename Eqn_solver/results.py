@@ -1,8 +1,8 @@
 import Eqn_solver.equation_parsing
 
 
-def solve_and_print_results(equations):
-    exelist = Eqn_solver.equation_parsing.parse_single_unknown_equations(equations, 0)
+def solve_and_print_results(equations, exelist):
+    # exelist = Eqn_solver.equation_parsing.parse_single_unknown_equations(equations, 1)
     print("\nEntered Equations: \n")
     for i in equations:
         print(i)

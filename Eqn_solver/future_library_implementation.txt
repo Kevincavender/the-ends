@@ -31,3 +31,6 @@ kivy
     :gui things (may change, idk)
     only one that currently deploys to all os's
     and has multitouch support
+
+version control
+    :likely some kind of github/git compatibility

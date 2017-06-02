@@ -10,6 +10,11 @@ class EquationsClass(object):
         self.equations = equations
         self.equations = self.format()
 
+    def solve(self):
+        from Eqn_solver.Solver import Solver
+        solver_object = Solver(self.equations)
+        return
+
     def check(self):
         """ 
         :return:

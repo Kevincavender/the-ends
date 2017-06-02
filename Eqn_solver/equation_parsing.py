@@ -1,3 +1,4 @@
+import Eqn_solver.EquationsClass
 from Eqn_solver.text_parsing import collect_variables as collectvars
 
 

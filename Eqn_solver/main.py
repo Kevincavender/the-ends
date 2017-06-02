@@ -13,8 +13,8 @@ __license__ = "None atm"
 
 import time
 start_time = time.time()
-import Eqn_solver.readfile as rf
-import Eqn_solver.EquationsClass as Ec
+from Eqn_solver.readfile import readfile
+from Eqn_solver.EquationsClass import EquationsClass
 import Eqn_solver.results
 
 
@@ -24,9 +24,7 @@ def main():
     
     
     """
-    equations = Ec.EquationsClass(rf.readfile("1eqn")[0])
-    # equations, num_line = rf.readfile('1eqn')
-    # equations, solve = tp.syntax_processing(equations)
+    equations = EquationsClass(readfile("1eqn")[0])
     solve = equations.check()
 
     if solve == 1:
