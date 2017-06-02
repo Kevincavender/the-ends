@@ -11,18 +11,16 @@ def readfile(filename):
         number of equation lines
     '''
     # open file
-    f = open(filename, mode='r')
-    num_line = 0
-    line_list = []
-    # read in lines
-    while True:
-        line = f.readline()
-        if len(line) == 0:
-            break
-        num_line += 1
-        line_list.append(line)
-    f.close()
-    # close file
+    with open(filename, mode='r') as f:
+        num_line = 0
+        line_list = []
+        # read in lines
+        while True:
+            line = f.readline()
+            if len(line) == 0:
+                break
+            num_line += 1
+            line_list.append(line)
 
     # split lines in code
     equations = []
