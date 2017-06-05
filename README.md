@@ -5,28 +5,25 @@ THermodynamic Engineering Equations NeeD Solving
 Working on open-sourced equation solver for the needs of a Thermo-Fluids Mechanical Engineer. 
 
 ## future libraries to integrate
-### [pint](https://github.com/hgrecco/pint)
-    :for unit checking and conversion
+### [Pint](https://github.com/hgrecco/pint)
+    for unit checking and conversion
 
-### uncertainties
-    :for calculating and propogating uncertainties
-    https://github.com/lebigot/uncertainties/
-    http://pythonhosted.org/uncertainties/#future-developments
-
-### zunzun3
-    :for curve fitting
-    https://github.com/zunzun/pyeq3
-
-### CoolProp
+### [Uncertainties](https://github.com/lebigot/uncertainties/)
+    for calculating and propogating uncertainties
+    
+### [zunzun3](https://github.com/zunzun/pyeq3)
+    for curve fitting
+    
+### [CoolProp](https://github.com/CoolProp/CoolProp)
     :thermodynamic properties (open-source)
     http://coolprop.sourceforge.net/
 
 ### Refprop
-    :non-open thermodynamic properties
+    :integrated most up to date thermodynamic equations of state
 
 ### Numpy
     :hard maths and arrays
-
+    
 ### scipy
     :hard maths
 
