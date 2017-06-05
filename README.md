@@ -1,4 +1,4 @@
-# THEENDS (The Ends)
+# the-ends
 THermodynamic Engineering Equations NeeD Solving
 
 ## Work in progress
