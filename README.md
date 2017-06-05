@@ -3,6 +3,7 @@ THermodynamic Engineering Equations NeeD Solving
 
 ## Work in progress
 Working on open-sourced equation solver for the needs of a Thermo-Fluids Mechanical Engineer. 
+The initial module is an explicit numerical equations solver (Eqn_solver) and will eventually be built out to include the packages listed below (subject to change).
 
 ## future libraries to integrate
 ### [Pint](https://github.com/hgrecco/pint)
@@ -18,7 +19,7 @@ Working on open-sourced equation solver for the needs of a Thermo-Fluids Mechani
     :thermodynamic properties (open-source)
     http://coolprop.sourceforge.net/
 
-### Refprop
+### [Refprop](https://www.nist.gov/srd/refprop)
     :integrated most up to date thermodynamic equations of state
 
 ### Numpy
@@ -28,17 +29,17 @@ Working on open-sourced equation solver for the needs of a Thermo-Fluids Mechani
     :hard maths
 
 ### matplotlib
-    :plotting shtuff
+    :plotting stuff
 
 ### GUI
-    :start with Tk and move to PyQt if nessesary
+    :start with Tkinter and move to PyQt if nessesary
 
-### version control for equation files
+### version control for equation users files
     :likely some kind of github/git compatibility
 
-### py.test
+### testing suite, py.test
     :for testing all the things
     https://docs.pytest.org/en/latest/
 
 ### travis CI
-    :for continutious testing
+    :continuous integration
