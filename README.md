@@ -5,13 +5,12 @@ THermodynamic Engineering Equations NeeD Solving
 Working on open-sourced equation solver for the needs of a Thermo-Fluids Mechanical Engineer. 
 
 ## future libraries to integrate
-### pint
+### [pint](https://github.com/hgrecco/pint)
     :for unit checking and conversion
-    https://github.com/hgrecco/pint
-    https://pint.readthedocs.io/en/0.8/index.html
 
 ### uncertainties
     :for calculating and propogating uncertainties
+    https://github.com/lebigot/uncertainties/
     http://pythonhosted.org/uncertainties/#future-developments
 
 ### zunzun3
