@@ -12,36 +12,35 @@ __license__ = "None atm"
 
 
 import time
-start_time = time.time()
-from Eqn_solver.readfile import readfile
+from Eqn_solver.readfile import readstring, readfile
 from Eqn_solver.EquationsClass import EquationsClass
-import Eqn_solver.results
+from Eqn_solver.Solver import Solver
+from Eqn_solver.results import solve_and_print_results as results
 
 
-def main():
+def main(instring):
     """ Main entry point of the app 
     add: equations = EquationsClass(rf.readfile("1eqn")
     
     
     """
-    equations = EquationsClass(readfile("1eqn")[0])
-    solve = equations.check()
+    start_time = time.time()
+    user_input = EquationsClass(instring)
+    solve = user_input.check()
 
     if solve == 1:
-        equations.format()
-        Eqn_solver.results.solve_and_print_results(equations.equations)
-    else:
-        print("solver cannot continue because it pooped")
-
-    if solve == 1:
-        print('\n**************************************************')
-        print('Number of Equations = ', len(equations.equation_dict()))
-        print('Number of Variables = ', len(equations.variables()))
-        print('List of Variables', ', '.join(equations.variables()))
+        exelist, resultslist = Solver(user_input.equations).original_solver()
+        resultsout = results(user_input.entered_equations,exelist, resultslist)
+        print('**************************************************')
+        print('Number of Equations = ', len(user_input.equation_dict()))
+        print('Number of Variables = ', len(user_input.variables()))
+        print('List of Variables', ', '.join(user_input.variables()))
         print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
-    return
+        print('**************************************************')
+    return resultsout
 
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
-    main()
+    resultout = main(readfile("1eqn"))
+    print(resultout)

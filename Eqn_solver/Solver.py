@@ -11,9 +11,8 @@ class Solver(object):
         self.looplimit = 20
         self.eqn_obj = EquationsClass(input_equations)
         self.vdict = self.eqn_obj.variable_dict()
-        self.debug = True
+        self.debug = False
         self.equations = input_equations
-        pass
 
     def original_solver(self):
         eqn_block = [self.equations, []]
@@ -126,12 +125,13 @@ class Solver(object):
         all_vars = sorted(set(solvable_vars))
         # executable list to be run by python interpreter
         execute_list = []
+        results_list = []
         for current_block in eqn_block:
             for current_equation in current_block:
                 execute_list.append(current_equation)
         for current_variable in all_vars:
-            execute_list.append('print("'+ current_variable + ' = " + str(float('+current_variable+')))')
-        return execute_list
+            results_list.append(current_variable)
+        return execute_list, results_list
 
     def issolvable(self, equation, solvablevars, debug):
         """
@@ -165,10 +165,11 @@ class Solver(object):
 
 if __name__ == "__main__":
     # test of is solvable
+
     import Eqn_solver.readfile as rf
     from Eqn_solver.results import solve_and_print_results
     input_file = "1eqn"
-    eqns, num_line = rf.readfile(input_file)
+    eqns = rf.readfile(input_file)
     equations_object = EquationsClass(eqns)
     print("Reading input file of name: " + input_file + "\n")
     equations = equations_object.equations
@@ -176,9 +177,11 @@ if __name__ == "__main__":
     # print(equations)
     # print(variables)
     # print(Solver(equations).issolvable(equations[0], variables[2], 0))
-
-    exelist = Solver(equations).original_solver()
+    exelist, resultslist = Solver(equations).original_solver()
     peqns = EquationsClass(eqns).equations
-    solve_and_print_results(peqns, exelist)
+    print(exelist)
+    print(resultslist)
+    print(peqns)
+    # solve_and_print_results(peqns, exelist)
 
 

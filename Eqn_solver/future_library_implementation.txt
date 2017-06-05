@@ -27,10 +27,15 @@ scipy
 matplotlib
     :plotting shtuff
 
-kivy
-    :gui things (may change, idk)
-    only one that currently deploys to all os's
-    and has multitouch support
+GUI
+    :start with Tk and move to PyQt if nessesary
 
-version control
+version control for equation files
     :likely some kind of github/git compatibility
+
+py.test
+    :for testing all the things
+    https://docs.pytest.org/en/latest/
+
+travis CI
+    : for continutious testing

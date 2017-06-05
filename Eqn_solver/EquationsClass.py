@@ -4,11 +4,19 @@ class EquationsClass(object):
         
     """
 
-    def __init__(self, equations):
+    def __init__(self, eqn_input):
         """Constructor"""
-        self.entered_equations = equations
-        self.equations = equations
-        self.equations = self.format()
+
+        if isinstance(eqn_input, str):
+            self.equations = self.parse_eqns_from_string(instring=eqn_input)
+            self.entered_equations = self.equations
+            self.equations = self.format(self.equations)
+        elif isinstance(eqn_input, list):
+            self.entered_equations = eqn_input
+            self.equations = eqn_input
+            self.equations = self.format(self.equations)
+        else:
+            print(str(eqn_input) + "\n has generated an error going into the EquationsClass")
 
     def solve(self):
         from Eqn_solver.Solver import Solver
@@ -49,7 +57,13 @@ class EquationsClass(object):
             solve = False
         return solve
 
-    def format(self):
+    def parse_eqns_from_string(self, instring):
+        stringequations = instring
+        equations = stringequations.split("\n")
+        equations2 = list(filter(None, equations))
+        return equations2
+
+    def format(self, equations):
         """
         the purpose of this function is to take the list of equations,
         - remove spaces 
@@ -64,7 +78,7 @@ class EquationsClass(object):
         *************************
         """
         output_equations = []
-        for eqn in self.equations:
+        for eqn in equations:
             eqn = eqn.replace(" ","") # remove spaces
             eqn = eqn.replace("^", "**") # for python to understand exponentials
             outeqn = eqn.upper()
@@ -143,7 +157,7 @@ class EquationsClass(object):
             output.append(i)
 
         # format equations and number them
-        debug_equations = self.format()
+        debug_equations = self.format(self.equations)
         output.append("\nFormatted Equations: ")
         for i, item in enumerate(debug_equations):
             output.append(str(str(i+1) + " " + item))
@@ -180,7 +194,7 @@ class EquationsClass(object):
 if __name__ == "__main__":
     import Eqn_solver.readfile as rf
     input_file = "1eqn"
-    eqns, num_line = rf.readfile(input_file)
+    eqns = rf.readfile(input_file)
     equations_object = EquationsClass(eqns)
     print("Reading input file of name: " + input_file + "\n")
     equations_object.debug()
