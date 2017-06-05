@@ -4,5 +4,5 @@ Eqn_solver/__pycache__
 .idea/workspace.xml
 *.xml
 *.whl
-/Eqn_solver/tmp.py
-/Eqn_solver/tmp.txt
+tmp.py
+tmp.txt
