@@ -21,6 +21,7 @@ class EquationsClass(object):
     def solve(self):
         from Eqn_solver.Solver import Solver
         solver_object = Solver(self.equations)
+
         return
 
     def check(self):

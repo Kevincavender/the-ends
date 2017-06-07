@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Module Docstring
 
@@ -5,15 +6,9 @@ THEENDS (The Ends)
 THermodynamic Engineering Equations NeeD Solving
 
 """
-
-__author__ = "Kevin Cavender"
-__version__ = "0.0.1"
-__license__ = "None atm"
-
-
 import time
-from Eqn_solver.readfile import readstring, readfile
-from Eqn_solver.EquationsClass import EquationsClass
+from Eqn_solver.readfile import readfile
+from Eqn_solver.myEquations import EquationsClass
 from Eqn_solver.Solver import Solver
 from Eqn_solver.results import solve_and_print_results as results
 

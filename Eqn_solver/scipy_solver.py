@@ -1,4 +1,5 @@
-from Eqn_solver.text_parsing import collect_variables
+# from Eqn_solver.text_parsing import collect_variables
+# Fix collect variables reference
 
 # Define the expression whose roots we want to find
 # take in an equation that needs to be reordered

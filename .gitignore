@@ -6,3 +6,5 @@ Eqn_solver/__pycache__
 *.whl
 tmp.py
 tmp.txt
+/InstallWheels/
+/build/

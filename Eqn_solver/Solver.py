@@ -1,4 +1,3 @@
-from Eqn_solver.EquationsClass import EquationsClass
 
 
 class Solver(object):
