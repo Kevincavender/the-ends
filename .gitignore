@@ -8,3 +8,4 @@ tmp.py
 tmp.txt
 /InstallWheels/
 /build/
+*.msi

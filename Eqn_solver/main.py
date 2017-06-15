@@ -26,12 +26,12 @@ def main(instring):
     if solve == 1:
         exelist, resultslist = Solver(user_input.equations).original_solver()
         resultsout = results(user_input.entered_equations,exelist, resultslist)
-        print('**************************************************')
-        print('Number of Equations = ', len(user_input.equation_dict()))
-        print('Number of Variables = ', len(user_input.variables()))
-        print('List of Variables', ', '.join(user_input.variables()))
-        print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
-        print('**************************************************')
+        # print('**************************************************')
+        # print('Number of Equations = ', len(user_input.equation_dict()))
+        # print('Number of Variables = ', len(user_input.variables()))
+        # print('List of Variables', ', '.join(user_input.variables()))
+        # print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
+        # print('**************************************************')
     return resultsout
 
 
