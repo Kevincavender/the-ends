@@ -10,9 +10,6 @@ class Notepad(tkinter.Frame):
     def __init__(self, *args, **kwargs):
         # variables
         self.__root = Tk()
-        # default window width and height
-        # __thisWidth = 300
-        # __thisHeight = 300
         self.frame = Frame(self.__root, padx=10, pady=10)
         self.frame.grid(column=0, row=0, columnspan=2, rowspan=1,
                         sticky=N + S + E + W)
