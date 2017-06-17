@@ -8,6 +8,7 @@ import Eqn_solver.main as eqn
 
 class Notepad(tkinter.Frame):
     def __init__(self, *args, **kwargs):
+        tkinter.Frame.__init__(self, *args, **kwargs)
         # variables
         self.__root = Tk()
         self.frame = Frame(self.__root, padx=10, pady=10)
@@ -33,7 +34,7 @@ class Notepad(tkinter.Frame):
         self.__thisSolveButton = Button(self.__thisMenuBar)
         self.__thisScrollBar = Scrollbar(self.__thisConsoleArea)
         self.__file = None
-        tkinter.Frame.__init__(self, *args, **kwargs)
+
         self.__root.title("Untitled - Equation Solver")
         # set icon
         try:
