@@ -57,7 +57,7 @@ class Solver(object):
                 print("Block Number: " + str(current_block_num + 1))
                 # prints activity for debugging
 
-            current_block_vars = EquationsClass(current_block).variables()
+            current_block_vars = EquationsClass(current_block).variablesin()
             # collect variables in the current_block
             for current_variable in solvable_vars:
                 # add current block variables to main variable list
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     equations_object = EquationsClass(eqns)
     print("Reading input file of name: " + input_file + "\n")
     equations = equations_object.equations
-    variables = equations_object.variables()
+    variables = equations_object.variablesin()
     # print(equations)
     # print(variables)
     # print(Solver(equations).issolvable(equations[0], variables[2], 0))

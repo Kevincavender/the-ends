@@ -7,60 +7,37 @@ import Eqn_solver.main as eqn
 class MainApplication(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.parent = parent
-        self.mainframe = tk.Frame(self.parent, height=600, width=600)
-        self.mainframe.pack()
-        MenuBar(self.parent)
+        # parent is expressed as root
+        parent.title("Untitled - Equation Solver")
+        # mainframe is the frame inside root where things happen
+        mainframe = tk.Frame(parent)
+        mainframe.pack(fill='both', expand=YES)
+
+        inputframe = CodeWindow(mainframe, 0)
+        outputframe = CodeWindow(mainframe, 1)
+        # vsb = tk.Scrollbar(outputframe.text, orient='vertical')
+        inputframe.pack(side=LEFT, fill=Y, pady=10)
+        outputframe.pack(side=LEFT, fill=Y, padx=10, pady=10)
+        # vsb.pack(side=RIGHT, fill=BOTH, expand=YES)
+        MenuBar(parent, inputframe.text, outputframe.text)
 
 
 class MenuBar(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, inputframe, outputframe, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.inputframe=inputframe
+        self.outputframe=outputframe
         self.parent = parent
+        self.__file = None
         menubar = tk.Menu(self.parent)
+        filemenu=tk.Menu(menubar)
+        menubar.add_cascade(label="File", menu=filemenu)
         menubar.add_command(label="Quit!", command=self.parent.quit)
+        menubar.add_command(label="New", command=self.__newFile)
+        menubar.add_command(label="Open", command=self.__openFile)
+        menubar.add_command(label="Save", command=self.__saveFile)
         self.parent.config(menu=menubar)
 
-    def filemenucascade(self):
-        pass
-
-
-class CodeWindow(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.parent = parent
-        self.text = CustomText(self)
-        # self.vsb = tkinter.Scrollbar(orient="vertical", command=self.text.yview)
-        # self.text.configure(yscrollcommand=self.vsb.set)
-        self.text.configure()
-        self.text.tag_configure("bigfont", font=("Helvetica", "24", "bold"))
-        self.linenumbers = TextLineNumbers(self, width=30)
-        self.linenumbers.attach(self.text)
-
-        # self.vsb.pack(side="right", fill="y")
-        self.linenumbers.pack(side="left", fill="y")
-        self.text.pack(side="left", fill="both", expand=True)
-
-        self.text.bind("<<Change>>", self._on_change)
-        self.text.bind("<Configure>", self._on_change)
-
-    def _on_change(self, event):
-        self.linenumbers.redraw()
-
-    def solvecode(self, codetext, outputtext):
-        inputstring = codetext.text.get("1.0", END)
-        outputtext.delete(1.0, END)
-        try:
-            if isinstance(inputstring, str):
-                resultsout = eqn.main(inputstring)
-                outputtext.insert(1.0, resultsout)
-
-        except:
-            resultsout = "Error in Solving, \nwill give more information tommorow"
-            outputtext.insert(1.0, resultsout)
-
-    def printtogui(self, solveroutput, outputtext):
-        outputtext.text.insert(1.0, solveroutput)
 
     def __quitApplication(self):
         self.parent.destroy()
@@ -69,7 +46,10 @@ class CodeWindow(tk.Frame):
     def __showAbout(self):
         showinfo("App", "all the bugs\nVersion 0.1")
 
-    def __openFile(self, opentext):
+    def __settings(self):
+        pass
+
+    def __openFile(self):
 
         self.__file = askopenfilename(defaultextension=".txt",
                                       filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt")])
@@ -81,20 +61,22 @@ class CodeWindow(tk.Frame):
             # try to open the file
             # set the window title
             self.parent.title(os.path.basename(self.__file) + " - Equation Solver")
-            opentext.text.delete(1.0, END)
+            self.inputframe.delete(1.0, END)
 
             file = open(self.__file, "r")
 
-            opentext.text.insert(1.0, file.read())
+            self.inputframe.insert(1.0, file.read())
 
             file.close()
 
-    def __newFile(self, newtext):
+    def __newFile(self):
+        
         self.parent.title("Untitled - Equation Solver")
         self.__file = None
-        newtext.text.delete(1.0, END)
+        self.inputframe.delete(1.0, END)
+        self.outputframe.delete(1.0, END)
 
-    def __saveFile(self, savedtext):
+    def __saveFile(self):
         if self.__file == None:
             # save as new file
             self.__file = asksaveasfilename(initialfile='Untitled.txt', defaultextension=".txt",
@@ -105,14 +87,64 @@ class CodeWindow(tk.Frame):
             else:
                 # try to save the file
                 file = open(self.__file, "w")
-                file.write(savedtext.text.get(1.0, END))
+                file.write(self.inputframe.get(1.0, END))
                 file.close()
                 # change the window title
                 self.parent.title(os.path.basename(self.__file) + " - Equation Solver")
+
         else:
             file = open(self.__file, "w")
-            file.write(savedtext.text.get(1.0, END))
+            file.write(self.inputframe.get(1.0, END))
             file.close()
+
+
+class OutputWindow(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+        self.text = Text(self)
+        self.text.configure()
+        self.text.insert(1.0, "Results")
+        self.text.pack()
+
+
+class CodeWindow(tk.Frame):
+    def __init__(self, parent, vsbon, *args, **kwargs):
+        tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.parent = parent
+        self.text = CustomText(self)
+        if vsbon == 1: self.vsb = tk.Scrollbar(orient="vertical", command=self.text.yview)
+        if vsbon == 1: self.text.configure(yscrollcommand=self.vsb.set)
+        self.text.configure()
+        self.linenumbers = TextLineNumbers(self, width=15)
+        self.linenumbers.attach(self.text)
+        if vsbon == 1: self.vsb.pack(side="right", fill=Y)
+        self.linenumbers.pack(side="left", fill="y")
+        self.text.pack(side="left", fill="both", expand=True)
+        # print(self.text)
+        self.text.bind("<<Change>>", self._on_change)
+        self.text.bind("<Configure>", self._on_change)
+
+    def _on_change(self, event):
+        self.linenumbers.redraw()
+
+    def solvecode(self, codetext, outputtext):
+        inputstring = codetext.get("1.0", END)
+        outputtext.delete(1.0, END)
+        try:
+            if isinstance(inputstring, str):
+                resultsout = eqn.main(inputstring)
+                outputtext.insert(1.0, resultsout)
+
+        except:
+            resultsout = "Error in Solving, \nwill give more information tommorow"
+            outputtext.insert(1.0, resultsout)
+
+    def printtogui(self, solveroutput, outputtext):
+        outputtext.insert(1.0, solveroutput)
+
+    def text(self):
+        return self.text
 
 
 class TextLineNumbers(tk.Canvas):
@@ -140,7 +172,6 @@ class TextLineNumbers(tk.Canvas):
 class CustomText(tk.Text):
     def __init__(self, *args, **kwargs):
         tk.Text.__init__(self, *args, **kwargs)
-
         self.tk.eval('''
             proc widget_proxy {widget widget_command args} {
 
@@ -166,6 +197,7 @@ class CustomText(tk.Text):
             rename {widget} _{widget}
             interp alias {{}} ::{widget} {{}} widget_proxy {widget} _{widget}
         '''.format(widget=str(self)))
+
 
 
 def runapp():

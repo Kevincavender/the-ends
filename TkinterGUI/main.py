@@ -24,7 +24,7 @@ class Notepad(tkinter.Frame):
         self.codearea = CodeEditor(self.__thisTextArea)
         self.codearea.pack(side=LEFT, fill=BOTH, expand=True)
 
-        self.__thisConsoleArea = Text(self.frame)
+        self.__thisConsoleArea = Text(self.frame, height=200)
         self.__thisConsoleArea.grid(row=0, column=2, sticky=N + S + E + W, ipadx=200)
 
         self.__thisMenuBar = Menu(self.__root)
