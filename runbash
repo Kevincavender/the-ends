@@ -1,0 +1,13 @@
+#!/bin/bash
+STRING="Launching game..."
+PYTHON="/usr/bin/python3.4"
+GAME_ROOT="/home/user/Projects/Test"
+GAME="game.py"
+
+pushd . > /dev/null 2>&1
+cd $GAME_ROOT
+
+echo $STRING
+$PYTHON "$GAME"
+
+popd > /dev/null 2>&1
