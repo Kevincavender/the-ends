@@ -3,6 +3,9 @@ from tkinter.messagebox import *
 from tkinter.filedialog import *
 import Eqn_solver.main as eqn
 
+# need to work on IO Class for the application
+# need to pass line numbers
+# and strings of the things
 
 class MainApplication(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -12,10 +15,11 @@ class MainApplication(tk.Frame):
         # mainframe is the frame inside root where things happen
         mainframe = tk.Frame(parent)
         mainframe.pack(fill='both', expand=YES)
-
+        solvebutton = tk.Button(mainframe, text="Solve")
         inputframe = CodeWindow(mainframe, 0)
         outputframe = CodeWindow(mainframe, 1)
         # vsb = tk.Scrollbar(outputframe.text, orient='vertical')
+        solvebutton.pack(fill=X, padx=5, pady=5)
         inputframe.pack(side=LEFT, fill=Y, pady=10)
         outputframe.pack(side=LEFT, fill=Y, padx=10, pady=10)
         # vsb.pack(side=RIGHT, fill=BOTH, expand=YES)
@@ -25,25 +29,28 @@ class MainApplication(tk.Frame):
 class MenuBar(tk.Frame):
     def __init__(self, parent, inputframe, outputframe, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.inputframe=inputframe
-        self.outputframe=outputframe
+        self.inputframe = inputframe
+        self.outputframe = outputframe
         self.parent = parent
         self.__file = None
         menubar = tk.Menu(self.parent)
         filemenu=tk.Menu(menubar)
+        helpmenu = tk.Menu(menubar)
         menubar.add_cascade(label="File", menu=filemenu)
-        menubar.add_command(label="Quit!", command=self.parent.quit)
-        menubar.add_command(label="New", command=self.__newFile)
-        menubar.add_command(label="Open", command=self.__openFile)
-        menubar.add_command(label="Save", command=self.__saveFile)
+        menubar.add_cascade(label="Help", menu=helpmenu)
+        filemenu.add_command(label="New", command=self.__newFile)
+        filemenu.add_command(label="Open", command=self.__openFile)
+        filemenu.add_command(label="Save", command=self.__saveFile)
+        filemenu.add_separator()
+        filemenu.add_command(label="Quit", command=self.parent.quit)
+        helpmenu.add_command(label="About", command=self.__showabout)
         self.parent.config(menu=menubar)
 
-
-    def __quitApplication(self):
+    def __quitapplication(self):
         self.parent.destroy()
         # exit()
 
-    def __showAbout(self):
+    def __showabout(self):
         showinfo("App", "all the bugs\nVersion 0.1")
 
     def __settings(self):
@@ -70,7 +77,7 @@ class MenuBar(tk.Frame):
             file.close()
 
     def __newFile(self):
-        
+
         self.parent.title("Untitled - Equation Solver")
         self.__file = None
         self.inputframe.delete(1.0, END)
@@ -118,7 +125,7 @@ class CodeWindow(tk.Frame):
         self.text.configure()
         self.linenumbers = TextLineNumbers(self, width=15)
         self.linenumbers.attach(self.text)
-        if vsbon == 1: self.vsb.pack(side="right", fill=Y)
+        if vsbon == 1: self.vsb.pack(side="right", fill=Y, in_=self)
         self.linenumbers.pack(side="left", fill="y")
         self.text.pack(side="left", fill="both", expand=True)
         # print(self.text)
