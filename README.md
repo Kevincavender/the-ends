@@ -5,6 +5,10 @@ THermodynamic Engineering Equations NeeD Solving
 Working on open-sourced equation solver for the needs of a Thermo-Fluids Mechanical Engineer. 
 The initial module is an explicit numerical equations solver (Eqn_solver) and will eventually be built out to include the packages listed below (subject to change).
 
+## Install info
+currently developing in Python 3.6. This is the only version currently semi-guaranteed to work.
+
+
 ## future libraries to integrate
 ### [Pint](https://github.com/hgrecco/pint)
     for unit checking and conversion
