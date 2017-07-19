@@ -17,12 +17,12 @@ class MenuBar(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
-        menubar = tk.Menu(self.parent)
-        menubar.add_command(label="Quit!", command=self.parent.quit)
-        self.parent.config(menu=menubar)
+        self.menubar = tk.Menu(self.parent)
+        self.filemenucascade()
+        self.parent.config(menu=self.menubar)
 
     def filemenucascade(self):
-        pass
+        self.menubar.add_command(label="Quit!", command=self.parent.quit)
 
 
 class CodeWindow(tk.Frame):
