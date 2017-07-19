@@ -1,0 +1,13 @@
+#!/bin/bash
+STRING="Launching the thing..."
+PYTHON="/usr/bin/python3.6.1"
+SCRIPT_ROOT="/home/user/Projects/Test"
+SCRIPT="yourscript.py"
+
+pushd . > /dev/null 2>&1
+cd $SCRIPT_ROOT
+
+echo $STRING
+$PYTHON "$SCRIPT"
+
+popd > /dev/null 2>&1

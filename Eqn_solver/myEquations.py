@@ -17,6 +17,7 @@ class EquationsClass(object):
             self.equations = self.format(self.equations)
         else:
             print(str(eqn_input) + "\n has generated an error going into the EquationsClass")
+        self.variable_dictionary = self.variable_dict()
 
     def solve(self):
         from Eqn_solver.Solver import Solver
@@ -28,13 +29,14 @@ class EquationsClass(object):
         """ 
         :return:
             boolean for passing syntax check
+
         """
         solve = True  # indication for no errors in preprocessing
         containsoperator = False
         count = 0
         tmp_eqn = []
         output_equations = []
-        symbols_not_allowed = ['?', '@', '&', '`', '~', '#', '!', '$']
+        symbols_not_allowed = ['?', '@', '&', '`', '~', '#', '!', '$', '%']
 
         for text in self.equations:
             # string containing an equation
@@ -94,30 +96,25 @@ class EquationsClass(object):
             list of equations
         :return:
             list of variables (without copies)
-            variable dict = {equation:[variables], ..}
         """
         import re
         variables = []
         for one_equation in self.equations:
             # regular expression for splitting strings with given characters
             split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
-            # print('split equation ->', split_equations)
-            tmp_vars = []
             for i in split_equations:
-                if i != '':
-                    if i.isnumeric() == 0 and i not in variables:
-                        # if the item in list (i) is not numeric append
-                        # and it's not already in the list of variables
-                        # it to the variables list
-                        variables.append(i)
-                    if i.isnumeric() == 0:
-                        tmp_vars.append(i)
+                if not i.isnumeric() and i not in variables:
+                    variables.append(i)
         return variables
+
+    def variables_in_eqn(self,equation):
+        pass
 
     def variable_dict(self):
         """
         split equations by the '=' operator
         store in list for processing
+        :rtype: dict
         :return:
             list of variables (without copies)
             variable dict = {equation:[variables], ..}
@@ -173,10 +170,9 @@ class EquationsClass(object):
 
         # Variable dictionary
         output.append("\nVariable Dictionary")
-        variable_dict = self.variable_dict()
-        for i in variable_dict.items():
-            output.append(str(i[0]))
-            output.append(str(i[1]))
+        for i in self.variable_dictionary:
+            output.append(str(i))
+            output.append(str(self.variable_dictionary[i]))
 
         # Equation dictionary
         output.append("\nEquation Dictionary")
@@ -198,4 +194,6 @@ if __name__ == "__main__":
     eqns = rf.readfile(input_file)
     equations_object = EquationsClass(eqns)
     print("Reading input file of name: " + input_file + "\n")
+    print(equations_object.variables())
+    print(equations_object.variable_dictionary)
     equations_object.debug()

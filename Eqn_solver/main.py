@@ -32,6 +32,8 @@ def main(instring):
         # print('List of Variables', ', '.join(user_input.variables()))
         # print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
         # print('**************************************************')
+    else:
+        resultsout = "Unsolvable"
     return resultsout
 
 
