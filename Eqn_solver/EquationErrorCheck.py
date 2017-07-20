@@ -54,11 +54,17 @@ class EquationErrorCheck():
     def check_trailing_operators(self):
         # r"[=+\-^*/\\()\[\]]"
         trailing_operators_pass = False
+        startbin = False
+        endbin = False
         for string in [self.leftequation, self.rightequation]:
             lineend = re.search(r"\+$|-$|\*$|\^$|\($|/$", self.equation)
-            end = lineend.group()
             linestart = re.search(r"^\+|^-|^\*|^\^|^\)|^/", self.equation)
-            start = linestart.group()
+            if lineend:
+                end = lineend.groups()
+                endbin = True
+            if linestart:
+                start = linestart.groups()
+                startbin = True
         return trailing_operators_pass
     # https://stackoverflow.com/questions/406230/regular-expression-to-match-a-line-that-doesnt-contain-a-word
 
@@ -66,11 +72,11 @@ class EquationErrorCheck():
         pass
 
 if __name__ == '__main__':
-    EQ = EquationErrorCheck("-x=4", 3)
+    EQ = EquationErrorCheck("-x=4+", 3)
     print(">>>Checkline results:")
     print(EQ.checkline())
     # EQ.check_trailing_operators()
     print(">>> Does the equation have the correct number of equals?")
     print(EQ.check_for_equals())
-    print(">>> Does the equation have any trailing operators?")
+    print(">>> Does the equation have no trailing operators?")
     print(EQ.check_trailing_operators())
