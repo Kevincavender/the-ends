@@ -60,11 +60,19 @@ class EquationErrorCheck():
             lineend = re.search(r"\+$|-$|\*$|\^$|\($|/$", self.equation)
             linestart = re.search(r"^\+|^-|^\*|^\^|^\)|^/", self.equation)
             if lineend:
-                end = lineend.groups()
+                end = lineend.group(0)
                 endbin = True
+                self.errormessage = \
+                    "There is a trailing " + str(end) + \
+                    " in this equation"
             if linestart:
-                start = linestart.groups()
+                start = linestart.group(0)
                 startbin = True
+                self.errormessage = \
+                    "There is a trailing " + str(start) + \
+                    " in this equation"
+            if not linestart and not lineend:
+                trailing_operators_pass = True
         return trailing_operators_pass
     # https://stackoverflow.com/questions/406230/regular-expression-to-match-a-line-that-doesnt-contain-a-word
 
@@ -72,7 +80,7 @@ class EquationErrorCheck():
         pass
 
 if __name__ == '__main__':
-    EQ = EquationErrorCheck("-x=4+", 3)
+    EQ = EquationErrorCheck("x=4-", 3)
     print(">>>Checkline results:")
     print(EQ.checkline())
     # EQ.check_trailing_operators()
@@ -80,3 +88,4 @@ if __name__ == '__main__':
     print(EQ.check_for_equals())
     print(">>> Does the equation have no trailing operators?")
     print(EQ.check_trailing_operators())
+    print(EQ.errormessage)
