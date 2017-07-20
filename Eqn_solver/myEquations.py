@@ -26,7 +26,7 @@ class EquationsClass(object):
         return
 
     def check(self):
-        """ 
+        """
         :return:
             boolean for passing syntax check
 
@@ -59,6 +59,16 @@ class EquationsClass(object):
             print("There is a missing '=' sign or a lone variable in the equations list")
             solve = False
         return solve
+
+    # this don't work
+
+    # def check(self):
+    #     solve = True
+    #     for equation in self.equations:
+    #         has_errors = EquationErrorCheck.EquationErrorCheck(equation).contains_errors()
+    #         if has_errors is True:
+    #             solve = False
+    #     return solve
 
     def parse_eqns_from_string(self, instring):
         stringequations = instring
