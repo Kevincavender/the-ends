@@ -52,22 +52,28 @@ class Solver(object):
             # simplify the reference to the current block
             current_block = eqn_block[current_block_num]
 
+            # debuging activities...........
             if self.debug == True:
                 print("\nCurrent Block: " + str(current_block))
                 print("Block Number: " + str(current_block_num + 1))
                 # prints activity for debugging
+            # ..............................
 
-            current_block_vars = EquationsClass(current_block).variablesin()
             # collect variables in the current_block
+            current_block_vars = EquationsClass(current_block).variables()
+
+            # adds solvable variables to the current block variables
             for current_variable in solvable_vars:
-                # add current block variables to main variable list
-                # appends the previously solvable variables
                 current_block_vars.append(current_variable)
 
+            # don't know why this is nessesary
             block_vars = current_block_vars
+
+            # list(set()) operation to sort and remove duplicates
             block_vars = list(set(block_vars))
             solvable_vars = list(set(solvable_vars))
-            # order and remove duplicates
+
+            # words
             if set(block_vars) == set(solvable_vars):
                 blockissolvable = True
                 if self.debug == 1: print("block vars and solvable vars are the same")
@@ -165,22 +171,23 @@ class Solver(object):
 
 if __name__ == "__main__":
     # test of is solvable
-
     import Eqn_solver.readfile as rf
-    from Eqn_solver.results import solve_and_print_results
     input_file = "1eqn"
     eqns = rf.readfile(input_file)
     equations_object = EquationsClass(eqns)
-    print("Reading input file of name: " + input_file + "\n")
+    print("Reading input file of name: " + input_file)
     equations = equations_object.equations
-    variables = equations_object.variablesin()
+    variables = equations_object.variables()
     # print(equations)
     # print(variables)
     # print(Solver(equations).issolvable(equations[0], variables[2], 0))
     exelist, resultslist = Solver(equations).original_solver()
     peqns = EquationsClass(eqns).equations
+    print("exelist:")
     print(exelist)
+    print("resulting variables list:")
     print(resultslist)
+    print("equations from equations class:")
     print(peqns)
     # solve_and_print_results(peqns, exelist)
 
