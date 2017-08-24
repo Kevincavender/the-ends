@@ -7,11 +7,11 @@ class Solver(object):
     take in list of equations
     
     """
-    def __init__(self, input_equations):
+    def __init__(self, input_equations, debug=False):
         self.looplimit = 20
         self.eqn_obj = EquationsClass(input_equations)
         self.vdict = self.eqn_obj.variable_dict()
-        self.debug = False
+        self.debug = debug
         self.equations = input_equations
 
     def original_solver(self):
@@ -29,9 +29,11 @@ class Solver(object):
             if count > self.looplimit:
                 print("Loop Limit reached on block solver")
                 execute_list = ['print("Error: Loop Limit Reached on Solver")']
-                return execute_list
+                results_list = ''
+                return execute_list, results_list
 
                 # break if loop limit is reached
+            # DO NOT CHANGE FROM == TO is
             elif eqn_block[current_block_num] == []:
                 # when there are no more equations to sort,
                 # terminate the loop
@@ -41,7 +43,9 @@ class Solver(object):
                 if self.debug == 1:
                     print("--------------------------------------------"
                           "--------------------"
-                          "\nFinal Equation Block: " + str(eqn_block))
+                          "\nFinal Equation Block: ")
+                    for i in range(0, len(eqn_block)):
+                        print("     " + str(eqn_block[i]))
                 break
             # *****************************************************************
             # Working with Current Block
@@ -59,6 +63,10 @@ class Solver(object):
                 # prints activity for debugging
             # ..............................
 
+<<<<<<< HEAD
+=======
+            current_block_vars = EquationsClass(current_block).variables()
+>>>>>>> origin/master
             # collect variables in the current_block
             current_block_vars = EquationsClass(current_block).variables()
 
@@ -71,6 +79,7 @@ class Solver(object):
 
             # list(set()) operation to sort and remove duplicates
             block_vars = list(set(block_vars))
+            block_vars = list(filter(None, block_vars))
             solvable_vars = list(set(solvable_vars))
 
             # words
@@ -87,6 +96,8 @@ class Solver(object):
                     # print("Current Equation: " + str(current_equation))
                     # print("Solvable Variables: " + str(solvable_vars))
                     # check each equation in the current block to see if they are solvable
+                    # this is done by comparing the solvable variables to the variables in
+                    # the current equation.
                     solvable = self.issolvable(current_equation, solvable_vars, False)
                     if solvable == False:
                         # move equation to next block
@@ -111,9 +122,11 @@ class Solver(object):
                 # iterate through current block equations
                 # determine if not solvable
             if self.debug == 1:
-                print("Block Variables " + str(block_vars))
-                print("Solvable Variables " + str(solvable_vars))
-                print("current equation block: " + str(eqn_block))
+                print("Block Variables \n     " + str(block_vars))
+                print("Solvable Variables \n     " + str(solvable_vars))
+                print("current equation block: ")
+                for i in range(0, len(eqn_block)):
+                    print("     " + str(eqn_block[i]))
                 print("Is block solvable: " + str(blockissolvable))
             if blockissolvable == True:
                 current_block_num += 1
@@ -181,7 +194,7 @@ if __name__ == "__main__":
     # print(equations)
     # print(variables)
     # print(Solver(equations).issolvable(equations[0], variables[2], 0))
-    exelist, resultslist = Solver(equations).original_solver()
+    exelist, resultslist = Solver(equations, debug=True).original_solver()
     peqns = EquationsClass(eqns).equations
     print("exelist:")
     print(exelist)
