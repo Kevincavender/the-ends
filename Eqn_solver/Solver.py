@@ -62,11 +62,7 @@ class Solver(object):
                 print("Block Number: " + str(current_block_num + 1))
                 # prints activity for debugging
             # ..............................
-
-<<<<<<< HEAD
-=======
             current_block_vars = EquationsClass(current_block).variables()
->>>>>>> origin/master
             # collect variables in the current_block
             current_block_vars = EquationsClass(current_block).variables()
 

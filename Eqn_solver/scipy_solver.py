@@ -5,10 +5,18 @@
 # take in an equation that needs to be reordered
 
 
-def solver(equation, known_variables, first_run):
+def solver(equation, equation_variables, known_variables, first_run):
+    '''
+    equation
+        string
+    known_variables
+        list of strings
+    first_run
+        determine whether this function has been used yet for import statement
+        --> make first_run a global variable?
+    '''
     equation = reorder(equation)
-    variables, variable_dict = collect_variables(equation)
-    common_variables = set(variables).difference(known_variables)
+    common_variables = set(equation_variables).difference(known_variables)
     list1 = func(equation, common_variables)
     if first_run == True:
         import_string = ["from scipy.optimize import fsolve"]
@@ -44,3 +52,13 @@ def func(equation, solved_for_variable):
     ]
     list1 = [''.join(equation_list), ''.join(solver_list), ''.join(formating)]
     return list1
+
+if __name__ == "__main__":
+    import pprint
+    singeq = solver("x+y = 2", ["x", "y"], ["x"], 1)
+    x = 1
+    pprint.pprint(singeq)
+    for i in singeq:
+        exec(i)
+    print(y)
+    #print('x')
