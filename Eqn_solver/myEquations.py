@@ -1,7 +1,19 @@
 class EquationsClass(object):
-    """docstring yo
-        take in list of equations when creating class
-        
+    """docstring
+    Inputs
+    -----------------------------
+        eqn_input: text file as a string input into
+                   solver for initial processing
+
+    Availible outputs:
+    -----------------------------
+        self.equation_dict = {"equation":[LeftSide, RightSide]
+        self.format
+        self.variables
+        self.solve
+        self.check
+        self.parse_eqns_from_string
+        self.debug
     """
 
     def __init__(self, eqn_input):
@@ -199,11 +211,12 @@ class EquationsClass(object):
             return print("Error in equation checking")
 
 if __name__ == "__main__":
-    import Eqn_solver.readfile as rf
+    import readfile as rf
+    import pprint
     input_file = "1eqn"
     eqns = rf.readfile(input_file)
     equations_object = EquationsClass(eqns)
-    print("Reading input file of name: " + input_file + "\n")
-    print(equations_object.variables())
-    print(equations_object.variable_dictionary)
+    pprint.pprint("Reading input file of name: " + input_file + "\n")
+    pprint.pprint(equations_object.variables())
+    pprint.pprint(equations_object.variable_dictionary)
     equations_object.debug()

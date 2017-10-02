@@ -4,7 +4,13 @@
 # Define the expression whose roots we want to find
 # take in an equation that needs to be reordered
 
+"""
+incorporate
+Equation Object={...}
+dictionary of all things
 
+
+"""
 def solver(equation, equation_variables, known_variables, first_run):
     '''
     equation
@@ -61,4 +67,3 @@ if __name__ == "__main__":
     for i in singeq:
         exec(i)
     print(y)
-    #print('x')
