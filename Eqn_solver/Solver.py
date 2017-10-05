@@ -3,7 +3,7 @@ from Eqn_solver.myEquations import EquationsClass
 
 class Solver(object):
     """
-    docstring yo
+    docstring
     take in list of equations
     
     """
@@ -15,17 +15,28 @@ class Solver(object):
         self.equations = input_equations
 
     def original_solver(self):
+        '''
+        :param
+        self.equations
+
+        :return:
+        '''
+
         eqn_block = [self.equations, []]
         solvable_vars = []
         parsed = False
         count = 0
-        current_block_num = 0
+        block_num = 0
 
         while not parsed:
             count += 1
             # *****************************************************************
             # Loop Termination Items
             # *****************************************************************
+            # Loop is terminated if:
+            # A: self.looplimit is reached
+            # B: Current block has run out of equations
+            # C: (NEED TO ADD) Remaining Block has multiple (self-contingent) unknowns
             if count > self.looplimit:
                 print("Loop Limit reached on block solver")
                 execute_list = ['print("Error: Loop Limit Reached on Solver")']
@@ -34,11 +45,11 @@ class Solver(object):
 
                 # break if loop limit is reached
             # DO NOT CHANGE FROM == TO is
-            elif eqn_block[current_block_num] == []:
+            elif eqn_block[block_num] == []:
                 # when there are no more equations to sort,
                 # terminate the loop
                 eqn_block.remove([])
-                if eqn_block[current_block_num] == []:
+                if eqn_block[block_num] == []:
                     eqn_block.remove([])
                 if self.debug == 1:
                     print("--------------------------------------------"
@@ -47,53 +58,58 @@ class Solver(object):
                     for i in range(0, len(eqn_block)):
                         print("     " + str(eqn_block[i]))
                 break
+
             # *****************************************************************
             # Working with Current Block
             # *****************************************************************
 
             # by default the block is not solvable
             blockissolvable = False
-            # simplify the reference to the current block
-            current_block = eqn_block[current_block_num]
 
-            # debuging activities...........
-            if self.debug == True:
-                print("\nCurrent Block: " + str(current_block))
-                print("Block Number: " + str(current_block_num + 1))
-                # prints activity for debugging
-            # ..............................
-            current_block_vars = EquationsClass(current_block).variables()
+            # simplify the reference to the current block
+            current_block = eqn_block[block_num]
+
             # collect variables in the current_block
             current_block_vars = EquationsClass(current_block).variables()
 
             # adds solvable variables to the current block variables
-            for current_variable in solvable_vars:
-                current_block_vars.append(current_variable)
-
-            # don't know why this is nessesary
-            block_vars = current_block_vars
+            block_vars = solvable_vars+current_block_vars
 
             # list(set()) operation to sort and remove duplicates
             block_vars = list(set(block_vars))
             block_vars = list(filter(None, block_vars))
             solvable_vars = list(set(solvable_vars))
 
-            # words
+            if self.debug == True:
+                print("\nCurrent Block: " + str(current_block))
+                print("Block Number: " + str(block_num + 1))
+                # prints activity for debugging
+
+            # Check if the block is already solvable
+            # if variables in current block and
+            #                 previous blocks
+            #                 == solvable variables
+            # --> revisit order of logic
             if set(block_vars) == set(solvable_vars):
                 blockissolvable = True
                 if self.debug == 1: print("block vars and solvable vars are the same")
-                # if variables in block + variables in previous blocks = solvable variables
+
             elif set(block_vars) != set(solvable_vars):
                 tmp_solvable_vars = []
                 next_block_equation_list = []
-                # print("Current Block: " + str(current_block))
 
                 for current_equation in current_block:
-                    # print("Current Equation: " + str(current_equation))
-                    # print("Solvable Variables: " + str(solvable_vars))
-                    # check each equation in the current block to see if they are solvable
-                    # this is done by comparing the solvable variables to the variables in
-                    # the current equation.
+                    # *****************************************************************
+                    # Working with Current Equation (sorting single unknowns)
+                    # *****************************************************************
+                    # 1. Determine if solvable
+                    #       By comparing solvable vars to current equation
+                    # 2. If not solvable
+                    #       Push Equation to next Block
+                    # 3. If solvable
+                    #       Add variables to Solvable Variables
+                    #       Leave Equation in current block
+
                     solvable = self.issolvable(current_equation, solvable_vars, False)
                     if solvable == False:
                         # move equation to next block
@@ -109,14 +125,15 @@ class Solver(object):
                         # print("variables in equation test" + str(tmp_eqn_vars))
 
                 for current_equation in next_block_equation_list:
-                    eqn_block[current_block_num + 1].append(current_equation)
-                    eqn_block[current_block_num].remove(current_equation)
+                    eqn_block[block_num + 1].append(current_equation)
+                    eqn_block[block_num].remove(current_equation)
 
                 for variable in tmp_solvable_vars:
                     solvable_vars.append(variable)
                 if self.debug == 1: print("block vars and solvable vars are not the same")
                 # iterate through current block equations
                 # determine if not solvable
+
             if self.debug == 1:
                 print("Block Variables \n     " + str(block_vars))
                 print("Solvable Variables \n     " + str(solvable_vars))
@@ -124,8 +141,10 @@ class Solver(object):
                 for i in range(0, len(eqn_block)):
                     print("     " + str(eqn_block[i]))
                 print("Is block solvable: " + str(blockissolvable))
+
             if blockissolvable == True:
-                current_block_num += 1
+                # If the block is solvable, advance to next block
+                block_num += 1
                 eqn_block.append([])
                 if self.debug == 1: print("next block\n--------------------------"
                                           "--------------------------------------")
@@ -134,6 +153,7 @@ class Solver(object):
             # read previous solveable variables (list them)
             # pull out solvable
             # move unsolvable to next level
+
         # *****************************************************************
         # Export of solvable list of variables
         # *****************************************************************
