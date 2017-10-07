@@ -1,9 +1,21 @@
 def solve_and_print_results(equations, exelist, results_list):
     '''
     creates temporary python file to execute solving in it's own environment
-    tmp python file records the results output to a tmp text file, which is 
+    tmp python file records the results output to a tmp text file
+    the output text file is send back to the user
     '''
     pyfile = open("tmp.py", "w")
+
+    # Write list of imported libraries into python
+    librarylist = [
+        "from scipy.optimize import fsolve"
+    ]
+    for i in librarylist:
+        pyfile.write(i + "\n")
+
+    # Write python executable equations
+    for i in exelist:
+        pyfile.write(i + "\n")
 
     results = [
         'textfile = open("tmp.txt", "w")',
@@ -12,16 +24,23 @@ def solve_and_print_results(equations, exelist, results_list):
         r'    textfile.write(i + "\n")',
         r'textfile.write("\nResults: \n\n")',
               ]
-    for i in exelist:
-        pyfile.write(i + "\n")
+
+    # Have python evaluate the print out entered equations
     for i in results:
         pyfile.write(i + "\n")
+
+    # Have python print results to each variable
     for i in results_list:
         pyfile.write('print("'+i+' = " + str(float('+i+')), file=textfile)\n')
     pyfile.write('textfile.close()\n')
     pyfile.close()
+
+    # Run the just created python file
     import os
     os.system("python tmp.py")
+
+    # Open text file that python created
+    # Read the text file and return the results
     with open('tmp.txt', mode='r') as f:
         line_list = []
         # read in lines

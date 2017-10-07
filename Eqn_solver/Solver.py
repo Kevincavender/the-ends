@@ -1,4 +1,4 @@
-from Eqn_solver.myEquations import EquationsClass
+from Eqn_solver.EquationObject import EquationsClass
 
 
 class Solver(object):
@@ -214,7 +214,7 @@ if __name__ == "__main__":
     peqns = EquationsClass(eqns).equations
     print("exelist:")
     print(exelist)
-    print("resulting variables list:")
+    print("results list:")
     print(resultslist)
     print("equations from equations class:")
     print(peqns)

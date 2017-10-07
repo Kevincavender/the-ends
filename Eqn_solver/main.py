@@ -8,9 +8,9 @@ THermodynamic Engineering Equations NeeD Solving
 """
 import time
 from Eqn_solver.readfile import readfile
-from Eqn_solver.myEquations import EquationsClass
+from Eqn_solver.EquationObject import EquationsClass
 from Eqn_solver.Solver import Solver
-from Eqn_solver.results import solve_and_print_results as results
+from Eqn_solver.RunAndOutput import solve_and_print_results as results
 
 
 def main(instring, debug=False):
