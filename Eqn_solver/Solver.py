@@ -16,6 +16,8 @@ class Solver(object):
 
     def original_solver(self):
         '''
+        (rename to parser to reflect actual job)
+        (is that a promotion or demotion?)
         :param
         self.equations
 
@@ -49,6 +51,7 @@ class Solver(object):
                 # when there are no more equations to sort,
                 # terminate the loop
                 eqn_block.remove([])
+                # DO NOT MODIFY THIS LINE! things will break, frustration will ensue
                 if eqn_block[block_num] == []:
                     eqn_block.remove([])
                 if self.debug == 1:
@@ -80,7 +83,7 @@ class Solver(object):
             block_vars = list(filter(None, block_vars))
             solvable_vars = list(set(solvable_vars))
 
-            if self.debug == True:
+            if self.debug is True:
                 print("\nCurrent Block: " + str(current_block))
                 print("Block Number: " + str(block_num + 1))
                 # prints activity for debugging
@@ -111,12 +114,12 @@ class Solver(object):
                     #       Leave Equation in current block
 
                     solvable = self.issolvable(current_equation, solvable_vars, False)
-                    if solvable == False:
+                    if solvable is False:
                         # move equation to next block
                         next_block_equation_list.append(current_equation)
 
                         if self.debug == 1: print(str(current_equation) + " is not solvable")
-                    if solvable == True:
+                    if solvable is True:
                         # add variables to solvable variables
                         tmp_eqn_vars = self.vdict[current_equation]
                         for v in tmp_eqn_vars:
@@ -142,7 +145,7 @@ class Solver(object):
                     print("     " + str(eqn_block[i]))
                 print("Is block solvable: " + str(blockissolvable))
 
-            if blockissolvable == True:
+            if blockissolvable is True:
                 # If the block is solvable, advance to next block
                 block_num += 1
                 eqn_block.append([])
@@ -167,6 +170,16 @@ class Solver(object):
         for current_variable in all_vars:
             results_list.append(current_variable)
         return execute_list, results_list
+
+    def solver_selection(self):
+        """
+        Will read in execute_list and apply additional solvers as nessesary?
+        - python math
+        - fsolve
+        (solving actually happens in tmp.py)
+        :return:
+        """
+        pass
 
     def issolvable(self, equation, solvablevars, debug):
         """

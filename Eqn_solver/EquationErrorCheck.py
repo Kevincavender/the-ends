@@ -83,6 +83,11 @@ class EquationErrorCheck:
         self.leftequation, self.rightequation = re.split(r"[=]", self.equation)
 
     def check_trailing_operators(self):
+        """
+        Checks front and back of each subequation(left and right of equals)
+        for extraneous operators
+        :return:
+        """
         # r"[=+\-^*/\\()\[\]]"
         # does this pass the check?
         trailing_operators_pass = True
@@ -116,6 +121,7 @@ class EquationErrorCheck:
 
     def debug(self):
         pass
+
 
 if __name__ == '__main__':
     EQ = EquationErrorCheck("x=4+4+a")

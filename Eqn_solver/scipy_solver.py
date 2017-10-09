@@ -1,3 +1,5 @@
+import warnings
+
 # from Eqn_solver.text_parsing import collect_variables
 # Fix collect variables reference
 
@@ -35,9 +37,18 @@ def solve(equation, equation_variables, known_variables):
     [str(result_variable)]
         variable for results printing
     '''
+
+    # Added to make the runtime warning exception work
+    # changes warnings from scipy to exceptions
+    warnings.filterwarnings(action="error", module="scipy")
+
+    # puts equation on one side of the equals
     equation = reorder(equation)
+
+    # separates known variables from variables in equation
+    # this should be one variable
     result_variable = set(equation_variables).difference(known_variables)
-    print(result_variable)
+
     # this should raise an error if it's not going to work
     if len(result_variable) is not 1:
         raise Exception("FSOLVE: an Equation Variable Match Error has Occured")
@@ -48,7 +59,7 @@ def solve(equation, equation_variables, known_variables):
 def reorder(equation):
     import re
     left, right = re.split(r"[=]", equation)
-    reordered = [left, '-', right]
+    reordered = [left, '-', '(', right, ')']
     reordered = ''.join(reordered)
     return reordered
 
@@ -75,22 +86,20 @@ def func(equation, solved_for_variable):
 
 if __name__ == "__main__":
     import pprint
-    import warnings
-
-    # Added to make the runtime warning exception work
-    # changes warnings from scipy to exceptions
-    warnings.filterwarnings(action="error", module="scipy")
-
     # included fsolve import statement by default
     exec('from scipy.optimize import fsolve')
-    singeq = solve("x**2+y**3+z = 2", ["z", "y", "x"], ["x", "z"])[0]
-    singeq2 = solve("a+b+c = 2", ["a", "b", "c"], ["a", "b", "d", "e"])[0]
+    singeq = solve("x+y=2+y", ["y", "x"], ["x", "z"])[0]
+    singeq2 = solve("a+b+c=2", ["a", "b", "c"], ["a", "b", "d", "e"])[0]
     a = 2
     b = 2
-    x = 2
+    x = 3
     z = 5
-    pprint.pprint(singeq, indent=1, width=40)
-    pprint.pprint(singeq2, indent=1, width=40)
+
+    pprint.pprint(singeq2, indent=1, width=60)
+    singeq = ['def equation(y): return (y)',
+              'y = fsolve(equation, 1)',
+              'y=y[0]']
+    pprint.pprint(singeq, indent=1, width=60)
     try:
         for i in singeq+singeq2:
             exec(i)
@@ -98,7 +107,13 @@ if __name__ == "__main__":
         print("\nX = " + str(x))
         print("\nC = " + str(c))
     except RuntimeWarning:
-        print("TOO MANY COOKS: Not making progress on this equation, try changing guess value")
+        # add a thing to happen when this doesn't work
+        print("\nTOO MANY COOKS: Not making progress on this equation")
+        print("Possible issues:" +
+              "\n- May be out of bounds for solver"
+              "\n- May be inappropriate guess value"
+              "\n- May result in (+/-) infinity"
+              "\n- May be division by zero error")
     except NameError:
         print("NameError: solver not fully defined")
 

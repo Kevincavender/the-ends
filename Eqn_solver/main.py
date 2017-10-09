@@ -5,6 +5,17 @@ Module Docstring
 THEENDS (The Ends)
 THermodynamic Engineering Equations NeeD Solving
 
+1. Read in file of equations
+    readfile.py
+2. Create Equations Object from text
+    EquationObject.py
+3. Check Equations for errors
+    EquationObject.py --> EquationErrorCheck.py
+4. Run Equations through Solver/Parser
+    Solver.py
+5. run and export results
+    RunAndOutput.py
+
 """
 import time
 from Eqn_solver.readfile import readfile
