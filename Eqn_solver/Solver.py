@@ -177,7 +177,11 @@ class Solver(object):
         - python math
         - fsolve
         (solving actually happens in tmp.py)
+        :parameter:
+        solve("equation", "for this variable", "with this guess")
         :return:
+        float of answer
+        error message?
         """
         pass
 
@@ -231,6 +235,12 @@ if __name__ == "__main__":
     print(resultslist)
     print("equations from equations class:")
     print(peqns)
+    print("--------------\nTESTING\n-------------")
+    for i in exelist:
+        print(i)
+        exec(i)
+    for i in resultslist:
+        exec("print('"+i+" = '+str(float("+i+")))")
     # solve_and_print_results(peqns, exelist)
 
 

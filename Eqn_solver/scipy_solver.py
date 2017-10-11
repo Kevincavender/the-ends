@@ -84,6 +84,22 @@ def func(equation, solved_for_variable):
     return list1
 
 
+def DivZeroCheck():
+    from scipy.optimize import fsolve
+
+    # 0= equation
+    def equation(c):
+        return 2 * c + 1
+    try:
+        ans = equation(0)
+    except ZeroDivisionError:
+        print("Divide by zero error")
+    else:
+        c = fsolve(equation, 2)
+        c = c[0]
+        print('C = ', c)
+    return True
+
 if __name__ == "__main__":
     import pprint
     # included fsolve import statement by default
@@ -116,4 +132,5 @@ if __name__ == "__main__":
               "\n- May be division by zero error")
     except NameError:
         print("NameError: solver not fully defined")
-
+    print("\n Divzero check")
+    DivZeroCheck()
