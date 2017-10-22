@@ -147,19 +147,31 @@ class EquationsClass(object):
         for one_equation in self.equations:
             # regular expression for splitting strings with given characters
             split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
-            # print('split equation ->', split_equations)
+            print('split equation ->', split_equations)
             tmp_vars = []
             for i in split_equations:
-                if i != '':
-                    if i.isnumeric() == 0 and i not in variables:
-                        # if the item in list (i) is not numeric append
-                        # and it's not already in the list of variables
-                        # it to the variables list
-                        variables.append(i)
-                    if i.isnumeric() == 0:
+                if self.isvariable(i) and i not in variables:
+                    variables.append(i)
+                    if not self.isvariable(i):
                         tmp_vars.append(i)
                         variable_dict[one_equation] = tmp_vars
         return variable_dict
+
+    def isvariable(self, variable):
+        if variable is '':
+            return False
+        elif variable.isnumeric():
+            return False
+        elif self.isfloat(variable):
+            return False
+        return True
+
+    def isfloat(self, i):
+        try:
+            float(i)
+            return True
+        except ValueError:
+            return False
 
     def equation_dict(self):
         # split equations by the equals sign
@@ -185,7 +197,7 @@ class EquationsClass(object):
         # check equations
         solve = self.check()
         # print variables input
-        output.append("\nInput Variables")
+        output.append("\nVariables")
         variables = self.variables()
         for i in variables:
             output.append(i)
@@ -217,6 +229,6 @@ if __name__ == "__main__":
     eqns = rf.readfile(input_file)
     equations_object = EquationsClass(eqns)
     pprint.pprint("Reading input file of name: " + input_file + "\n")
-    pprint.pprint(equations_object.variables())
-    pprint.pprint(equations_object.variable_dictionary)
+    #pprint.pprint(equations_object.variables())
+    #pprint.pprint(equations_object.variable_dictionary)
     equations_object.debug()

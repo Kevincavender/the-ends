@@ -35,7 +35,7 @@ def main(instring, debug=False):
     solve = user_input.check()
 
     if solve == 1:
-        exelist, resultslist = Solver(user_input.equations, debug).original_solver()
+        exelist, resultslist = Solver(user_input.equations, debug).primary_parser()
         resultsout = results(user_input.entered_equations,exelist, resultslist)
         # print('**************************************************')
         # print('Number of Equations = ', len(user_input.equation_dict()))

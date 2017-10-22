@@ -1,6 +1,8 @@
 
-
-a = 2
+z=a+b+c-(y*x)/2
+a = 2.25
 b = 5+a
 c = 4
-textfile=1
+x=1.0
+y=x
+

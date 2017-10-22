@@ -14,10 +14,8 @@ class Solver(object):
         self.debug = debug
         self.equations = input_equations
 
-    def original_solver(self):
+    def primary_parser(self):
         '''
-        (rename to parser to reflect actual job)
-        (is that a promotion or demotion?)
         :param
         self.equations
 
@@ -127,12 +125,15 @@ class Solver(object):
                         if self.debug == 1: print(str(current_equation) + " is solvable")
                         # print("variables in equation test" + str(tmp_eqn_vars))
 
+                #what does this do
                 for current_equation in next_block_equation_list:
                     eqn_block[block_num + 1].append(current_equation)
                     eqn_block[block_num].remove(current_equation)
 
-                for variable in tmp_solvable_vars:
-                    solvable_vars.append(variable)
+                # append tmp_solvable_vars to solvable vars
+                solvable_vars.extend(tmp_solvable_vars)
+                #for variable in tmp_solvable_vars:
+                #    solvable_vars.append(variable)
                 if self.debug == 1: print("block vars and solvable vars are not the same")
                 # iterate through current block equations
                 # determine if not solvable
@@ -227,7 +228,7 @@ if __name__ == "__main__":
     # print(equations)
     # print(variables)
     # print(Solver(equations).issolvable(equations[0], variables[2], 0))
-    exelist, resultslist = Solver(equations, debug=True).original_solver()
+    exelist, resultslist = Solver(equations, debug=True).primary_parser()
     peqns = EquationsClass(eqns).equations
     print("exelist:")
     print(exelist)
