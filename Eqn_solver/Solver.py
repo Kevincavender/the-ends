@@ -236,7 +236,7 @@ if __name__ == "__main__":
     print(resultslist)
     print("equations from equations class:")
     print(peqns)
-    print("--------------\nTESTING\n-------------")
+    print("--------------\nTESTING\n--------------")
     for i in exelist:
         print(i)
         exec(i)

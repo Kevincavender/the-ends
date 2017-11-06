@@ -110,32 +110,41 @@ class EquationsClass(object):
             output_equations.append(outeqn)
         return output_equations
 
-    def variables(self):
+    def variables(self, equation=False):
         """
         split equations by the all known operators
         store in list for processing
-        :param equations:
-            list of equations
+        :param equation:
         :return:
             list of variables (without copies)
         """
         import re
         variables = []
-        for one_equation in self.equations:
-            # regular expression for splitting strings with given characters
-            split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
+
+        if equation is False:
+            for one_equation in self.equations:
+                # regular expression for splitting strings with given characters
+                split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
+                for i in split_equations:
+                    if self.isvariable(i) and i not in variables:
+                        variables.append(i)
+            return variables
+
+        elif isinstance(equation, str):
+            split_equations = re.split(r"[=+\-^*/\\()\[\]]", equation)
             for i in split_equations:
-                if equations_object.isvariable(i) and i not in variables:
+                if self.isvariable(i) and i not in variables:
                     variables.append(i)
-        return variables
+            return variables
+
+        else:
+            raise TypeError
 
     def variables_in_eqn(self,equation):
         pass
 
     def variable_dict(self):
         """
-        split equations by the '=' operator
-        store in list for processing
         :rtype: dict
         :return:
             list of variables (without copies)
@@ -144,17 +153,9 @@ class EquationsClass(object):
         import re
         variables = []
         variable_dict = {}
-        for one_equation in self.equations:
+        for each_equation in self.equations:
             # regular expression for splitting strings with given characters
-            split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
-            print('split equation ->', split_equations)
-            tmp_vars = []
-            for i in split_equations:
-                if self.isvariable(i) and i not in variables:
-                    variables.append(i)
-                    if not self.isvariable(i):
-                        tmp_vars.append(i)
-                        variable_dict[one_equation] = tmp_vars
+            variable_dict[each_equation] = self.variables(each_equation)
         return variable_dict
 
     def isvariable(self, variable):
@@ -226,6 +227,7 @@ class EquationsClass(object):
             return print(output)
         else:
             return print("Error in equation checking")
+
 
 if __name__ == "__main__":
     import readfile as rf
