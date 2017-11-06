@@ -1,12 +1,16 @@
 from Eqn_solver.EquationObject import EquationsClass
+import math
 
 
 class Solver(object):
     """
     docstring
     take in list of equations
-    
+    parse them
+    solve them
+    spit them back at the user
     """
+
     def __init__(self, input_equations, debug=False):
         self.looplimit = 20
         self.eqn_obj = EquationsClass(input_equations)
@@ -74,7 +78,7 @@ class Solver(object):
             current_block_vars = EquationsClass(current_block).variables()
 
             # adds solvable variables to the current block variables
-            block_vars = solvable_vars+current_block_vars
+            block_vars = solvable_vars + current_block_vars
 
             # list(set()) operation to sort and remove duplicates
             block_vars = list(set(block_vars))
@@ -125,14 +129,14 @@ class Solver(object):
                         if self.debug == 1: print(str(current_equation) + " is solvable")
                         # print("variables in equation test" + str(tmp_eqn_vars))
 
-                #what does this do
+                # what does this do
                 for current_equation in next_block_equation_list:
                     eqn_block[block_num + 1].append(current_equation)
                     eqn_block[block_num].remove(current_equation)
 
                 # append tmp_solvable_vars to solvable vars
                 solvable_vars.extend(tmp_solvable_vars)
-                #for variable in tmp_solvable_vars:
+                # for variable in tmp_solvable_vars:
                 #    solvable_vars.append(variable)
                 if self.debug == 1: print("block vars and solvable vars are not the same")
                 # iterate through current block equations
@@ -153,10 +157,10 @@ class Solver(object):
                 if self.debug == 1: print("next block\n--------------------------"
                                           "--------------------------------------")
                 # if the block is solvable, advance the block
-        # check if block is solvable
-            # read previous solveable variables (list them)
-            # pull out solvable
-            # move unsolvable to next level
+                # check if block is solvable
+                # read previous solveable variables (list them)
+                # pull out solvable
+                # move unsolvable to next level
 
         # *****************************************************************
         # Export of solvable list of variables
@@ -177,7 +181,7 @@ class Solver(object):
         Will read in execute_list and apply additional solvers as nessesary?
         - python math
         - fsolve
-        (solving actually happens in tmp.py)
+        (solving actually happens in tmp.py (might have changed))
         :parameter:
         solve("equation", "for this variable", "with this guess")
         :return:
@@ -216,9 +220,39 @@ class Solver(object):
         return solvable
 
 
-if __name__ == "__main__":
+class KevinSolver1:
+    def __init__(self):
+        pass
+
+    def fn(self, x):
+        return 6 * x
+
+    def firsttry(self):
+        ans = (self.solve(self.fn, 10))
+        print(ans)
+        return
+
+    def dx(self, fn, x, delta=0.001):
+        return (fn(x + delta) - fn(x)) / delta
+
+    def solve(self, fn, value, x=0.5, maxtries=1000, maxerr=0.00001):
+        for tries in range(maxtries):
+            err = fn(x) - value
+            if abs(err) < maxerr:
+                x = math.ceil(x * 100000) / 100000
+                return x
+            slope = self.dx(fn, x)
+            x -= err / slope
+        raise ValueError('no solution found')
+
+
+def testingsolverclass():
+    """
+        Testing Solver Class------------------------
+        """
     # test of is solvable
     import Eqn_solver.readfile as rf
+
     input_file = "1eqn"
     eqns = rf.readfile(input_file)
     equations_object = EquationsClass(eqns)
@@ -241,7 +275,17 @@ if __name__ == "__main__":
         print(i)
         exec(i)
     for i in resultslist:
-        exec("print('"+i+" = '+str(float("+i+")))")
-    # solve_and_print_results(peqns, exelist)
+        exec("print('" + i + " = '+str(float(" + i + ")))")
+        # solve_and_print_results(peqns, exelist)
 
 
+def testingkevinsolver1class():
+    solver = KevinSolver1()
+    solver.firsttry()
+    return
+
+
+if __name__ == "__main__":
+    # testingsolverclass()
+    testingkevinsolver1class()
+    
