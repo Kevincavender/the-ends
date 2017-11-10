@@ -224,6 +224,11 @@ class KevinSolver1:
     def __init__(self):
         pass
 
+    def stringtofunction(self, equationstring="6*x"):
+        mydict = {'eq': equationstring}
+        A = mydict['eq']
+        return A
+
     def fn(self, x):
         return 6 * x
 
@@ -274,18 +279,19 @@ def testingsolverclass():
     for i in exelist:
         print(i)
         exec(i)
+    print("\n")
     for i in resultslist:
-        exec("print('" + i + " = '+str(float(" + i + ")))")
+        print(i, "=", float(eval(i))) # implement this elsewhere!!!!
         # solve_and_print_results(peqns, exelist)
 
 
 def testingkevinsolver1class():
     solver = KevinSolver1()
     solver.firsttry()
+    print(solver.stringtofunction())
     return
 
 
 if __name__ == "__main__":
     # testingsolverclass()
     testingkevinsolver1class()
-    
