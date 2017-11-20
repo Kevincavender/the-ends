@@ -52,14 +52,39 @@ def solve_and_print_results(equations, exelist, results_list):
     outstring = "".join(list(filter(None, line_list)))
     return outstring
 
-# def solve_and_print_results(equations, exelist, results_list):
-#     print("\nEntered Equations: \n")
-#     for i in equations:
-#         print(i)
-#     print("\nResults: \n")
-#     for i in exelist:
-#         exec(i)
-#     return
+
+class OutputCode:
+    """
+    code in the class comes in to be collected into an executable form of python code
+    """
+    def __init__(self):
+        pass
+
+    def funcname(self, inputvar):
+        name = "def eq_" + inputvar
+        return str(name)
+
+    def createfunc(self, inputvar, inputequ):
+        # use form
+        # def solvefor_x(x):
+        #     return x * 2
+
+        firstline = "(" + inputvar + "):\n"
+        secondline = "     return " + inputequ
+        return str(firstline + secondline)
+
+    def execfunc(self):
+        pass
+
+
+def testcreatefunc():
+    outclass = OutputCode
+    x = outclass.createfunc("x","x*2")
+    print(x)
+    exec(x)
+    exec("print(eq_x(4))")
+    return
+
 
 if __name__ == '__main__':
     printed_output = solve_and_print_results(
@@ -72,4 +97,5 @@ if __name__ == '__main__':
          'E=4+F', 'X3=X2-10', 'D=C+E'],
         ['A', 'B', 'C', 'D', 'E', 'F',
          'G', 'X1', 'X2', 'X3'])
-    print(printed_output)
+    # print(printed_output)
+    # testcreatefunc()

@@ -229,11 +229,17 @@ class KevinSolver1:
         A = mydict['eq']
         return A
 
-    def fn(self, x):
-        return 6 * x
+    def fn1(self, x):
+        return 5 * x
+
+    def fn2(self, x):
+        return x + 2
+
+    def fn3(self, z):
+        return z+3
 
     def firsttry(self):
-        ans = (self.solve(self.fn, 10))
+        ans = (self.solve2(self.fn1, self.fn2))
         print(ans)
         return
 
@@ -248,6 +254,22 @@ class KevinSolver1:
                 return x
             slope = self.dx(fn, x)
             x -= err / slope
+        raise ValueError('no solution found')
+
+    def solve2(self, fn1, fn2, x1=1.0, x2=2.0, value=1.0, maxtries=1000, maxerr=0.00001):
+        # currently finds a solution to an indeterminate set of equations
+        for tries in range(maxtries):
+            err1 = fn1(x1) - value
+            err2 = fn2(x2) - value
+            err = (err1+err2)/2.0
+            if abs(err) < maxerr:
+                x1 = math.ceil(x1 * 100000) / 100000
+                x2 = math.ceil(x2 * 100000) / 100000
+                return {"x1": x1, "x2": x2}
+            slope1 = self.dx(fn1, x1)
+            x1 -= err / slope1
+            slope2 = self.dx(fn2, x2)
+            x2 -= err / slope2
         raise ValueError('no solution found')
 
 
@@ -288,7 +310,6 @@ def testingsolverclass():
 def testingkevinsolver1class():
     solver = KevinSolver1()
     solver.firsttry()
-    print(solver.stringtofunction())
     return
 
 
