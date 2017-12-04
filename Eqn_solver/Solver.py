@@ -221,6 +221,18 @@ class Solver(object):
 
 
 class KevinSolver1:
+    '''
+    say this is block 1
+    x*2 = 5+y
+    y+2 = x-2
+    splits to
+    x, x*2
+    y, 5+y
+    y, y+2
+    x, x-2
+    creates equation going to
+
+    '''
     def __init__(self):
         pass
 
@@ -229,24 +241,65 @@ class KevinSolver1:
         A = mydict['eq']
         return A
 
-    def fn1(self, x):
-        return 5 * x
+    def fn1_1(self, x):
+        return 2 * x
 
-    def fn2(self, x):
-        return x + 2
+    def fn1_2(self, y):
+        return y + 5
 
-    def fn3(self, z):
-        return z+3
+    def fn2_1(self, y):
+        return y+2
+
+    def fn2_2(self, x):
+        return x-2
+
+    def fn1_solve(self):
+        pass
+
+    def fn2_solve(self):
+        pass
 
     def firsttry(self):
-        ans = (self.solve2(self.fn1, self.fn2))
-        print(ans)
+
+        x=1.0
+        y=-3.0
+        var1 = "x"
+        var2 = "y"
+        tries = 4
+        maxerr = .00001
+        delta = .001
+        for tries in range(tries):
+            ans1 = (self.solve2(self.fn1_1, self.fn1_2, x, y, var1, var2))
+            ans2 = (self.solve2(self.fn2_1, self.fn2_2, y, x, var2, var1))
+            ans1_delta = (self.solve2(self.fn1_1, self.fn1_2, x+delta, y+delta, var1, var2))
+            ans2_delta = (self.solve2(self.fn2_1, self.fn2_2, y+delta, x+delta, var2, var1))
+            #print(ans1, ans2)
+            print("--------------")
+            print(var1, ans1[var1], ans2[var1])
+            print(var2, ans1[var2], ans2[var2])
+            err1 = ans1[var1]-ans2[var1]
+            err2 = ans1[var2]-ans2[var2]
+            err = err1*err2
+            print("x error:", err1,"y error:", err2)
+            #x=(ans1[var1]+ans2[var1])/2.0
+            #y=(ans1[var2]+ans2[var2])/2.0
+            slope1_1 = (ans1_delta[var1]-ans1[var1])/delta # add to ans dict
+            slope1_2 = (ans2_delta[var1]-ans2[var1])/delta
+            slope2_1 = (ans1_delta[var2]-ans1[var2])/delta  # add to ans dict
+            slope2_2 = (ans2_delta[var2]-ans2[var2])/delta
+            if slope1_2 == 0:
+                slope1_2 = 1.0
+            if slope2_2 == 0:
+                slope2_2 = 1.0
+            x -= err/(slope1_1*slope1_2)
+            y -= err/(slope2_1*slope2_2)
+            print("New X:", x, "New Y:", y)
         return
 
     def dx(self, fn, x, delta=0.001):
         return (fn(x + delta) - fn(x)) / delta
 
-    def solve(self, fn, value, x=0.5, maxtries=1000, maxerr=0.00001):
+    def solve_old(self, fn, value, x=0.5, maxtries=1000, maxerr=0.00001):
         for tries in range(maxtries):
             err = fn(x) - value
             if abs(err) < maxerr:
@@ -256,21 +309,24 @@ class KevinSolver1:
             x -= err / slope
         raise ValueError('no solution found')
 
-    def solve2(self, fn1, fn2, x1=1.0, x2=2.0, value=1.0, maxtries=1000, maxerr=0.00001):
+    def solve2(self, fn1, fn2, x1, x2, x1str, x2str, maxtries=1000, maxerr=0.00001):
         # currently finds a solution to an indeterminate set of equations
+        err = 1.0
         for tries in range(maxtries):
-            err1 = fn1(x1) - value
-            err2 = fn2(x2) - value
-            err = (err1+err2)/2.0
+            err = fn1(x1) - fn2(x2)
             if abs(err) < maxerr:
                 x1 = math.ceil(x1 * 100000) / 100000
                 x2 = math.ceil(x2 * 100000) / 100000
-                return {"x1": x1, "x2": x2}
+                return {x1str: x1, x2str: x2}
             slope1 = self.dx(fn1, x1)
             x1 -= err / slope1
             slope2 = self.dx(fn2, x2)
             x2 -= err / slope2
-        raise ValueError('no solution found')
+        if maxtries == 1:
+            return {x1str: x1, x2str: x2}
+        else:
+            raise ValueError('no solution found')
+
 
 
 def testingsolverclass():
