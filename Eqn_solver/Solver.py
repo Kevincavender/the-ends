@@ -8,7 +8,7 @@ class Solver(object):
     take in list of equations
     parse them
     solve them
-    spit them back at the user
+    spit them back at the user in a rather violent but satifactory manner
     """
 
     def __init__(self, input_equations, debug=False):
@@ -18,6 +18,15 @@ class Solver(object):
         self.debug = debug
         self.equations = input_equations
 
+    def solve(self):
+        #MAIN
+        # this is the order in which the solver class is completed.
+        eqn_block, solvable_vars = self.primary_parser
+        exelist, resultlist = self.exportSortedEquations(eqn_block, solvable_vars)
+        return exelist, resultlist
+
+
+    @property
     def primary_parser(self):
         '''
         :param
@@ -43,9 +52,7 @@ class Solver(object):
             # C: (NEED TO ADD) Remaining Block has multiple (self-contingent) unknowns
             if count > self.looplimit:
                 print("Loop Limit reached on block solver")
-                execute_list = ['print("Error: Loop Limit Reached on Solver")']
-                results_list = ''
-                return execute_list, results_list
+                raise SolutionError
 
                 # break if loop limit is reached
             # DO NOT CHANGE FROM == TO is
@@ -102,7 +109,7 @@ class Solver(object):
             elif set(block_vars) != set(solvable_vars):
                 tmp_solvable_vars = []
                 next_block_equation_list = []
-
+                number_of_unsolvable_equations = 0
                 for current_equation in current_block:
                     # *****************************************************************
                     # Working with Current Equation (sorting single unknowns)
@@ -117,17 +124,20 @@ class Solver(object):
 
                     solvable = self.issolvable(current_equation, solvable_vars, False)
                     if solvable is False:
+                        number_of_unsolvable_equations +=1
                         # move equation to next block
                         next_block_equation_list.append(current_equation)
 
-                        if self.debug == 1: print(str(current_equation) + " is not solvable")
-                    if solvable is True:
+                        if self.debug == 1: print("Not Solvable--> " + str(current_equation))
+                    elif solvable is True:
                         # add variables to solvable variables
                         tmp_eqn_vars = self.vdict[current_equation]
                         for v in tmp_eqn_vars:
                             tmp_solvable_vars.append(v)
-                        if self.debug == 1: print(str(current_equation) + " is solvable")
+                        if self.debug == 1: print("Solvable        " + str(current_equation))
                         # print("variables in equation test" + str(tmp_eqn_vars))
+                if len(current_block) == number_of_unsolvable_equations:
+                    raise SolutionError(current_block)
 
                 # what does this do
                 for current_equation in next_block_equation_list:
@@ -156,12 +166,9 @@ class Solver(object):
                 eqn_block.append([])
                 if self.debug == 1: print("next block\n--------------------------"
                                           "--------------------------------------")
-                # if the block is solvable, advance the block
-                # check if block is solvable
-                # read previous solveable variables (list them)
-                # pull out solvable
-                # move unsolvable to next level
+        return eqn_block, solvable_vars
 
+    def exportSortedEquations(self, eqn_block, solvable_vars):
         # *****************************************************************
         # Export of solvable list of variables
         # *****************************************************************
@@ -220,8 +227,29 @@ class Solver(object):
         return solvable
 
 
+class Error(Exception):
+    """Base class for exceptions in this module."""
+    pass
+
+
+class SolutionError(Error):
+    """Exception raised for errors in the input.
+
+    Attributes:
+        expression -- input expression in which the error occurred
+        message -- explanation of the error
+    """
+
+    def __init__(self, expression):
+        self.expression = expression
+        self.message = "These equations are unsolvable: \n" + \
+                       str(self.expression)
+
+
 class KevinSolver1:
     '''
+    NOT CURRENTLY WORKING
+    WORKING IN EQUATION SOLVER RESIDUALS
     say this is block 1
     x*2 = 5+y
     y+2 = x-2
@@ -329,46 +357,50 @@ class KevinSolver1:
 
 
 
-def testingsolverclass():
+def testsolverclass():
     """
         Testing Solver Class------------------------
         """
     # test of is solvable
-    import Eqn_solver.readfile as rf
+    try:
+        import Eqn_solver.readfile as rf
 
-    input_file = "1eqn"
-    eqns = rf.readfile(input_file)
-    equations_object = EquationsClass(eqns)
-    print("Reading input file of name: " + input_file)
-    equations = equations_object.equations
-    variables = equations_object.variables()
-    # print(equations)
-    # print(variables)
-    # print(Solver(equations).issolvable(equations[0], variables[2], 0))
-    exelist, resultslist = Solver(equations, debug=True).primary_parser()
-    peqns = EquationsClass(eqns).equations
-    print("exelist:")
-    print(exelist)
-    print("results list:")
-    print(resultslist)
-    print("equations from equations class:")
-    print(peqns)
-    print("--------------\nTESTING\n--------------")
-    for i in exelist:
-        print(i)
-        exec(i)
-    print("\n")
-    for i in resultslist:
-        print(i, "=", float(eval(i))) # implement this elsewhere!!!!
-        # solve_and_print_results(peqns, exelist)
+        input_file = "1eqn"
+        eqns = rf.readfile(input_file)
+        equations_object = EquationsClass(eqns)
+        print("Reading input file of name: " + input_file)
+        equations = equations_object.equations
+        variables = equations_object.variables()
+        # print(equations)
+        # print(variables)
+        # print(Solver(equations).issolvable(equations[0], variables[2], 0))
+        exelist, resultslist = Solver(equations, debug=True).solve()
+        peqns = EquationsClass(eqns).equations
+        print("exelist:")
+        print(exelist)
+        print("results list:")
+        print(resultslist)
+        print("equations from equations class:")
+        print(peqns)
+        print("--------------\nTESTING\n--------------")
+        for i in exelist:
+            print(i)
+            exec(i)
+        print("\n")
+        for i in resultslist:
+            print(i, "=", float(eval(i))) # implement this elsewhere!!!!
+            # solve_and_print_results(peqns, exelist)
+    except SolutionError:
+        print("\n\nTHE SOLVER BROKE!\nOH NO!!\n"
+              "maybe if you try again you will get the same result...")
 
 
-def testingkevinsolver1class():
+def testkevinsolver1class():
     solver = KevinSolver1()
     solver.firsttry()
     return
 
 
 if __name__ == "__main__":
-    # testingsolverclass()
-    testingkevinsolver1class()
+    testsolverclass()
+    #testkevinsolver1class()

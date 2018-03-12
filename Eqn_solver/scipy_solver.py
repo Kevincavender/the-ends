@@ -1,4 +1,7 @@
 import warnings
+# THIS FILE HAS BEEN ABANDONED
+# IT WILL BE REMOVED EVENTUALLY...
+
 
 # from Eqn_solver.text_parsing import collect_variables
 # Fix collect variables reference
