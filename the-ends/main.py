@@ -50,5 +50,5 @@ def main(instring, debug=False):
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
-    resultout = main(readfile("1eqn"), debug=True)
+    resultout = main(readfile("1eqn"), debug=False)
     print(resultout)
