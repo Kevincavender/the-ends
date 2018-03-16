@@ -1,4 +1,4 @@
-from Eqn_solver.EquationObject import EquationsClass
+from EquationObject import EquationsClass
 import math
 
 
@@ -12,7 +12,7 @@ class Solver(object):
     """
 
     def __init__(self, input_equations, debug=False):
-        self.looplimit = 20
+        self.looplimit = 50
         self.eqn_obj = EquationsClass(input_equations)
         self.vdict = self.eqn_obj.variable_dict()
         self.debug = debug
