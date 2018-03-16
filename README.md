@@ -1,8 +1,15 @@
 # the-ends
 THermodynamic Engineering Equations NeeD Solving
 
+## Description
+This is a side project for me as a cryo-mechanical engineer, i enjoy coding and problem solving. However i frequently desire a rapid numerical solution that simply can't be done currently without involving 3D FEA solutions. Those also don't do thermal system modeling. Integrating property libraries (fluid properties, heat transfer correlations, solid properties) has been the challange with other programming type solutions (Mathcad, matlab, python, C++, etc.) the problem lies in that it is not a simple task to sit down and model a thermal system like you would in CAD. The software packages that come close that i know of are EES (engineering equation solver) and maybe GFSSP (General Fluid Simulation Software Package?). These are not well known and not taught at many schools. I hope to solve these problems, creating an open sourced equation solver to allow an easier time modeling thermal systems. (or any system of equations for that matter). 
+
 ## Work in progress
-Working on open-sourced equation solver for the needs of a Thermo-Fluids Mechanical Engineer. 
+Working on open-sourced equation solver for the needs of a Thermo based Mechanical Engineer.
+Though this could be utilized by any kind.
+
+
+
 The initial module is an explicit numerical equations solver (Eqn_solver) and will eventually be built out to include the packages listed below (subject to change).
 
 ## Install info
@@ -36,10 +43,10 @@ currently developing in Python 3.6. This is the only version currently semi-guar
     :plotting stuff
 
 ### GUI
-    :start with Tkinter and move to PyQt if nessesary
+    :start with Tkinter and move to PyQt
 
 ### version control for equation users files
-    :likely some kind of github/git compatibility
+    :duh
 
 ### testing suite, py.test
     :for testing all the things
