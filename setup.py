@@ -1,18 +1,22 @@
 #!/usr/bin/python
 
 # setup.py info things
-'''
+
 from distutils.core import setup
 
 setup(
-  name="the-ends",
-  version="0.1",
-  packages=["Eqn_solver", "TkinterGUI"],
-  author="Kevin Cavender",
-  url="https://github.com/Kevincavender/the-ends"
+    name="the-ends",
+    packages = ['the-ends'],
+    version="0.1",
+    author="Kevin Cavender",
+    author_email='kac1200@gmail.com',
+    url="https://github.com/Kevincavender/the-ends",
+    download_url='',
+    keywords = ['equation', 'engineer', 'math', 'calculator'],
+    classifiers=[]
   )
-'''
 
+'''
 # cx_setup.py info things
 import sys, os
 from cx_Freeze import setup, Executable
@@ -35,3 +39,4 @@ setup(
   author="Kevin Cavender",
   executables=exe
   )
+'''
