@@ -1,5 +1,5 @@
-numpy
-scipy
-tkinter
-reportlab
-matplotlib
+#numpy
+#scipy
+#tkinter
+#reportlab
+#matplotlib

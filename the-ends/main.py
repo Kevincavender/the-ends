@@ -18,10 +18,10 @@ THermodynamic Engineering Equations NeeD Solving
 
 """
 import time
-from Eqn_solver.readfile import readfile
-from Eqn_solver.EquationObject import EquationsClass
-from Eqn_solver.Solver import Solver
-from Eqn_solver.RunAndOutput import solve_and_print_results as results
+from readfile import readfile
+from EquationObject import EquationsClass
+from Solver import Solver
+from RunAndOutput import solve_and_print_results as results
 
 
 def main(instring, debug=False):
@@ -35,7 +35,7 @@ def main(instring, debug=False):
     solve = user_input.check()
 
     if solve == 1:
-        exelist, resultslist = Solver(user_input.equations, debug).primary_parser
+        exelist, resultslist = Solver(user_input.equations, debug).solve()
         resultsout = results(user_input.entered_equations,exelist, resultslist)
         # print('**************************************************')
         # print('Number of Equations = ', len(user_input.equation_dict()))

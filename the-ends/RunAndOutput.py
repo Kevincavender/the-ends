@@ -8,14 +8,14 @@ def solve_and_print_results(equations, exelist, results_list):
 
     # Write list of imported libraries into python
     librarylist = [
-        "from scipy.optimize import fsolve"
+        ""
     ]
     for i in librarylist:
         pyfile.write(i + "\n")
 
     # Write python executable equations
     for i in exelist:
-        pyfile.write(i + "\n")
+        pyfile.write(str(i) + "\n")
 
     results = [
         'textfile = open("tmp.txt", "w")',
