@@ -1,9 +1,21 @@
 def solve_and_print_results(equations, exelist, results_list):
     '''
     creates temporary python file to execute solving in it's own environment
-    tmp python file records the results output to a tmp text file, which is 
+    tmp python file records the results output to a tmp text file
+    the output text file is send back to the user
     '''
     pyfile = open("tmp.py", "w")
+
+    # Write list of imported libraries into python
+    librarylist = [
+        "from scipy.optimize import fsolve"
+    ]
+    for i in librarylist:
+        pyfile.write(i + "\n")
+
+    # Write python executable equations
+    for i in exelist:
+        pyfile.write(i + "\n")
 
     results = [
         'textfile = open("tmp.txt", "w")',
@@ -12,16 +24,23 @@ def solve_and_print_results(equations, exelist, results_list):
         r'    textfile.write(i + "\n")',
         r'textfile.write("\nResults: \n\n")',
               ]
-    for i in exelist:
-        pyfile.write(i + "\n")
+
+    # Have python evaluate the print out entered equations
     for i in results:
         pyfile.write(i + "\n")
+
+    # Have python print results to each variable
     for i in results_list:
         pyfile.write('print("'+i+' = " + str(float('+i+')), file=textfile)\n')
     pyfile.write('textfile.close()\n')
     pyfile.close()
+
+    # Run the just created python file
     import os
     os.system("python tmp.py")
+
+    # Open text file that python created
+    # Read the text file and return the results
     with open('tmp.txt', mode='r') as f:
         line_list = []
         # read in lines
@@ -33,14 +52,39 @@ def solve_and_print_results(equations, exelist, results_list):
     outstring = "".join(list(filter(None, line_list)))
     return outstring
 
-# def solve_and_print_results(equations, exelist, results_list):
-#     print("\nEntered Equations: \n")
-#     for i in equations:
-#         print(i)
-#     print("\nResults: \n")
-#     for i in exelist:
-#         exec(i)
-#     return
+
+class OutputCode:
+    """
+    code in the class comes in to be collected into an executable form of python code
+    """
+    def __init__(self):
+        pass
+
+    def funcname(self, inputvar):
+        name = "def eq_" + inputvar
+        return str(name)
+
+    def createfunc(self, inputvar, inputequ):
+        # use form
+        # def solvefor_x(x):
+        #     return x * 2
+
+        firstline = "(" + inputvar + "):\n"
+        secondline = "     return " + inputequ
+        return str(firstline + secondline)
+
+    def execfunc(self):
+        pass
+
+
+def testcreatefunc():
+    outclass = OutputCode
+    x = outclass.createfunc("x","x*2")
+    print(x)
+    exec(x)
+    exec("print(eq_x(4))")
+    return
+
 
 if __name__ == '__main__':
     printed_output = solve_and_print_results(
@@ -53,4 +97,5 @@ if __name__ == '__main__':
          'E=4+F', 'X3=X2-10', 'D=C+E'],
         ['A', 'B', 'C', 'D', 'E', 'F',
          'G', 'X1', 'X2', 'X3'])
-    print(printed_output)
+    # print(printed_output)
+    # testcreatefunc()

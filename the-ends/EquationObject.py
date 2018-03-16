@@ -1,7 +1,19 @@
 class EquationsClass(object):
-    """docstring yo
-        take in list of equations when creating class
-        
+    """docstring
+    Inputs
+    -----------------------------
+        eqn_input: text file as a string input into
+                   solver for initial processing
+
+    Availible outputs:
+    -----------------------------
+        self.equation_dict = {"equation":[LeftSide, RightSide]
+        self.format
+        self.variables
+        self.solve
+        self.check
+        self.parse_eqns_from_string
+        self.debug
     """
 
     def __init__(self, eqn_input):
@@ -98,32 +110,41 @@ class EquationsClass(object):
             output_equations.append(outeqn)
         return output_equations
 
-    def variables(self):
+    def variables(self, equation=False):
         """
-        split equations by the '=' operator
+        split equations by the all known operators
         store in list for processing
-        :param equations:
-            list of equations
+        :param equation:
         :return:
             list of variables (without copies)
         """
         import re
         variables = []
-        for one_equation in self.equations:
-            # regular expression for splitting strings with given characters
-            split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
+
+        if equation is False:
+            for one_equation in self.equations:
+                # regular expression for splitting strings with given characters
+                split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
+                for i in split_equations:
+                    if self.isvariable(i) and i not in variables:
+                        variables.append(i)
+            return variables
+
+        elif isinstance(equation, str):
+            split_equations = re.split(r"[=+\-^*/\\()\[\]]", equation)
             for i in split_equations:
-                if not i.isnumeric() and i not in variables:
+                if self.isvariable(i) and i not in variables:
                     variables.append(i)
-        return variables
+            return variables
+
+        else:
+            raise TypeError
 
     def variables_in_eqn(self,equation):
         pass
 
     def variable_dict(self):
         """
-        split equations by the '=' operator
-        store in list for processing
         :rtype: dict
         :return:
             list of variables (without copies)
@@ -132,22 +153,31 @@ class EquationsClass(object):
         import re
         variables = []
         variable_dict = {}
-        for one_equation in self.equations:
+        for each_equation in self.equations:
             # regular expression for splitting strings with given characters
-            split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
-            # print('split equation ->', split_equations)
-            tmp_vars = []
-            for i in split_equations:
-                if i != '':
-                    if i.isnumeric() == 0 and i not in variables:
-                        # if the item in list (i) is not numeric append
-                        # and it's not already in the list of variables
-                        # it to the variables list
-                        variables.append(i)
-                    if i.isnumeric() == 0:
-                        tmp_vars.append(i)
-                        variable_dict[one_equation] = tmp_vars
+            variable_dict[each_equation] = self.variables(each_equation)
         return variable_dict
+
+    def isvariable(self, variable):
+        if variable is '':
+            return False
+        elif variable.isnumeric():
+            return False
+        elif self.isfloat(variable):
+            return False
+        return True
+
+    def isfloat(self, i):
+        '''
+        will determine if a string can be interpreted as a float
+        :param i: string
+        :return:
+        '''
+        try:
+            float(i)
+            return True
+        except ValueError:
+            return False
 
     def equation_dict(self):
         # split equations by the equals sign
@@ -160,11 +190,11 @@ class EquationsClass(object):
 
     def debug(self):
         # print input equations
-        output = ["Entered Equations: "]
+        output = ["\nEntered Equations: "]
         for i in self.entered_equations:
             output.append(i)
 
-        # format equations and number them
+        # formatted equations and numbered
         debug_equations = self.format(self.equations)
         output.append("\nFormatted Equations: ")
         for i, item in enumerate(debug_equations):
@@ -173,7 +203,7 @@ class EquationsClass(object):
         # check equations
         solve = self.check()
         # print variables input
-        output.append("\nInput Variables")
+        output.append("\nVariables")
         variables = self.variables()
         for i in variables:
             output.append(i)
@@ -198,12 +228,12 @@ class EquationsClass(object):
         else:
             return print("Error in equation checking")
 
+
 if __name__ == "__main__":
-    import Eqn_solver.readfile as rf
+    import readfile as rf
     input_file = "1eqn"
     eqns = rf.readfile(input_file)
     equations_object = EquationsClass(eqns)
-    print("Reading input file of name: " + input_file + "\n")
-    print(equations_object.variables())
-    print(equations_object.variable_dictionary)
+    print("\nReading input file of name: " + input_file)
     equations_object.debug()
+    print("\n")

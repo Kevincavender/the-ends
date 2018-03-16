@@ -5,12 +5,23 @@ Module Docstring
 THEENDS (The Ends)
 THermodynamic Engineering Equations NeeD Solving
 
+1. Read in file of equations
+    readfile.py
+2. Create Equations Object from text
+    EquationObject.py
+3. Check Equations for errors
+    EquationObject.py --> EquationErrorCheck.py
+4. Run Equations through Solver/Parser
+    Solver.py
+5. run and export results
+    RunAndOutput.py
+
 """
 import time
 from Eqn_solver.readfile import readfile
-from Eqn_solver.myEquations import EquationsClass
+from Eqn_solver.EquationObject import EquationsClass
 from Eqn_solver.Solver import Solver
-from Eqn_solver.results import solve_and_print_results as results
+from Eqn_solver.RunAndOutput import solve_and_print_results as results
 
 
 def main(instring, debug=False):
@@ -24,7 +35,7 @@ def main(instring, debug=False):
     solve = user_input.check()
 
     if solve == 1:
-        exelist, resultslist = Solver(user_input.equations, debug).original_solver()
+        exelist, resultslist = Solver(user_input.equations, debug).primary_parser
         resultsout = results(user_input.entered_equations,exelist, resultslist)
         # print('**************************************************')
         # print('Number of Equations = ', len(user_input.equation_dict()))
