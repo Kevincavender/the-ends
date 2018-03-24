@@ -18,6 +18,7 @@ THermodynamic Engineering Equations NeeD Solving
 
 """
 import time
+import sys
 from readfile import readfile
 from EquationObject import EquationsClass
 from Solver import Solver
@@ -41,7 +42,7 @@ def main(instring, debug=False):
         # print('Number of Equations = ', len(user_input.equation_dict()))
         # print('Number of Variables = ', len(user_input.variables()))
         # print('List of Variables', ', '.join(user_input.variables()))
-        # print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
+        print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
         # print('**************************************************')
     else:
         resultsout = "Unsolvable"
@@ -50,5 +51,10 @@ def main(instring, debug=False):
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
-    resultout = main(readfile("1eqn"), debug=False)
-    print(resultout)
+    debug = False
+    try:
+        results_out = main(readfile(sys.argv[1]), debug=debug)
+        print(results_out)
+
+    except:
+        print("ERROR: I DON'T KNOW WHAT HAPPENED BUT SOMETHING BROKE")
