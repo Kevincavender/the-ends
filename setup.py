@@ -10,6 +10,7 @@ from setuptools import setup, find_packages
 setup(
     name="the_ends",
     packages = ['the_ends'],
+    version="0.1.8",
     author="Kevin Cavender",
     description='Implicit Equation Solver (will reorder equations for maths)',
     author_email='kac1200@gmail.com',
@@ -18,6 +19,7 @@ setup(
     keywords = ['equation', 'engineer', 'math', 'calculator'],
     entry_points={
         'console_scripts':[
+            'solve=the_ends.__main__:main'
         ]
     }
   )
