@@ -1,4 +1,4 @@
-from EquationObject import EquationsClass
+from the_ends.EquationObject import EquationsClass
 import math
 
 

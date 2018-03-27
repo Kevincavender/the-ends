@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Module Docstring
 
@@ -19,20 +19,26 @@ THermodynamic Engineering Equations NeeD Solving
 """
 import time
 import sys
-from readfile import readfile
-from EquationObject import EquationsClass
-from Solver import Solver
-from RunAndOutput import solve_and_print_results as results
+from the_ends.readfile import readfile
+from the_ends.EquationObject import EquationsClass
+from the_ends.Solver import Solver
+from the_ends.RunAndOutput import solve_and_print_results as results
 
 
-def main(instring, debug=False):
+def main(args=None, debug=False):
     """ Main entry point of the app 
     add: equations = EquationsClass(rf.readfile("1eqn")
     
     
     """
+    if args is None:
+        args = sys.argv[1:]
+    else:
+        print("something is wrong with how main is being called")
+    input_filename = args
+    input_string = readfile(input_filename)
     start_time = time.time()
-    user_input = EquationsClass(instring)
+    user_input = EquationsClass(input_string)
     solve = user_input.check()
 
     if solve == 1:
@@ -53,8 +59,10 @@ if __name__ == "__main__":
     """ This is executed when run from the command line """
     debug = False
     try:
-        results_out = main(readfile(sys.argv[1]), debug=debug)
+        results_out = main(sys.argv[1], debug=debug)
         print(results_out)
 
     except:
         print("ERROR: I DON'T KNOW WHAT HAPPENED BUT SOMETHING BROKE")
+        print("\nMaybe try putting your input file as"
+              "the first argument\n like this: \n python __main__.py <maFile>")

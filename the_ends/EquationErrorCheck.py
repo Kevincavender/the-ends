@@ -1,5 +1,5 @@
 import re
-from Eqn_solver.EquationObject import EquationsClass
+from the_ends.EquationObject import EquationsClass
 
 
 class EquationErrorCheck:

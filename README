@@ -1,0 +1,17 @@
+This readme will be added to eventually
+
+Written and test only in python 3.6
+
+Ubuntu:
+
+pip3 install the-ends
+
+python3 -m the_ends <your_textfile_with_equations>
+
+This will create tmp.py
+
+run the tmp.py with
+
+python3 tmp.py
+
+cat tmp.txt to show your results
