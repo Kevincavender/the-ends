@@ -32,7 +32,7 @@ def main(args=None, debug=False):
     
     """
     if args is None:
-        args = sys.argv[1:]
+        args = sys.argv[1]
     else:
         print("something is wrong with how main is being called")
     input_filename = args
@@ -52,17 +52,9 @@ def main(args=None, debug=False):
         # print('**************************************************')
     else:
         resultsout = "Unsolvable"
+    print(resultsout)
     return resultsout
 
 
 if __name__ == "__main__":
-    """ This is executed when run from the command line """
-    debug = False
-    try:
-        results_out = main(sys.argv[1], debug=debug)
-        print(results_out)
-
-    except:
-        print("ERROR: I DON'T KNOW WHAT HAPPENED BUT SOMETHING BROKE")
-        print("\nMaybe try putting your input file as"
-              "the first argument\n like this: \n python __main__.py <maFile>")
+    main()

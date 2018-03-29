@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 setup(
     name="the_ends",
     packages = ['the_ends'],
-    version="0.1.8",
+    version="0.1.9",
     author="Kevin Cavender",
     description='Implicit Equation Solver (will reorder equations for maths)',
     author_email='kac1200@gmail.com',
