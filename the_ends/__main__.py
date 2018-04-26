@@ -26,7 +26,8 @@ from the_ends.RunAndOutput import solve_and_print_results as results
 
 
 def main(args=None, debug=False):
-    """ Main entry point of the app 
+    """ Main entry point of the app
+    # args currently 1eqn (which si a text file of the input equations)
     add: equations = EquationsClass(rf.readfile("1eqn")
     
     
@@ -35,26 +36,27 @@ def main(args=None, debug=False):
         args = sys.argv[1]
     else:
         print("something is wrong with how main is being called")
+
     input_filename = args
     input_string = readfile(input_filename)
     start_time = time.time()
-    user_input = EquationsClass(input_string)
-    solve = user_input.check()
+    user_equations = EquationsClass(input_string)
+    solve = user_equations.check()
 
     if solve == 1:
-        exelist, resultslist = Solver(user_input.equations, debug).solve()
-        resultsout = results(user_input.entered_equations,exelist, resultslist)
+        execute_list, results_list = Solver(user_equations.equations, debug).solve()
+        results_out = results(user_equations.entered_equations,execute_list, results_list)
         # print('**************************************************')
-        # print('Number of Equations = ', len(user_input.equation_dict()))
-        # print('Number of Variables = ', len(user_input.variables()))
-        # print('List of Variables', ', '.join(user_input.variables()))
+        # print('Number of Equations = ', len(user_equations.equation_dict()))
+        # print('Number of Variables = ', len(user_equations.variables()))
+        # print('List of Variables', ', '.join(user_equations.variables()))
         print("Time Elapsed: {:.3f}s".format(time.time() - start_time))
         # print('**************************************************')
     else:
-        resultsout = "Unsolvable"
-    print(resultsout)
-    return resultsout
+        results_out = "Unsolvable by unknown error"
+    # print(results_out)
+    return results_out
 
 
 if __name__ == "__main__":
-    main()
+    print(main())

@@ -7,3 +7,20 @@ Ubuntu:
 pip3 install the-ends
 
 python3 -m the_ends <your_textfile_with_equations>
+
+**************************************
+What it can and can't do at this moment
+**************************************
+It is not case sensitive for variables names
+A single variable must be on the left (much like standard assignment based programming)
+A new line designates a new equation
+
+It can: 
+	reorder equations to solve them in the proper order 
+	do most basic math operations
+
+It can't (but hopefully in the future):
+	Deal with implicitly linked equations
+	work outside of floating point doubles
+	have more than one '=' on one line
+

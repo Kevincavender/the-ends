@@ -1,4 +1,4 @@
-class EquationsClass(object):
+class EquationsClass:
     """docstring
     Inputs
     -----------------------------
@@ -31,10 +31,6 @@ class EquationsClass(object):
             print(str(eqn_input) + "\n has generated an error going into the EquationsClass")
         self.variable_dictionary = self.variable_dict()
 
-    def solve(self):
-        from Eqn_solver.Solver import Solver
-        solver_object = Solver(self.equations)
-
         return
 
     def check(self):
@@ -62,6 +58,7 @@ class EquationsClass(object):
                     print("Error in equation " + str(count)
                           + ": \"" + i + "\" is not an allowed character")
                     solve = False
+                    raise SyntaxError
                     # join the characters back into one equation
                 elif i == '=':
                     # determines if equals sign is present in every line
@@ -72,15 +69,6 @@ class EquationsClass(object):
             solve = False
         return solve
 
-    # this don't work
-
-    # def check(self):
-    #     solve = True
-    #     for equation in self.equations:
-    #         has_errors = EquationErrorCheck.EquationErrorCheck(equation).contains_errors()
-    #         if has_errors is True:
-    #             solve = False
-    #     return solve
 
     def parse_eqns_from_string(self, instring):
         stringequations = instring

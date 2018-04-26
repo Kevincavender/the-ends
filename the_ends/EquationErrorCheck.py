@@ -1,25 +1,22 @@
 import re
-from the_ends.EquationObject import EquationsClass
-
 
 class EquationErrorCheck:
-    '''
+    """
     This class if to check for errors in individual equations
     it is intended to interface with the gui
     the error message variable will be used for interactive
     feedback when coding in the equation solver
-    
-    '''
+
+    equation is entered into this class in string format
+    """
+
     def __init__(self, equation, line_number=0):
         self.equation = equation
         self.line_number = line_number
-        self.variable_dict = EquationsClass(equation).variable_dictionary
-        # error message that will be displayed line by line
-        # includes active messages
-        self.errormessage = ''
-        self.leftequation = ''
-        self.rightequation = ''
+        self.left_equation = ''
+        self.right_equation = ''
         self.contains_errors = True
+        self.error_message = 'No Error'
         self.checkline()
 
     def checkline(self):
@@ -29,58 +26,22 @@ class EquationErrorCheck:
         3. check for symbols not allowed
         :return:
         """
-        # assumed to contain errors until proven false
-        contains_errors = True
-        while contains_errors is True:
-
-            # returns true if there is only one equals sign
-            check_equals = self.check_for_equals()
-            if check_equals is False:
-                # check for correct number of equals
-                self.errormessage = "This equation must contain only one = "
-                break
-            # splits the equation into a left and right side
-            # Split equation on the equals using
-            # self.leftequation
-            # self.rightequation
-            elif check_equals is True:
-
-                self.split_equation()
-
-            # uses left and right equations
-            # checks if there is a trailing opereator in both
-            # returns True if there are no errors
-            # returns False if an error is found
-            check_trailing = self.check_trailing_operators()
-            if check_trailing is False:
-                break
-
-            # checks for common symbols not allowed by the program
-            check_symbols = self.check_symbols()
-            if check_symbols is False:
-                break
-
-            # if no errors are found it will make it to here
-            self.errormessage = "no errors"
-            contains_errors = False
-
-        # sets the contains errors variable for the class
-        self.contains_errors = contains_errors
-        return self.errormessage
-
-    def check_for_equals(self):
-        # need to find all = in line
-        # only passes if there's one and only one
+        # returns true if there is only one equals sign
         answer = re.findall(r"[=]", self.equation)
-        if len(answer) is 1:
-            correct_equals = True
+        if len(answer) is not 1:
+            raise SyntaxError
+        elif not self.check_trailing_operators():
+            raise SyntaxError
+        elif not self.check_symbols():
+            raise SyntaxError
+        elif not self.check():
+            raise SyntaxError
         else:
-            correct_equals = False
-        return correct_equals
+            self.split_equation()
 
     def split_equation(self):
         # split equation by = first
-        self.leftequation, self.rightequation = re.split(r"[=]", self.equation)
+        self.left_equation, self.right_equation = re.split(r"[=]", self.equation)
 
     def check_trailing_operators(self):
         """
@@ -91,17 +52,17 @@ class EquationErrorCheck:
         # r"[=+\-^*/\\()\[\]]"
         # does this pass the check?
         trailing_operators_pass = True
-        for eqstring in [self.leftequation, self.rightequation]:
+        for eqstring in [self.left_equation, self.right_equation]:
             lineend = re.search(r"\+$|-$|\*$|\^$|\($|/$", eqstring)
             linestart = re.search(r"^\+|^-|^\*|^\^|^\)|^/", eqstring)
             if lineend:
                 end = lineend.group(0)
-                self.errormessage = \
+                self.error_message = \
                     "There is a trailing " + str(end) + \
                     " in this equation"
             elif linestart:
                 start = linestart.group(0)
-                self.errormessage = \
+                self.error_message = \
                     "There is a trailing " + str(start) + \
                     " in this equation"
             # print(bool(linestart))
@@ -111,12 +72,38 @@ class EquationErrorCheck:
         return trailing_operators_pass
 
     def check_symbols(self):
-        symbols_not_allowed = ['?', '@', '&', '`', '~', '#', '!', '$', '%']
+        symbols_not_allowed = ['?', '@', '&', '`', '~', '#', '!', '$', '%', '<', '>']
         for i in self.equation:
             if i in symbols_not_allowed:
-                self.errormessage = str(i) + " is not an allowed symbol"
+                self.error_message = str(i) + " is not an allowed symbol"
                 return False
 
+        return True
+
+    def check(self, line_number=0):
+        """
+        :return:
+            boolean for passing syntax check
+        """
+        symbols_not_allowed = ['?', '@', '&', '`', '~', '#', '!', '$', '%']
+        # string containing an equation
+        # checks every equation line
+        contains_operator = False
+        for i in self.equation:
+            # checks for individual characters in the equations
+            # from symbols_not_allowed variable list
+            if i in symbols_not_allowed:
+                print("Error in equation " + str(line_number)
+                      + ": \"" + i + "\" is not an allowed character")
+                return False
+                # join the characters back into one equation
+            elif i == '=':
+                # determines if equals sign is present in every line
+                contains_operator = True
+
+        if not contains_operator:
+            print("There is a missing '=' sign or a lone variable in the equations list")
+            return False
         return True
 
     def debug(self):
@@ -125,10 +112,12 @@ class EquationErrorCheck:
 
 if __name__ == '__main__':
     EQ = EquationErrorCheck("x=4+4+a")
-    print(EQ.variable_dict)
-    print("\n>>>Checkline results:")
-    print(EQ.checkline())
-    print("\n>>>Contains Errors? \n", EQ.contains_errors)
+    try:
+        EQ.checkline()
+    except SyntaxError:
+        print("Syntax Error")
+    else:
+        print("No Errors")
     # EQ.check_trailing_operators()
     # print(">>> Does the equation have the correct number of equals?")
     # print(EQ.check_for_equals())
