@@ -1,3 +1,6 @@
+import the_ends.EquationErrorCheck as EQ_check
+from the_ends.EquationErrorCheck import EquationErrorCheck
+
 class EquationsClass:
     """docstring
     Inputs
@@ -7,13 +10,7 @@ class EquationsClass:
 
     Availible outputs:
     -----------------------------
-        self.equation_dict = {"equation":[LeftSide, RightSide]
-        self.format
-        self.variables
-        self.solve
-        self.check
-        self.parse_eqns_from_string
-        self.debug
+
     """
 
     def __init__(self, eqn_input):
@@ -27,6 +24,10 @@ class EquationsClass:
             self.entered_equations = eqn_input
             self.equations = eqn_input
             self.equations = self.format(self.equations)
+        elif isinstance(eqn_input, int):
+            raise TypeError
+        elif isinstance(eqn_input, float):
+            raise TypeError
         else:
             print(str(eqn_input) + "\n has generated an error going into the EquationsClass")
         self.variable_dictionary = self.variable_dict()
@@ -35,40 +36,16 @@ class EquationsClass:
 
     def check(self):
         """
+        REFERENCES PYTHON FILE:
+        EquationErrorCheck.py
         :return:
             boolean for passing syntax check
-
         """
-        solve = True  # indication for no errors in preprocessing
-        containsoperator = False
-        count = 0
-        tmp_eqn = []
-        output_equations = []
-        symbols_not_allowed = ['?', '@', '&', '`', '~', '#', '!', '$', '%']
-
-        for text in self.equations:
-            # string containing an equation
-            # checks every equation line
-            count += 1
-            containsoperator = False
-            for i in text:
-                # checks for individual characters in the equations
-                # from symbols_not_allowed variable list
-                if i in symbols_not_allowed:
-                    print("Error in equation " + str(count)
-                          + ": \"" + i + "\" is not an allowed character")
-                    solve = False
-                    raise SyntaxError
-                    # join the characters back into one equation
-                elif i == '=':
-                    # determines if equals sign is present in every line
-                    containsoperator = True
-        output_equations.append(tmp_eqn)
-        if not containsoperator:
-            print("There is a missing '=' sign or a lone variable in the equations list")
-            solve = False
-        return solve
-
+        for i in self.equations:
+            checking_equation = EQ_check.EquationErrorCheck(i)
+            if checking_equation.checkline() is False:
+                return False
+        return True
 
     def parse_eqns_from_string(self, instring):
         stringequations = instring
@@ -188,7 +165,7 @@ class EquationsClass:
         for i, item in enumerate(debug_equations):
             output.append(str(str(i+1) + " " + item))
 
-        # check equations
+        # eck equations
         solve = self.check()
         # print variables input
         output.append("\nVariables")

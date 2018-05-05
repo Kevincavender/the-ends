@@ -1,6 +1,6 @@
 import unittest
 from the_ends.EquationObject import EquationsClass
-from the_ends.Solver import Solver
+from the_ends.Solver import Solver, SolutionError
 from the_ends.RunAndOutput import solve_and_print_results_only as results
 
 
@@ -112,7 +112,6 @@ class TheEndsTestCases(unittest.TestCase):
     def test_single_11(self):
         #this ones is expected to raise a syntax error
         equation_input = 'x=~1'
-        equation_output = 1.0
         with self.assertRaises(SyntaxError):
             result_output = self.single_test_frame(equation_input)
             result_output = self.float_output(result_output)
@@ -120,7 +119,6 @@ class TheEndsTestCases(unittest.TestCase):
     def test_single_12(self):
         #this ones is expected to raise a syntax error
         equation_input = 'x=<>'
-        equation_output = 1.0
         with self.assertRaises(SyntaxError):
             result_output = self.single_test_frame(equation_input)
             result_output = self.float_output(result_output)
@@ -142,7 +140,7 @@ class TheEndsTestCases(unittest.TestCase):
     def test_single_15(self):
         # this ones is expected to raise a syntax error
         equation_input = 'x=1\nx=2'
-        with self.assertRaises(SyntaxError):
+        with self.assertRaises(SolutionError):
             result_output = self.single_test_frame(equation_input)
 
 

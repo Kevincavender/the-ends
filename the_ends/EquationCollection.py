@@ -1,32 +1,31 @@
 from the_ends.EquationErrorCheck import EquationErrorCheck
 import re
 
+
 class EquationCollection:
     '''
     Example of equations and variables dictionaries
-
-
     '''
 
     def __init__(self, equation_string=''):
         self.equation_string = equation_string
-
         self.equations = {
-            1: dict(
-                equation='x=1',
-                variables=['X'],
-                solved=True,
-                line_number=2,
+            0: dict(
+                equation='',
+                variables=[],
+                solved=False,
+                line_number=0,
                 error='',
                 block_number=0),
         }
         self.variables = {
-            1: dict(
-                variable_name='a',
-                equations=['a=1'],
+            0: dict(
+                variable_name='',
+                equations=[],
                 value=1.0,
                 initial_value=1.0,
-                solved=False),
+                solved=False
+            ),
         }
         self.number_of_equations = 0
         self.number_of_variables = 0
@@ -35,6 +34,9 @@ class EquationCollection:
         self.solved_variable_list = []
         self.solved_equation_list = []
 
+        # will populate the previous variables
+        self.parse_eqns_from_string(self.equation_string)
+        self.update_class()
 
     def update_class(self):
         # this order is important
@@ -47,12 +49,29 @@ class EquationCollection:
         self.update_solved_variable_list()
 
 
+    def parse_eqns_from_string(self, in_string):
+        # starts here: takes in a string with line carriages
+        #   splits it down to individual lines
+        #   enumerates lines
+        #   cleans up whitespace
+        #   capitalizes all letters
+        list_of_equations = in_string.split("\n")
+        list_of_equations = list(enumerate(list_of_equations))
+        for i in list_of_equations:
+            if i[1] == '':
+                list_of_equations.remove(i)
+            else:
+                j = list(i)
+                j[1] = j[1].replace(' ','')
+                j[1] = j[1].replace('\t', '')
+                self.add_equation_to_dictionary(j[1], j[0]+1)
+
     def add_equation_to_dictionary(self, equation_string, line_number=0):
         new_equation_number = max(list(self.equations.keys())) + 1
         # need to check and parse equation string
         # need to check and parse variables in equation
         equation = equation_string  # must be string
-        variables_in_equation = ['X']  # must be list of strings
+        variables_in_equation = self.separate_variables(equation) # must be list of strings
         self.equations[new_equation_number] = {
             "equation": equation,
             "variables": variables_in_equation,
@@ -68,28 +87,58 @@ class EquationCollection:
         # looks at equation dictionary to update variable dictionary
         # 1: {'equation': 'x=1', "variables": ['X'], 'solved': False, "line_number": 2, "error": ''},
         # 1: {'variable_name': 'a', 'equations': ['a=1'], 'value': 1.0, 'initial_value': 1.0, 'solved': False},
-        self.update_variable_list()
-        self.update_equation_list()
 
-
+        # self.update_variable_list()
+        # self.update_equation_list()
+        #
+        # for i in self.equations:
+        #     # i = 3 (int)
+        #     # i is a dictionary of equation information
+        #     current_variable_list = self.equations[i]['variables']
+        #     current_equation = self.equations[i]['equation']
+        #     for j in current_variable_list:
+        #         # j = 'x' (string, variable)
+        #         self.update_variable_list()
+        #         self.update_equation_list()
+        #         new_variables_number = max(list(self.variables.keys())) + 1
+        #         if j not in self.variable_list:
+        #             self.variables[new_variables_number] = {
+        #                 'variable_name': j,
+        #                 'equations': [current_equation],
+        #                 'value': 1.0,
+        #                 'initial_value': 1.0,
+        #                 'solved': False
+        #             }
+        #     print([current_equation])
+        #     print(self.variables[i]['equations'])
+        #     for k in self.variables:
+        #         if (current_equation not in self.variables[k]['equations']) and (k not in current_variable_list):
+        #             self.variables[k]['equations'].append(current_equation)
         for i in self.equations:
-            # i is a dictionary of equation information
-            current_variable_list = self.equations[i]['variables']
-            current_equation = self.equations[i]['equation']
-            for j in current_variable_list:
-                # j is a list of variables in a single equation
-                new_variables_number = max(list(self.variables.keys())) + 1
-                if j not in self.variable_list:
-                    self.variables[new_variables_number] = {
-                        'variable_name': j,
-                        'equations': [current_equation],
-                        'value': 1.0,
-                        'initial_value': 1.0,
-                        'solved': False
+            # Creates new variable dictionary if none exists
 
-                    }
-                elif j in self.variable_list and i not in self.equation_list:
-                    self.variables[i]['equations'].append(current_equation)
+            variable_list_in_equation = self.equations[i]['variables']
+            equation_in_equation = self.equations[i]['equation']
+
+            for var in variable_list_in_equation:
+                self.update_variable_list()
+                new_variables_number = max(list(self.variables.keys())) + 1
+                if var not in self.variable_list:
+                    self.variables[new_variables_number] = {
+                                'variable_name': var,
+                                'equations': [],
+                                'value': 1.0,
+                                'initial_value': 1.0,
+                                'solved': False
+                            }
+            for j in self.variables:
+                variable_in_variables = self.variables[j]['variable_name']
+                equations_in_variables = self.variables[j]['equations']
+                check1 = equation_in_equation not in equations_in_variables
+                check2 = variable_in_variables in variable_list_in_equation
+                if check1 and check2:
+                    self.variables[j]['equations'].append(equation_in_equation)
+
         return
 
     def parse_line(self, line_string, line_number):
@@ -98,12 +147,10 @@ class EquationCollection:
             line.checkline()
         except SyntaxError:
             print("Syntax Error Detected:\n\tLine error")
+        equations = line_string.split("\n")
+        equations = equations.replace(' ', '')
+        return equations
 
-    def parse_eqns_from_string(self, in_string):
-        string_equations = in_string
-        equations = string_equations.split("\n")
-        equations2 = list(filter(None, equations))
-        return equations2
 
     def update_number_of_equations(self):
         self.number_of_equations = len(self.equations)
@@ -128,7 +175,6 @@ class EquationCollection:
             if self.equations[i]['solved'] is True:
                 self.solved_equation_list.append(self.equations[i]['equation'])
                 self.solved_equation_list = list(set(self.solved_equation_list))
-
 
     def update_list_from_dictionary(self, dictionary_name: dict, key_name: str, list_name: list) -> list:
         # function to update a list taking a key from the variable or equation dictionary
@@ -177,14 +223,13 @@ class EquationCollection:
                     if self.is_variable(i) and i not in variables:
                         variables.append(i)
             return variables
-
         elif isinstance(equation, str):
+            equation = equation.replace(' ','')
             split_equations = re.split(r"[=+\-^*/\\()\[\]]", equation)
             for i in split_equations:
                 if self.is_variable(i) and i not in variables:
                     variables.append(i)
             return variables
-
         else:
             raise TypeError
 
@@ -209,12 +254,18 @@ class EquationCollection:
         except ValueError:
             return False
 
-    # def equation_split(self, equation):
-    #     # split equations by the equals sign
-    #     equation_halves = []
-    #     split_equations = re.split(r"[=]", equation)
-    #     equation_halves.append(split_equations)
-    #     return equation_halves
+    def equation_split(self, equation:str):
+        # split equations by the equals sign
+        equation_halves = []
+        split_equations = re.split(r"[=]", equation)
+        equation_halves.append(split_equations)
+        return equation_halves
+
+    def reorder_equation_string(self, equation: str):
+        equation_halves = self.equation_split(equation)
+        reordered = [equation_halves[0], '-', '(', equation_halves[1], ')']
+        reordered = ''.join(reordered)
+        return reordered
 
     def debug_output(self):
         for i in self.equations:
@@ -230,9 +281,7 @@ class EquationCollection:
 
 
 if __name__ == "__main__":
-    EQ = EquationCollection()
+    EQ = EquationCollection("x=1\ny=2\na= x+y")
     # EQ.add_equation_to_dictionary("words=1", 4)
     EQ.update_class()
     EQ.debug_output()
-    repr(EQ)
-    # print(EQ.variables[2]['variable_name'])
