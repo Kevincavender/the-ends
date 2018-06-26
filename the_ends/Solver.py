@@ -22,11 +22,9 @@ class Solver(object):
         #MAIN
         # this is the order in which the solver class is completed.
         eqn_block, solvable_vars = self.primary_parser
-        exelist, resultlist = self.exportSortedEquations(eqn_block, solvable_vars)
+        exelist, resultlist = self.export_sorted_equations(eqn_block, solvable_vars)
         return exelist, resultlist
 
-
-    @property
     def primary_parser(self):
         '''
         :param
@@ -168,7 +166,7 @@ class Solver(object):
                                           "--------------------------------------")
         return eqn_block, solvable_vars
 
-    def exportSortedEquations(self, eqn_block, solvable_vars):
+    def export_sorted_equations(self, eqn_block, solvable_vars):
         # *****************************************************************
         # Export of solvable list of variables
         # *****************************************************************

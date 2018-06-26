@@ -33,6 +33,7 @@ class EquationCollection:
         self.equation_list = []
         self.solved_variable_list = []
         self.solved_equation_list = []
+        self.master = {}
 
         # will populate the previous variables
         self.parse_eqns_from_string(self.equation_string)
@@ -47,6 +48,7 @@ class EquationCollection:
         self.update_number_of_variables()
         self.update_solved_equation_list()
         self.update_solved_variable_list()
+        self.update_master()
 
 
     def parse_eqns_from_string(self, in_string):
@@ -80,6 +82,19 @@ class EquationCollection:
             "error": '',
             "block_number": 0,
             "root_equation":''
+
+        }
+
+    def update_master(self):
+        self.master = {
+            "Equations" : self.equations,
+            "Variables" : self.variables,
+            "Number of Equations": self.number_of_equations,
+            "Equation List": self.equation_list,
+            "Solved Equations": self.solved_equation_list,
+            "Number of Variables": self.number_of_variables,
+            "Variable List": self.variable_list,
+            "Solved Variable List":self.solved_variable_list
 
         }
 
@@ -268,20 +283,20 @@ class EquationCollection:
         return reordered
 
     def debug_output(self):
-        for i in self.equations:
-            print("Equation " + str(i) + " " + str(self.equations[i]))
-        for i in self.variables:
-            print("Variable " + str(i) + " " + str(self.variables[i]))
-        print("Number of Equations: " + str(self.number_of_equations))
-        print("Equation List: " + str(self.equation_list))
-        print("Solved Equations: " + str(self.solved_equation_list))
-        print("Number of Variables: " + str(self.number_of_variables))
-        print("Variable List: " + str(self.variable_list))
-        print("Solved Variable List: " + str(self.solved_variable_list))
+        from pprint import pprint
+        print("------------------------------------------")
+        print("--------------DEBUG-PRINTOUT--------------")
+        print("------------------------------------------")
+        pprint(self.master, depth=1)
+        print("\n\n")
+        print("Press any key to continue...")
+        #input()
+
+        pprint(self.master)
 
 
 if __name__ == "__main__":
     EQ = EquationCollection("x=1\ny=2\na= x+y")
-    # EQ.add_equation_to_dictionary("words=1", 4)
+    EQ.add_equation_to_dictionary("words=1", 4)
     EQ.update_class()
     EQ.debug_output()
