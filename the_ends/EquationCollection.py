@@ -257,6 +257,14 @@ class EquationCollection:
             return False
         return True
 
+    def is_function(self, line):
+        #work in progress for this function
+        contains_function = False
+        for x in line:
+            if x == "(":
+                contains_function = True
+        return ""
+
     def is_float(self, i):
         '''
         will determine if a string can be interpreted as a float
@@ -296,7 +304,7 @@ class EquationCollection:
 
 
 if __name__ == "__main__":
-    EQ = EquationCollection("x=1\ny=2\na= x+y")
+    EQ = EquationCollection("x=1\ny=2\na= x+y\nsqu=sqa(")
     EQ.add_equation_to_dictionary("words=1", 4)
     EQ.update_class()
     EQ.debug_output()
