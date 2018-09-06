@@ -33,10 +33,12 @@ class EquationCollection:
         self.equation_list = []
         self.solved_variable_list = []
         self.solved_equation_list = []
-
+        del self.variables[0]
+        del self.equations[0]
         # will populate the previous variables
         self.parse_eqns_from_string(self.equation_string)
         self.update_class()
+
 
     def update_class(self):
         # this order is important
@@ -67,7 +69,10 @@ class EquationCollection:
                 self.add_equation_to_dictionary(j[1], j[0]+1)
 
     def add_equation_to_dictionary(self, equation_string, line_number=0):
-        new_equation_number = max(list(self.equations.keys())) + 1
+        if self.equations == {}:
+            new_equation_number = 1
+        else:
+            new_equation_number = max(list(self.equations.keys())) + 1
         # need to check and parse equation string
         # need to check and parse variables in equation
         equation = equation_string  # must be string
@@ -84,36 +89,6 @@ class EquationCollection:
         }
 
     def update_variable_dictionary(self):
-        # looks at equation dictionary to update variable dictionary
-        # 1: {'equation': 'x=1', "variables": ['X'], 'solved': False, "line_number": 2, "error": ''},
-        # 1: {'variable_name': 'a', 'equations': ['a=1'], 'value': 1.0, 'initial_value': 1.0, 'solved': False},
-
-        # self.update_variable_list()
-        # self.update_equation_list()
-        #
-        # for i in self.equations:
-        #     # i = 3 (int)
-        #     # i is a dictionary of equation information
-        #     current_variable_list = self.equations[i]['variables']
-        #     current_equation = self.equations[i]['equation']
-        #     for j in current_variable_list:
-        #         # j = 'x' (string, variable)
-        #         self.update_variable_list()
-        #         self.update_equation_list()
-        #         new_variables_number = max(list(self.variables.keys())) + 1
-        #         if j not in self.variable_list:
-        #             self.variables[new_variables_number] = {
-        #                 'variable_name': j,
-        #                 'equations': [current_equation],
-        #                 'value': 1.0,
-        #                 'initial_value': 1.0,
-        #                 'solved': False
-        #             }
-        #     print([current_equation])
-        #     print(self.variables[i]['equations'])
-        #     for k in self.variables:
-        #         if (current_equation not in self.variables[k]['equations']) and (k not in current_variable_list):
-        #             self.variables[k]['equations'].append(current_equation)
         for i in self.equations:
             # Creates new variable dictionary if none exists
 
@@ -122,7 +97,10 @@ class EquationCollection:
 
             for var in variable_list_in_equation:
                 self.update_variable_list()
-                new_variables_number = max(list(self.variables.keys())) + 1
+                if self.variables == {}:
+                    new_variables_number = 1
+                else:
+                    new_variables_number = max(list(self.variables.keys())) + 1
                 if var not in self.variable_list:
                     self.variables[new_variables_number] = {
                                 'variable_name': var,
@@ -281,7 +259,9 @@ class EquationCollection:
 
 
 if __name__ == "__main__":
-    EQ = EquationCollection("x=1\ny=2\na= x+y")
+    EQ = EquationCollection("x=1\ny=x\na= x+y")
     # EQ.add_equation_to_dictionary("words=1", 4)
+    EQ.solved_equation_list.append('x=1')
+
     EQ.update_class()
     EQ.debug_output()
