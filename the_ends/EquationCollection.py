@@ -66,9 +66,12 @@ class EquationCollection:
                 j = list(i)
                 j[1] = j[1].replace(' ','')
                 j[1] = j[1].replace('\t', '')
-                self.add_equation_to_dictionary(j[1], j[0]+1)
+                self.add_equation_to_database(j[1], j[0] + 1)
 
-    def add_equation_to_dictionary(self, equation_string, line_number=0):
+    def add_function_to_database(self):
+        pass
+
+    def add_equation_to_database(self, equation_string, line_number=0):
         if self.equations == {}:
             new_equation_number = 1
         else:
@@ -260,7 +263,7 @@ class EquationCollection:
 
 if __name__ == "__main__":
     EQ = EquationCollection("x=1\ny=x\na= x+y")
-    # EQ.add_equation_to_dictionary("words=1", 4)
+    # EQ.add_equation_to_database("words=1", 4)
     EQ.solved_equation_list.append('x=1')
 
     EQ.update_class()
