@@ -3,12 +3,22 @@ import re
 
 
 class EquationCollection:
-    '''
+    """
+    This Class is for interacting with metadata of the equations entered as a string
+
     Example of equations and variables dictionaries
-    '''
+
+    block_number : used for the solution order of the equations
+    error: used for giving specific error results to the user
+    variables and equations are cross listed to allow for storing resulting values in one place
+
+    """
 
     def __init__(self, equation_string=''):
         self.equation_string = equation_string
+        # each equation dictionary within the self.equations dictionary
+        # will get it's own index number
+        # (starting at 1 because 0 is being used by the example listed here)
         self.equations = {
             0: dict(
                 equation='',
@@ -49,7 +59,6 @@ class EquationCollection:
         self.update_solved_equation_list()
         self.update_solved_variable_list()
         self.update_master()
-
 
     def parse_eqns_from_string(self, in_string):
         # starts here: takes in a string with line carriages
@@ -166,7 +175,6 @@ class EquationCollection:
         equations = equations.replace(' ', '')
         return equations
 
-
     def update_number_of_equations(self):
         self.number_of_equations = len(self.equations)
 
@@ -199,7 +207,6 @@ class EquationCollection:
                 list_name.append(dictionary_name[i][key_name])
         list_name_output = list(set(list_name))
         return list_name_output
-
 
     def format(self, equation):
         """
@@ -258,7 +265,9 @@ class EquationCollection:
         return True
 
     def is_function(self, line):
-        #work in progress for this function
+        # work in progress for this function
+        # function processing with be identified in this function
+        # and be passed to it's own class
         contains_function = False
         for x in line:
             if x == "(":
@@ -298,6 +307,7 @@ class EquationCollection:
         pprint(self.master, depth=1)
         print("\n\n")
         print("Press any key to continue...")
+        input()
         #input()
 
         pprint(self.master)
