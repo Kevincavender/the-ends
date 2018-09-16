@@ -32,14 +32,10 @@ def main(args=None, debug=False):
     
     
     """
-
-    try:
-        if args is None:
-            args = sys.argv[1]
-        else:
-            raise IndexError
-    except IndexError:
-        return "Error:\nPlease call an existing filename"
+    if args is None:
+        args = sys.argv[1]
+    else:
+        print("something is wrong with how main is being called")
 
     input_filename = args
     input_string = readfile(input_filename)

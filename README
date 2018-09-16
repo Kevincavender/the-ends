@@ -12,8 +12,8 @@ python3 -m the_ends <your_textfile_with_equations>
 What it can and can't do at this moment
 **************************************
 It is not case sensitive for variables names
-A single variable must be on the left (much like standard assignment based programming)
-A new line designates a new equation
+A single variable must be on the left (hoping to fix this in the future)
+A new line designates a new equation (with which an equation can have only on equals sign)
 
 It can: 
 	reorder equations to solve them in the proper order 
