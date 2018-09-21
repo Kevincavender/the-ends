@@ -8,7 +8,7 @@ class EquationsClass:
         eqn_input: text file as a string input into
                    solver for initial processing
 
-    Availible outputs:
+    Available outputs:
     -----------------------------
 
     """

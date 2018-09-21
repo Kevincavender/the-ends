@@ -32,10 +32,15 @@ def main(args=None, debug=False):
     
     
     """
-    if args is None:
-        args = sys.argv[1]
-    else:
-        print("something is wrong with how main is being called")
+    try:
+        if args is None:
+            args = sys.argv[1]
+        else:
+            raise IOError
+    except IOError:
+        print("IOError: something is wrong with how main is being called")
+    except TypeError:
+        print("TypeError: something is wrong with how main is being called")
 
     input_filename = args
     input_string = readfile(input_filename)
@@ -59,4 +64,4 @@ def main(args=None, debug=False):
 
 
 if __name__ == "__main__":
-    print(main())
+    print(main('1eqn'))
