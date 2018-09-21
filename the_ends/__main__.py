@@ -36,7 +36,7 @@ def main(args=None, debug=False):
         if args is None:
             args = sys.argv[1]
         else:
-            raise IOError
+            print("\n\t-----------\nDidn't read in any files\n\t-----------\n")
     except IOError:
         print("IOError: something is wrong with how main is being called")
     except TypeError:
@@ -64,4 +64,4 @@ def main(args=None, debug=False):
 
 
 if __name__ == "__main__":
-    print(main('1eqn'))
+    print(main())
