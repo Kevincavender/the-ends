@@ -18,12 +18,13 @@ class Solver(object):
         self.vdict = self.eqn_obj.variable_dict()
         self.debug = debug
         self.equations = input_equations
+        self.eqn_block = []
+        self.solvable_vars = []
 
     def solve(self):
         #MAIN
         # this is the order in which the solver class is completed.
-        eqn_block, solvable_vars = self.primary_parser
-        exelist, resultlist = self.exportSortedEquations(eqn_block, solvable_vars)
+        exelist, resultlist = self.exportSortedEquations(self.eqn_block, self.solvable_vars)
         return exelist, resultlist
 
 
@@ -166,7 +167,9 @@ class Solver(object):
                 eqn_block.append([])
                 if self.debug == 1: print("next block\n--------------------------"
                                           "--------------------------------------")
-        return eqn_block, solvable_vars
+        self.eqn_block = eqn_block
+        self.solvable_vars = solvable_vars
+        return None
 
 
 
@@ -530,7 +533,7 @@ def testsolverclass():
         equations_object = EquationsClass(eqns)
         print("Reading input file of name: " + input_file)
         equations = equations_object.equations
-        variables = equations_object.variables()
+        # variables = equations_object.variables()
         # print(equations)
         # print(variables)
         # print(Solver(equations).issolvable(equations[0], variables[2], 0))
