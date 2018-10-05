@@ -308,7 +308,6 @@ class EquationCollection:
         print("\n\n")
         print("Press any key to continue...")
         input()
-        #input()
 
         pprint(self.master)
 

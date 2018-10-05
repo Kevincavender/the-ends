@@ -91,18 +91,16 @@ class EquationErrorCheck:
 
         return True
 
-    def check_matching_parenthesis(self):
-        left = 0
-        right = 0
-        for i in self.equation:
-            if i is "(":
-                left=+1
-            if i is ")":
-                right=+1
-        if left == right:
-            return True
-        else:
-            return False
+    def check_matching_parenthesis(self, equation_string):
+        count = 0
+        for i in equation_string:
+            if i == "(":
+                count += 1
+            elif i == ")":
+                count -= 1
+            if count < 0:
+                return False
+        return count == 0
 
     def check_matching_brackets(self):
         left = 0
