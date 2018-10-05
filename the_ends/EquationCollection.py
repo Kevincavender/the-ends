@@ -311,6 +311,17 @@ class EquationCollection:
 
         pprint(self.master)
 
+    def check_matching_parenthesis(self, equation_string):
+        # TODO need to integrate into this class
+        count = 0
+        for i in equation_string:
+            if i == "(":
+                count += 1
+            elif i == ")":
+                count -= 1
+            if count < 0:
+                return False
+        return count == 0
 
 if __name__ == "__main__":
     EQ = EquationCollection("x=1\ny=2\na= x+y\nsqu=sqa(")
