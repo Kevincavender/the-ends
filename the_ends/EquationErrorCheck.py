@@ -36,7 +36,7 @@ class EquationErrorCheck:
         elif not self.check_symbols():
             self.error_message = self.error_message
             raise SyntaxError
-        elif not self.check_matching_parenthesis():
+        elif not self.check_matching_parenthesis(self.equation):
             self.error_message = 'unmatched set of parenthesis'
             raise SyntaxError
         elif not self.check_matching_brackets():

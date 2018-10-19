@@ -70,11 +70,13 @@ class EquationCollection:
         list_of_equations = list(enumerate(list_of_equations))
         for i in list_of_equations:
             if i[1] == '':
-                list_of_equations.remove(i)
+                list_of_equations.remove(i) # remove empty lines
+            #elif: the string starts with comment symbol (#)
+            #elif: the string starts with command starter ($)
             else:
                 j = list(i)
-                j[1] = j[1].replace(' ','')
-                j[1] = j[1].replace('\t', '')
+                j[1] = j[1].replace(' ','') # remove spaces
+                j[1] = j[1].replace('\t', '') # remove tabs
                 self.add_equation_to_dictionary(j[1], j[0]+1)
 
     def add_equation_to_dictionary(self, equation_string, line_number=0):
@@ -82,6 +84,7 @@ class EquationCollection:
         # need to check and parse equation string
         # need to check and parse variables in equation
         equation = equation_string  # must be string
+        functions_in_equation = self.separate_functions(equation)
         variables_in_equation = self.separate_variables(equation) # must be list of strings
         self.equations[new_equation_number] = {
             "equation": equation,
@@ -90,7 +93,8 @@ class EquationCollection:
             "line_number": line_number,
             "error": '',
             "block_number": 0,
-            "root_equation":''
+            "root_equation":'',
+            "functions": functions_in_equation
 
         }
 
@@ -227,6 +231,9 @@ class EquationCollection:
         output_equation = equation.upper()
         return output_equation
 
+    def separate_functions(self, equation=False):
+        pass
+
     def separate_variables(self, equation=False):
         """
         split equations by the all known operators
@@ -313,6 +320,7 @@ class EquationCollection:
 
     def check_matching_parenthesis(self, equation_string):
         # TODO need to integrate into this class
+        # Use for Function finding/checking
         count = 0
         for i in equation_string:
             if i == "(":
