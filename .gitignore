@@ -1,4 +1,5 @@
 Eqn_solver/__pycache__
+/the_ends.egg-info/
 .idea
 *.pyc
 .idea/workspace.xml
@@ -10,3 +11,4 @@ tmp.txt
 /build/
 *.msi
 *.pypirc
+*.gz

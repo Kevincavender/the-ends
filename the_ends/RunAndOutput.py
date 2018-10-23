@@ -1,9 +1,14 @@
+import os
+
+
 def solve_and_print_results(equations, exelist, results_list):
     '''
     creates temporary python file to execute solving in it's own environment
     tmp python file records the results output to a tmp text file
-    the output text file is send back to the user
+    the output of the text file is send back to the user
     '''
+
+    # open file that write execution code to
     pyfile = open("tmp.py", "w")
 
     # Write list of imported libraries into python
@@ -18,11 +23,13 @@ def solve_and_print_results(equations, exelist, results_list):
         pyfile.write(str(i) + "\n")
 
     results = [
-        'textfile = open("tmp.txt", "w")',
+        '\ntextfile = open("tmp.txt", "w")',
+        '',
         r'textfile.write("Entered Equations: \n\n")',
         'for i in' + str(equations) + ': ',
         r'    textfile.write(i + "\n")',
         r'textfile.write("\nResults: \n\n")',
+        '\n'
               ]
 
     # Have python evaluate the print out entered equations
@@ -36,7 +43,52 @@ def solve_and_print_results(equations, exelist, results_list):
     pyfile.close()
 
     # Run the just created python file
-    import os
+    os.system("python tmp.py")
+
+    # Open text file that python created
+    # Read the text file and return the results
+    with open('tmp.txt', mode='r') as f:
+        line_list = []
+        # read in lines
+        while True:
+            line = f.readline()
+            if len(line) == 0:
+                break
+            line_list.append(line)
+    outstring = "".join(list(filter(None, line_list)))
+    return outstring
+
+
+def solve_and_print_results_only(exelist, results_list):
+    '''
+    creates temporary python file to execute solving in it's own environment
+    tmp python file records the results output to a tmp text file
+    the output of the text file is send back to the user
+    '''
+
+    # open file that write execution code to
+    pyfile = open("tmp.py", "w")
+
+    # Write list of imported libraries into python
+    # librarylist = [
+    #     ""
+    # ]
+    # for i in librarylist:
+    #    pyfile.write(i + "\n")
+
+    # Write python executable equations
+    for i in exelist:
+        pyfile.write(str(i) + "\n")
+
+    pyfile.write('textfile = open("tmp.txt", "w")\n')
+
+    # Have python print results to each variable
+    for i in results_list:
+        pyfile.write('print("'+i+' = " + str(float('+i+')), file=textfile)\n')
+    pyfile.write('textfile.close()\n')
+    pyfile.close()
+
+    # Run the just created python file
     os.system("python tmp.py")
 
     # Open text file that python created
@@ -56,6 +108,7 @@ def solve_and_print_results(equations, exelist, results_list):
 class OutputCode:
     """
     code in the class comes in to be collected into an executable form of python code
+    NOT USED
     """
     def __init__(self):
         pass

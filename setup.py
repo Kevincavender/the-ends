@@ -1,42 +1,25 @@
 #!/usr/bin/python
 
 # setup.py info things
+from setuptools import setup, find_packages
 
-from distutils.core import setup
 
+# Distributing commands:
+# python setup.py sdist (builds the project from this file)
+# twine upload dist/* (uploads everything in that folder to pypi)
 setup(
-    name="the-ends",
-    packages = ['the-ends'],
-    version="0.1",
+    name="the_ends",
+    packages = ['the_ends'],
+    version="0.1.9",
     author="Kevin Cavender",
+    description='Implicit Equation Solver (will reorder equations for maths)',
     author_email='kac1200@gmail.com',
-    url="https://github.com/Kevincavender/the-ends",
-    download_url='',
+    url="https://github.com/Kevincavender/the_ends",
+    download_url='https://github.com/Kevincavender/the_ends/archive/0.1.tar.gz',
     keywords = ['equation', 'engineer', 'math', 'calculator'],
-    classifiers=[]
+    entry_points={
+        'console_scripts':[
+            'solve=the_ends.__main__:main'
+        ]
+    }
   )
-
-'''
-# cx_setup.py info things
-import sys, os
-from cx_Freeze import setup, Executable
-
-os.environ['TCL_LIBRARY'] = r'C:\Users\Kevin\AppData\Local\Programs\Python\Python36-32\tcl\tcl8.6'
-os.environ['TK_LIBRARY'] = r'C:\Users\Kevin\AppData\Local\Programs\Python\Python36-32\tcl\tk8.6'
-
-build_exe_options = {"packages": ["Eqn_solver", "TkinterGUI", "os", "tkinter", "time"],
-                     'path': sys.path + ['modules'],
-                     "include_files": [r"C:\Users\Kevin\AppData\Local\Programs\Python\Python36-32\DLLs\tcl86t.dll",
-                                       r"C:\Users\Kevin\AppData\Local\Programs\Python\Python36-32\DLLs\tk86t.dll"],
-                     }
-
-exe = [Executable(script="run.py", base="Win32GUI")]
-
-setup(
-  name="the-ends",
-  version="0.1",
-  options={"build_exe": build_exe_options},
-  author="Kevin Cavender",
-  executables=exe
-  )
-'''
