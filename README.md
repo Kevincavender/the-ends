@@ -52,6 +52,9 @@ currently developing in Python 3.6. This is the only version currently semi-guar
 ### matplotlib
     :plotting stuff
 
+### LaTex 
+    :format equations
+
 ### GUI
     :start with Tkinter and move to PyQt
 
@@ -64,3 +67,5 @@ currently developing in Python 3.6. This is the only version currently semi-guar
 
 ### travis CI
     :continuous integration
+
+
