@@ -227,7 +227,7 @@ class EquationCollection:
         *************************
         """
         equation = equation.replace(" ", "")  # remove spaces
-        equation = equation.replace("^", "**")  # for python to understand exponentals
+        equation = equation.replace("^", "**")  # for python to understand exponential's
         output_equation = equation.upper()
         return output_equation
 
