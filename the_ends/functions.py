@@ -3,7 +3,7 @@ import re
 '''
 Write function to identify functions being called
 
-example syntax:
+example syntax:?
 
 separate "function("
 
