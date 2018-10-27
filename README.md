@@ -28,9 +28,12 @@ currently developing in Python 3.6. This is the only version currently semi-guar
 
 ## future libraries to integrate
 ### UNITS
-#[Pint](https://github.com/hgrecco/pint)
- OR
-#[Quantities](https://github.com/python-quantities/python-quantities)
+
+# [Pint](https://github.com/hgrecco/pint)
+
+OR
+
+# [Quantities](https://github.com/python-quantities/python-quantities)
 
 ### [Uncertainties](https://github.com/lebigot/uncertainties/)
     for calculating and propogating uncertainties
