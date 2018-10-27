@@ -107,9 +107,9 @@ class EquationErrorCheck:
         right = 0
         for i in self.equation:
             if i is "[":
-                left=+1
+                left = +1
             if i is "]":
-                right=+1
+                right = +1
         if left == right:
             return True
         else:
@@ -126,7 +126,7 @@ if __name__ == '__main__':
         print("[EQ.checkline(), EQ.line_number, EQ.equation]")
         print(str(func_list))
     except SyntaxError:
-        print("Syntax Error Line "+  str(EQ.line_number) +": Debug manually")
+        print("Syntax Error Line " + str(EQ.line_number) + ": Debug manually")
 
 
     # EQ.check_trailing_operators()

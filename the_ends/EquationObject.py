@@ -34,6 +34,9 @@ class EquationsClass:
 
         return
 
+    def __repr__(self):
+        return str(self.equations)
+
     def check(self):
         """
         REFERENCES PYTHON FILE:

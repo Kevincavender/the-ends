@@ -16,6 +16,8 @@ THermodynamic Engineering Equations NeeD Solving
 5. run and export results
     RunAndOutput.py
 
+
+TODO replace EquationObject with Equation Collection
 """
 import time
 import sys
@@ -36,11 +38,13 @@ def main(args=None, debug=False):
         if args is None:
             args = sys.argv[1]
         else:
-            print("\n\t-----------\nDidn't read in any files\n\t-----------\n")
+            print("\n--------------\nFiles read by \ncalling Main()\n--------------\n")
     except IOError:
         print("IOError: something is wrong with how main is being called")
     except TypeError:
         print("TypeError: something is wrong with how main is being called")
+    except SyntaxError:
+        print("SyntaxError: ... somewhere")
 
     input_filename = args
     input_string = readfile(input_filename)
@@ -48,7 +52,7 @@ def main(args=None, debug=False):
     user_equations = EquationsClass(input_string)
     solve = user_equations.check()
 
-    if solve == 1:
+    if solve is True:
         execute_list, results_list = Solver(user_equations.equations, debug).solve()
         results_out = results(user_equations.entered_equations,execute_list, results_list)
         # print('**************************************************')
@@ -59,9 +63,16 @@ def main(args=None, debug=False):
         # print('**************************************************')
     else:
         results_out = "Unsolvable by unknown error"
+
+    if debug is True:
+        print("\nDEBUG:")
+        print("readfile.readfile(): " + str(input_string))
+        print("EquationObject.EquationsClass(): " + repr(user_equations))
+        print("user_equation.check(): " + repr(user_equations.check()))
+        print("END DEBUG\n")
     # print(results_out)
     return results_out
 
 
 if __name__ == "__main__":
-    print(main())
+    print(main(args='1eqn', debug=True))
