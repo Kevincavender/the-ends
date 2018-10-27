@@ -27,12 +27,17 @@ currently developing in Python 3.6. This is the only version currently semi-guar
 
 
 ## future libraries to integrate
+## UNITS
+
 ### [Pint](https://github.com/hgrecco/pint)
-    for unit checking and conversion
+
+### [Quantities](https://github.com/python-quantities/python-quantities)
+    :These are both unit handling libraries
 
 ### [Uncertainties](https://github.com/lebigot/uncertainties/)
     for calculating and propogating uncertainties
-    
+
+## Additional Functionality
 ### [zunzun3](https://github.com/zunzun/pyeq3)
     for curve fitting
     
@@ -52,6 +57,9 @@ currently developing in Python 3.6. This is the only version currently semi-guar
 ### matplotlib
     :plotting stuff
 
+### LaTex 
+    :format equations
+
 ### GUI
     :start with Tkinter and move to PyQt
 
@@ -64,3 +72,5 @@ currently developing in Python 3.6. This is the only version currently semi-guar
 
 ### travis CI
     :continuous integration
+
+

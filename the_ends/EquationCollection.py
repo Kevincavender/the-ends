@@ -49,6 +49,10 @@ class EquationCollection:
         self.parse_eqns_from_string(self.equation_string)
         self.update_class()
 
+    def __repr__(self):
+        # this needs a detailed printout of what's in the string
+        return str(self.equations)
+
     def update_class(self):
         # this order is important
         self.update_variable_dictionary()
@@ -61,22 +65,40 @@ class EquationCollection:
         self.update_master()
 
     def parse_eqns_from_string(self, in_string):
-        # starts here: takes in a string with line carriages
+        """
+        the purpose of this function is to take the list of equations,
+        - remove spaces
+        - uppercase all characters
+        - change certain characters for processing
+            ^ -> **
+
+        example input
+        ['x = y+ 1', 'y = 2^2', 'squ = 2', 'yo = 20']
+        example output
+        ['X=Y+1', 'Y=2**2', 'SQU=2', 'YO=20']
+        *************************
+        # Current functionality of this code:
+        #   takes in a string with line carriages
         #   splits it down to individual lines
         #   enumerates lines
         #   cleans up whitespace
         #   capitalizes all letters
-        list_of_equations = in_string.split("\n")
-        list_of_equations = list(enumerate(list_of_equations))
-        for i in list_of_equations:
+        """
+        list_of_lines = in_string.split("\n")
+        list_of_lines = list(enumerate(list_of_lines))
+        print(list_of_lines)
+        for i in list_of_lines:
+            #
             if i[1] == '':
-                list_of_equations.remove(i) # remove empty lines
-            #elif: the string starts with comment symbol (#)
-            #elif: the string starts with command starter ($)
+                list_of_lines.remove(i)  # remove empty lines
+            # TODO elif: the string starts with comment symbol (#)
+            # TODO elif: the string starts with special character ($)
             else:
                 j = list(i)
-                j[1] = j[1].replace(' ','') # remove spaces
-                j[1] = j[1].replace('\t', '') # remove tabs
+                j[1] = j[1].replace(' ', '')  # remove spaces
+                j[1] = j[1].replace('\t', '')  # remove tabs
+                j[1] = j[1].replace("^", "**")  # for python to understand exponential's
+                # j[1] = j[1].upper()  # for upper casing the equations
                 self.add_equation_to_dictionary(j[1], j[0]+1)
 
     def add_equation_to_dictionary(self, equation_string, line_number=0):
@@ -85,7 +107,7 @@ class EquationCollection:
         # need to check and parse variables in equation
         equation = equation_string  # must be string
         functions_in_equation = self.separate_functions(equation)
-        variables_in_equation = self.separate_variables(equation) # must be list of strings
+        variables_in_equation = self.separate_variables(equation)  # must be list of strings
         self.equations[new_equation_number] = {
             "equation": equation,
             "variables": variables_in_equation,
@@ -93,21 +115,20 @@ class EquationCollection:
             "line_number": line_number,
             "error": '',
             "block_number": 0,
-            "root_equation":'',
+            "root_equation": '',
             "functions": functions_in_equation
-
         }
 
     def update_master(self):
         self.master = {
-            "Equations" : self.equations,
-            "Variables" : self.variables,
+            "Equations": self.equations,
+            "Variables": self.variables,
             "Number of Equations": self.number_of_equations,
             "Equation List": self.equation_list,
             "Solved Equations": self.solved_equation_list,
             "Number of Variables": self.number_of_variables,
             "Variable List": self.variable_list,
-            "Solved Variable List":self.solved_variable_list
+            "Solved Variable List": self.solved_variable_list
 
         }
 
@@ -212,26 +233,8 @@ class EquationCollection:
         list_name_output = list(set(list_name))
         return list_name_output
 
-    def format(self, equation):
-        """
-        the purpose of this function is to take the list of equations,
-        - remove spaces
-        - uppercase all characters
-        - change certain characters for processing
-            ^ -> **
-
-        example input
-        ['x = y+ 1', 'y = 2^2', 'squ = 2', 'yo = 20']
-        example output
-        ['X=Y+1', 'Y=2**2', 'SQU=2', 'YO=20']
-        *************************
-        """
-        equation = equation.replace(" ", "")  # remove spaces
-        equation = equation.replace("^", "**")  # for python to understand exponential's
-        output_equation = equation.upper()
-        return output_equation
-
     def separate_functions(self, equation=False):
+        # TODO integrate function separation here
         pass
 
     def separate_variables(self, equation=False):
@@ -271,16 +274,6 @@ class EquationCollection:
             return False
         return True
 
-    def is_function(self, line):
-        # work in progress for this function
-        # function processing with be identified in this function
-        # and be passed to it's own class
-        contains_function = False
-        for x in line:
-            if x == "(":
-                contains_function = True
-        return ""
-
     def is_float(self, i):
         '''
         will determine if a string can be interpreted as a float
@@ -313,9 +306,6 @@ class EquationCollection:
         print("------------------------------------------")
         pprint(self.master, depth=1)
         print("\n\n")
-        print("Press any key to continue...")
-        input()
-
         pprint(self.master)
 
     def check_matching_parenthesis(self, equation_string):
@@ -331,8 +321,9 @@ class EquationCollection:
                 return False
         return count == 0
 
+
 if __name__ == "__main__":
-    EQ = EquationCollection("x=1\ny=2\na= x+y\nsqu=sqa(")
+    EQ = EquationCollection("x=1\ny=2\n\na= x+y\nsqu=sqa(")
     EQ.add_equation_to_dictionary("words=1", 4)
     EQ.update_class()
     EQ.debug_output()
