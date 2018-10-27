@@ -32,6 +32,7 @@ currently developing in Python 3.6. This is the only version currently semi-guar
 ### [Pint](https://github.com/hgrecco/pint)
 
 ### [Quantities](https://github.com/python-quantities/python-quantities)
+    :These are both unit handling libraries
 
 ### [Uncertainties](https://github.com/lebigot/uncertainties/)
     for calculating and propogating uncertainties
