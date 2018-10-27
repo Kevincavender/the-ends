@@ -1,6 +1,8 @@
 import unittest
 from the_ends.functions import function_finder
+import sys
 
+sys.path.insert(0, '/the_ends')
 
 class TheEndsTestCases(unittest.TestCase):
 
