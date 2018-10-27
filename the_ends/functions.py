@@ -44,7 +44,7 @@ def function_finder(equ):
   number_of_functions = len(fun_list1)
 
   if number_of_functions == 0:
-    return [],[] #might want to change this depending on other functions
+    return [],{} #might want to change this depending on other functions
   
   fun_list = []
   for i in range(number_of_functions):
@@ -69,8 +69,8 @@ def function_finder(equ):
             print('Syntax Error: Too many closing parentheses')
             raise
   if hold:  # check if stack is empty afterwards
-    print('Syntax Error: Too many opening parentheses')
-    raise
+    # print('Syntax Error: Too many opening parentheses')
+    raise SyntaxError
 
   function_ranges = []#indecies of only the functions
   for k in range(number_of_functions):
@@ -105,12 +105,12 @@ def function_finder(equ):
 
     
   #return values
-  return(fun_list, variable_dictionary_list)
+  return fun_list, variable_dictionary_list
 
 
 
 #I jumped down the rabbit hole of test cases but I want to
 #be sure on what you are looking for before going crazy
 #so I just did something simple
-equ = 'x=2*5+function1( x=x, 5/4, 12^(2-1)), 8) * function2(y, 7, 11*(y-3))'
+equ = 'x=2*5+function1(( x=x, 5/4, 12^(2-1)), 8) * function2(y, 7, 11*(y-3))'
 print(function_finder(equ))
