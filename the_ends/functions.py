@@ -7,15 +7,13 @@ example syntax:
 
 separate "function("
 
-
 from:
 
 "x=2*5+function(x=x, 5, 12^(2-1))"
 
-example output:
+example output (Updated 10/26/2018):
 
-function_name = 'function'
-function_variables = {1:"x", 2: "5", 3: "12^(2-1)"}
+return {'function_name': 'function', 1:"x", 2: "5", 3: "12^(2-1)"}
 
 write as a python function with a single line string as the input
 
@@ -24,13 +22,14 @@ Include a test case at bottom:
 2018-10-22
 Kevin Cavender
 Instructions for Sev on requested python function
-'''
-'''
-ToDO.... Maybe.....
+
+TODO.... Maybe.....
 
 -determine if a variable of a function is a unlisted function???
 -create a full program break for the related syntax errors
+    >>>
 -replace .append method with marginally faster numpy.zeros() method
+    >>>staying with python standard library wherever possible (re is included in this) -KC
 '''
 '''
 if __name__ == "__main__":
@@ -38,7 +37,7 @@ if __name__ == "__main__":
 '''
 
 
-def function_finder(equ):
+def function_finder(equ, debug=False):
     """
   Finds all functions and how many within a single string
   Define name for each function and create a returnable list of names
@@ -47,7 +46,7 @@ def function_finder(equ):
     number_of_functions = len(fun_list1)
 
     if number_of_functions == 0:
-        return [], {}  # might want to change this depending on other functions
+        return [], []  # might want to change this depending on other functions
 
     fun_list = []
     for i in range(number_of_functions):
@@ -82,10 +81,11 @@ def function_finder(equ):
     # extract string, parse and return a dictionary of variables for each function
     variable_dictionary_list = []  # returned list of dictionaries
     for n in range(number_of_functions):
-        og_string = equ[function_ranges[n][0] + 1:function_ranges[n][1]]  # extracts string
+        extracted_string = equ[function_ranges[n][0] + 1:function_ranges[n][1]]  # extracts string
 
         # removes spaces. might be obsolete
-        extracted_string = og_string.replace(' ', '')
+        # will already be done
+        # extracted_string = og_string.replace(' ', '')
 
         # if statement about functions inside functions. remove to make good program
         for m in range(number_of_functions):
@@ -95,7 +95,7 @@ def function_finder(equ):
                 # add something to kill everything
                 pass
 
-        extracted_strings = re.split(r"[=\\\,]", extracted_string)  # will be problem if you want nested functions
+        extracted_strings = re.split(r"[=\\,]", extracted_string)  # will be problem if you want nested functions
         # deals with x=x issue
         if extracted_strings[0] == extracted_strings[1]:
             extracted_strings.pop(0)
@@ -105,9 +105,28 @@ def function_finder(equ):
             var_dictionary[b + 1] = extracted_strings[b]
 
         variable_dictionary_list.append(var_dictionary)
-
+    if debug is True:
+        print("DEBUG: Functions.py")
+        print("Input string: " + equ)
+        print(function_ranges)
+        print(fun_list)
+        print(fun_list1)
+        print("\nOutput: \n")
     # return values
     return fun_list, variable_dictionary_list
+
+
+def matched(test):
+    # use this code instead
+    count = 0
+    for i in test:
+        if i == "(":
+            count += 1
+        elif i == ")":
+            count -= 1
+        if count < 0:
+            return False
+    return count == 0
 
 
 if __name__ == "__main__":
@@ -116,4 +135,4 @@ if __name__ == "__main__":
     # be sure on what you are looking for before going crazy
     # so I just did something simple
     equ = 'x=2*5+function1(( x=x, 5/4, 12^(2-1)), 8) * function2(y, 7, 11*(y-3))'
-    print(function_finder(equ))
+    print(function_finder(equ, debug=True))
