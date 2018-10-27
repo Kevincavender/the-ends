@@ -23,17 +23,26 @@ Include a test case at bottom:
 Kevin Cavender
 Instructions for Sev on requested python function
 
-TODO.... Maybe.....
+# TODO .... Maybe.....
 
 -determine if a variable of a function is a unlisted function???
+    >>> yes, but first is adding a single function SQRT? and integrating it into everything else
 -create a full program break for the related syntax errors
-    >>>
+    >>>This will be pushed more to the future
 -replace .append method with marginally faster numpy.zeros() method
-    >>>staying with python standard library wherever possible (re is included in this) -KC
-'''
-'''
-if __name__ == "__main__":
-  print("ASS")
+    >>>staying with python standard library wherever possible (re is included in this) 
+    
+-run the_ends_test >>> FunctionsUnitTest.py
+    >>> This will help us refine the functionality of this as we progress. 
+        Makes is a pass/fail condition for whether things are as we both expect them to act.
+    
+Functions initially to be integrated:
+SQRT()
+    square root (obvious function)
+ABS()
+    absolute value (again, obvious)
+
+2018-10-26 Kevin added Notes 
 '''
 
 
@@ -57,10 +66,15 @@ def function_finder(equ, debug=False):
     start_list = []
     for j in range(number_of_functions):
         start_list.append(re.search(re.escape(fun_list[j]), equ).end())
+        # TODO can these be combine to limit the number of looping sections?
 
     # figures out indexes of all parentheses
     parentheses_ranges = {}  # soon to be filled dictionary of ranges
-    hold = []  # please come up with a better variable name than hold
+    # .................................................................
+    # TODO Replace this section with EquationErrorCheck.EquationErrorCheck()
+    # Should be good practice dealing with multiple files
+    # ____________________________________________________________
+    hold = []  #
     for i, c in enumerate(equ):
         if c == '(':
             hold.append(i)
@@ -73,7 +87,7 @@ def function_finder(equ, debug=False):
     if hold:  # check if stack is empty afterwards
         # print('Syntax Error: Too many opening parentheses')
         raise SyntaxError
-
+    # ..................................................................
     function_ranges = []  # indices of only the functions
     for k in range(number_of_functions):
         function_ranges.append((start_list[k], parentheses_ranges[start_list[k]]))
@@ -85,14 +99,17 @@ def function_finder(equ, debug=False):
 
         # removes spaces. might be obsolete
         # will already be done
+        # TODO remove this, it should be done before the string gets to this function
         # extracted_string = og_string.replace(' ', '')
 
         # if statement about functions inside functions. remove to make good program
+        # why are you looping to find errors?
         for m in range(number_of_functions):
             if fun_list[m] in extracted_string:
                 print('Syntax Error: Nested Function')
                 raise SyntaxError
                 # add something to kill everything
+                # raise SyntaxError will kill everything and tell the user there is a syntax error
                 pass
 
         extracted_strings = re.split(r"[=\\,]", extracted_string)  # will be problem if you want nested functions
@@ -105,7 +122,9 @@ def function_finder(equ, debug=False):
             var_dictionary[b + 1] = extracted_strings[b]
 
         variable_dictionary_list.append(var_dictionary)
+
     if debug is True:
+        # TODO Make debug here much more detailed printout
         print("DEBUG: Functions.py")
         print("Input string: " + equ)
         print(function_ranges)
@@ -114,19 +133,6 @@ def function_finder(equ, debug=False):
         print("\nOutput: \n")
     # return values
     return fun_list, variable_dictionary_list
-
-
-def matched(test):
-    # use this code instead
-    count = 0
-    for i in test:
-        if i == "(":
-            count += 1
-        elif i == ")":
-            count -= 1
-        if count < 0:
-            return False
-    return count == 0
 
 
 if __name__ == "__main__":
