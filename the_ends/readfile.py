@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-#SUP KEVIN!!!!!!!
 
 def readfile(filename):
     '''

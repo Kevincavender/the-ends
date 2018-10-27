@@ -8,10 +8,12 @@ class TheEndsTestCases(unittest.TestCase):
 
     def setUp(self):
         pass
+
     # before test cases
 
     def tearDown(self):
         pass
+
     # after test cases
 
     def test_isupper(self):
@@ -102,7 +104,7 @@ class TheEndsTestCases(unittest.TestCase):
         self.assertEqual(equation_output, result_output)
 
     def test_single_10(self):
-        #this ones is expected to raise a syntax error
+        # this ones is expected to raise a syntax error
         equation_input = 'x=?'
         equation_output = 1.0
         with self.assertRaises(SyntaxError):
@@ -110,21 +112,21 @@ class TheEndsTestCases(unittest.TestCase):
             result_output = self.float_output(result_output)
 
     def test_single_11(self):
-        #this ones is expected to raise a syntax error
+        # this ones is expected to raise a syntax error
         equation_input = 'x=~1'
         with self.assertRaises(SyntaxError):
             result_output = self.single_test_frame(equation_input)
             result_output = self.float_output(result_output)
 
     def test_single_12(self):
-        #this ones is expected to raise a syntax error
+        # this ones is expected to raise a syntax error
         equation_input = 'x=<>'
         with self.assertRaises(SyntaxError):
             result_output = self.single_test_frame(equation_input)
             result_output = self.float_output(result_output)
 
     def test_single_13(self):
-        #this ones is expected to raise a syntax error
+        # this ones is expected to raise a syntax error
         equation_input = 'x=!!'
         equation_output = 1.0
         with self.assertRaises(SyntaxError):
@@ -132,7 +134,7 @@ class TheEndsTestCases(unittest.TestCase):
             result_output = self.float_output(result_output)
 
     def test_single_14(self):
-        #this ones is expected to raise a syntax error
+        # this ones is expected to raise a syntax error
         equation_input = 'x=&*'
         with self.assertRaises(SyntaxError):
             result_output = self.single_test_frame(equation_input)
