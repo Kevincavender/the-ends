@@ -1,6 +1,8 @@
 import re
 
 '''
+PRoblems commiting to Git hub
+
 Write function to identify functions being called
 
 example syntax:
@@ -112,10 +114,10 @@ def function_finder(equ, debug=False):
                 # raise SyntaxError will kill everything and tell the user there is a syntax error
                 pass
 
-        extracted_strings = re.split(r"[=\\,]", extracted_string)  # will be problem if you want nested functions
-        # deals with x=x issue
-        if extracted_strings[0] == extracted_strings[1]:
-            extracted_strings.pop(0)
+        extracted_strings = re.split(r",\s*(?![^()]*\))",extracted_string)#vodo magic that dosn't split on commas between parentheses
+        extracted_strings[0] = extracted_strings[0].split(r'=')
+        extracted_strings[0] = extracted_strings[0][0]
+        
         # creates a dictionary out of the extracted string
         var_dictionary = {}
         for b in range(len(extracted_strings)):
