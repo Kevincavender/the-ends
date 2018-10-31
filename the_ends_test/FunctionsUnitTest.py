@@ -1,15 +1,13 @@
 import unittest
-
 import sys
-sys.path.append('../')
+sys.path.append('../') #magic folder path helper
 
 from the_ends.functions import function_finder
-
-
 
 class TheEndsTestCases(unittest.TestCase):
 
     def setUp(self):
+        #not sure what to do here. Couldn't find a good example of referencing
         pass
 
     # before test cases
@@ -19,18 +17,9 @@ class TheEndsTestCases(unittest.TestCase):
 
     # after test cases
 
-    def test_isupper(self):
-        # example test
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
-
-    def test_split(self):
-        # example test
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
+    def equal_index(self):
+        equ = 'function1(x, 7, 8+9)*5 + function2(56, 89)'
+        self.assertequal(len(function_finder(equ)[0]),len(function_finder(equ)[1]))
 
     def test_empty_test(self):
         # checks for empty import pass
@@ -42,7 +31,7 @@ class TheEndsTestCases(unittest.TestCase):
         # checks for multiple functions called in a single line
         ans = [
                 ['function1', 'function2'],
-                [{1: '( x', 2: 'x', 3: ' 5/4', 4: ' 12^(2-1))', 5: ' 8'}, {1: 'y', 2: ' 7', 3: ' 11*(y-3)'}]
+                [{1: 'x', 2: ' 5/4', 3: ' 12^(2-1))', 4: ' 8'}, {1: 'y', 2: ' 7', 3: ' 11*(y-3)'}]
             ]
         equ = 'x=2*5+function1(( x=x, 5/4, 12^(2-1)), 8) * function2(y, 7, 11*(y-3))'
         fun_test = function_finder(equ)
