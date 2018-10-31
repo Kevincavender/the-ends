@@ -45,15 +45,13 @@ def function_finder(equ, debug=False):
         if fun_list[i] in integrated_functions_list:
             fun_list.remove(i)
 
-    number_of_functions_ = len(fun_list)
+    number_of_functions = len(fun_list)
     
     # figure out index of each open and close parentheses
 
     # figures out indexes of all parentheses
     parentheses_ranges = {}  # soon to be filled dictionary of ranges
-    # .................................................................
-    # TODO Replace this section with EquationErrorCheck.EquationErrorCheck()
-    # we can replace if you want to make the parentheses_ranges a returnable for the equation checking function
+    
     hold = []  #
     for i, c in enumerate(equ):
         if c == '(':
@@ -89,10 +87,10 @@ def function_finder(equ, debug=False):
 
         #parses variables
         extracted_strings = re.split(r",\s*(?![^()]*\))",extracted_string)#vodo magic that dosn't split on commas between parentheses
-        extracted_strings[0] = extracted_strings[0].split(r'=') #deals with x=x
-        try:
-            extracted_strings[0] = extracted_strings[0][0] #removes string within string, try stops python from dying...
-        
+        if '=' in extracted_strings[0]: 
+            extracted_strings[0] = extracted_strings[0].split(r'=') #deals with x=x
+            extracted_strings[0] = extracted_strings[0][1] #removes string within string, try stops python from dying...
+            
         # creates a dictionary out of the extracted string
         var_dictionary = {}
         for b in range(len(extracted_strings)):
@@ -102,11 +100,11 @@ def function_finder(equ, debug=False):
 
     if debug is True:
         print("DEBUG: Functions.py")
-        print("Input string: " + equ)
-        print('functions ranges: ' + function_ranges)
-        print('start list: ' + start_list)
-        print('parentheses ranges: ' + parentheses_ranges)
-        print('function ranges: ' + function_ranges)
+        print("Input string: " , equ)
+        print('functions ranges: ' , function_ranges)
+        print('start list: ' , start_list)
+        print('parentheses ranges: ' , parentheses_ranges)
+        print('function ranges: ' , function_ranges)
         print("\nOutput: ")
     
     return fun_list, variable_dictionary_list
