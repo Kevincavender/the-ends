@@ -52,7 +52,10 @@ def function_finder(equ, debug=False):
     # figures out indexes of all parentheses
     parentheses_ranges = {}  # soon to be filled dictionary of ranges
     
-    hold = []  #
+    hold = []
+    #This is neccesary to get the actuall index of the parentheses so that
+    #a string including only the variables can be extracted from equ and
+    #correctly parrsed.
     for i, c in enumerate(equ):
         if c == '(':
             hold.append(i)
