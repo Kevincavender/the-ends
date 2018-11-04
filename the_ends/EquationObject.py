@@ -24,13 +24,13 @@ class EquationsClass:
             self.entered_equations = eqn_input
             self.equations = eqn_input
             self.equations = self.format(self.equations)
-        elif isinstance(eqn_input, int):
+        elif isinstance(eqn_input, int): #This and the next one are unnecessary
             raise TypeError
         elif isinstance(eqn_input, float):
             raise TypeError
         else:
             print(str(eqn_input) + "\n has generated an error going into the EquationsClass")
-        self.variable_dictionary = self.variable_dict()
+        self.variable_dictionary = self.variable_dict() #this is useless unless you reference it as a input
 
         return
 
@@ -50,7 +50,7 @@ class EquationsClass:
                 return False
         return True
 
-    def parse_eqns_from_string(self, instring):
+    def parse_eqns_from_string(self, instring):#what is instring? the equations are being taken in as a list and parsed during initialization as equ_int
         stringequations = instring
         equations = stringequations.split("\n")
         equations2 = list(filter(None, equations))
