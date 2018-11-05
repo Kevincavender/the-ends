@@ -1,3 +1,5 @@
+import sys
+sys.path.append('../')
 from the_ends.EquationObject import EquationsClass
 import the_ends.EquationCollection
 import the_ends.readfile as rf
