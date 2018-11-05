@@ -29,7 +29,7 @@ class EquationErrorCheck:
         :return:
         """
         # returns true if there is only one equals sign
-        answer = re.findall(r"[=]", self.equation)
+        answer = re.findall(r"=\s*(?![^()]*\))", self.equation) #crazy stuff allows equation signs in functions
         if len(answer) is not 1:
             self.error_message = 'only 1 equals can be in an equation'
             raise SyntaxError
@@ -53,7 +53,7 @@ class EquationErrorCheck:
 
     def split_equation(self):
         # split equation by = first
-        self.left_equation, self.right_equation = re.split(r"[=]", self.equation)
+        self.left_equation, self.right_equation = re.split(r"=\s*(?![^()]*\))", self.equation)
 
     def check_trailing_operators(self):
         """
