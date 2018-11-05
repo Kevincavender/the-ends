@@ -85,10 +85,12 @@ class EquationCollection:
         #   capitalizes all letters
         """
         list_of_lines = in_string.split("\n")
-        list_of_lines = list(enumerate(list_of_lines))
-        print(list_of_lines)
         for i in list_of_lines:
-            #
+            list_of_lines[i] = list_of_lines[i].replace(' ','') #removes spaces
+            list_of_lines[i] = list_of_lines[i].replace('\t', '')  # remove tabs, neccesary? is it seen different than space?
+            list_of_lines[i] = list_of_lines[i].replace("^", "**")  # for python to understand exponential's
+            list_of_lines[i] = list_of_lines[i].upper()  # for upper casing the equations, so python isn't confused
+
             if i[1] == '':
                 list_of_lines.remove(i)  # remove empty lines
             # TODO elif: the string starts with comment symbol (#)
