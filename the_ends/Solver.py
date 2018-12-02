@@ -319,7 +319,7 @@ class SolverV2(object):
             # list(set()) operation to sort and remove duplicates
             block_vars = list(set(block_vars))
             block_vars = list(filter(None, block_vars))
-            solvable_vars = list(set(solvable_vars))
+            solvable_vars = list(set(solvable_vars)) #this is a weird place to put this
 
             if self.debug is True:
                 print("\nCurrent Block: " + str(current_block))
