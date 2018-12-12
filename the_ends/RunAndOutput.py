@@ -12,11 +12,10 @@ def solve_and_print_results(equations, exelist, results_list):
     pyfile = open("tmp.py", "w")
 
     # Write list of imported libraries into python
-    librarylist = [
-        ""
-    ]
+    librarylist = ["os","math"]
+    
     for i in librarylist:
-        pyfile.write(i + "\n")
+        pyfile.write("import " + i + "\n")
 
     # Write python executable equations
     for i in exelist:
