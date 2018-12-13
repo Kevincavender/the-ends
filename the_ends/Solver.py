@@ -26,6 +26,7 @@ class Solver(object):
     def solve(self):
         #MAIN
         # this is the order in which the solver class is completed.
+        eqn_block, solvable_vars = self.primary_parser
         exelist, resultlist = self.exportSortedEquations(self.eqn_block, self.solvable_vars)
         return exelist, resultlist
 
@@ -142,7 +143,6 @@ class Solver(object):
                 if len(current_block) == number_of_unsolvable_equations:
                     raise SolutionError(current_block)
 
-                # what does this do
                 for current_equation in next_block_equation_list:
                     eqn_block[block_num + 1].append(current_equation)
                     eqn_block[block_num].remove(current_equation)
