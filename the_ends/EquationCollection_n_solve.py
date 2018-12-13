@@ -3,6 +3,7 @@ import re
 
 
 class EquationCollection(object):
+    
     """
     This Class is for interacting with metadata of the equations entered as a string
 
@@ -46,6 +47,14 @@ class EquationCollection(object):
         self.solved_variable_list = []
         self.solved_equation_list = []
         self.master = {}
+        #solver initializations
+        self.looplimit = 50
+        #self.eqn_obj = EquationsClass(input_equations)
+        self.vdict = self.variable_list
+        #self.debug = debug
+        #self.equations = input_equations
+        self.eqn_block = []
+        self.solvable_vars = []
 
         # will populate the previous variables
         self.parse_eqns_from_string(self.equation_string)
@@ -81,7 +90,7 @@ class EquationCollection(object):
         return okay
 
     def parse_by_line(self, string):
-        list_of_lines = in_string.split("\n")
+        list_of_lines = string.split("\n")
         return list_of_lines
 
     def parse_eqns_from_string(self, in_string):
@@ -104,18 +113,20 @@ class EquationCollection(object):
         #   capitalizes all letters
         """
         list_of_lines = self.equation_string.split("\n")
-        for i in range(len(list_of_lines)):
+        i = 0
+        while i < len(list_of_lines):
             list_of_lines[i] = list_of_lines[i].replace(' ','') #removes spaces
             list_of_lines[i] = list_of_lines[i].replace('\t', '')  # remove tabs, neccesary? is it seen different than space?
             list_of_lines[i] = list_of_lines[i].replace("^", "**")  # for python to understand exponential's
             list_of_lines[i] = list_of_lines[i].upper()  # for upper casing the equations, so python isn't confused
 
             if list_of_lines[i] == '':
-                list_of_lines.remove(i)  # remove empty lines
+                list_of_lines.remove(list_of_lines[i])  # remove empty lines
             # TODO elif: the string starts with comment symbol (#)
             # TODO elif: the string starts with special character ($)
             else:
                 self.add_equation_to_dictionary(list_of_lines[i], i+1)
+            i += 1
 
     def add_equation_to_dictionary(self, equation_string, line_number=0):
         new_equation_number = line_number
