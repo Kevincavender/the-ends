@@ -28,7 +28,10 @@ def function_finder(equ, debug=False):
     Define name for each function and create a returnable list of names
     """
 
+    #TODO decide if built in formating is required here
+    
     equ = equ.replace(' ', '')
+    tot_functions = []
 
 
     fun_list = re.findall(r'\w+\(', equ, flags=0)
@@ -42,6 +45,7 @@ def function_finder(equ, debug=False):
     #Other wise they will appear as any other variable in a dictionary
     for i in range(number_of_functions_):
         fun_list[i] = fun_list[i][:-1]
+        tot_functions.append(fun_list[i])
         if fun_list[i] in integrated_functions_list:
             fun_list.remove(i)
 
@@ -110,7 +114,7 @@ def function_finder(equ, debug=False):
         print('function ranges: ' , function_ranges)
         print("\nOutput: ")
     
-    return fun_list, variable_dictionary_list
+    return fun_list, variable_dictionary_list, tot_functions
 
 
 if __name__ == "__main__":
