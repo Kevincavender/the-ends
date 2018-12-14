@@ -21,8 +21,9 @@ TODO replace EquationObject with Equation Collection
 """
 import time
 import sys
+sys.path.append('../') #magic folder path helper
 from the_ends.readfile import readfile
-from the_ends.EquationCollection_n_solve import EquationCollection_n_solve as EquationClass
+from the_ends.EquationCollection_n_solve import EquationCollection_n_solve as EquationsClass
 from the_ends.RunAndOutput import solve_and_print_results as results
 
 
@@ -53,7 +54,8 @@ def main(args=None, debug=False):
 
     if solve is True:
         execute_list, results_list = user_equations.solve
-        results_out = results(user_equations.equations_list,execute_list, results_list)
+        results_out = results(user_equations.equations_list
+                              ,execute_list, results_list)
         # print('**************************************************')
         # print('Number of Equations = ', len(user_equations.equation_dict()))
         # print('Number of Variables = ', len(user_equations.variables()))
