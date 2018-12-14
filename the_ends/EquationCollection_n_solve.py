@@ -1,4 +1,5 @@
 from EquationErrorCheck import EquationErrorCheck
+from functions import function_finder
 import re
 
 
@@ -33,10 +34,7 @@ class EquationCollection_n_solve(object):
         self.vdict = self.variable_list
         self.eqn_block = []
         self.solvable_vars = []
-
-        # will populate the previous variables
-        self.parse_eqns_from_string(self.equation_string)
-        self.update_class()
+        
 
     def __repr__(self):
         # this needs a detailed printout of what's in the string
@@ -97,7 +95,7 @@ class EquationCollection_n_solve(object):
             # TODO elif: the string starts with comment symbol (#)
             # TODO elif: the string starts with special character ($)
 
-    def variables(self, equation=False):
+    def variables_n_functions(self, equation=False):
         #takes in equation by equation or works as a . function for single equation blocks
         """
         split equations by the all known operators
@@ -106,24 +104,27 @@ class EquationCollection_n_solve(object):
         :return:
             list of variables (without copies)
         """
-        #TODO Reference list against function list from function finder
+        #12/14 integrated function list, variables list against all functions integrated and not
         
         import re
         variables = []
 
         if equation is False:
             for one_equation in self.equations:
+                self.function_list, self.funl_var_dic, self.tot_fun = function_finder(one_equation)
                 # regular expression for splitting strings with given characters
                 split_equations = re.split(r"[=+\-^*/\\()\[\]]", one_equation)
                 for i in split_equations:
-                    if self.isvariable(i) and i not in variables:
+                    if self.isvariable(i) and i not in variables and i not in self.tot_fun:
                         variables.append(i)
             return variables
 
         elif isinstance(equation, str):
+            self.function_list, self.funl_var_dic, self.tot_fun = function_finder(equation)
+            
             split_equations = re.split(r"[=+\-^*/\\()\[\]]", equation)
             for i in split_equations:
-                if self.isvariable(i) and i not in variables:
+                if self.isvariable(i) and i not in variables and i not in self.tot_fun:
                     variables.append(i)
             return variables
 
@@ -372,5 +373,4 @@ class EquationCollection_n_solve(object):
 
 if __name__ == "__main__":
     EQ = EquationCollection_n_solve("x=1\ny=2\n\na= x+y\nsqu=sqa(")
-    EQ.add_equation_to_dictionary("words=1", 4)
     EQ.debug_output()
