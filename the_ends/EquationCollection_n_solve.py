@@ -65,7 +65,7 @@ class EquationCollection_n_solve(object):
         list_of_lines = string.split("\n")
         return list_of_lines
 
-    def parse_eqns_from_string(self, in_string):
+    def format(self, in_string):
         """
         the purpose of this function is to take the list of equations,
         - remove spaces
