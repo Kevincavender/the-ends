@@ -22,7 +22,7 @@ class EquationCollection_n_solve(object):
         # will get it's own index number
         # (starting at 1 because 0 is being used by the example listed here)
         
-        self.number_of_equations = len(equations_list)
+        self.number_of_equations = len(self.equations_list)
         self.number_of_variables = 0
         self.variable_list = []
         self.solved_variable_list = []
