@@ -22,8 +22,7 @@ TODO replace EquationObject with Equation Collection
 import time
 import sys
 from the_ends.readfile import readfile
-from the_ends.EquationObject import EquationsClass
-from the_ends.Solver import Solver
+from the_ends.EquationCollection_n_solve import EquationCollection_n_solve as EquationClass
 from the_ends.RunAndOutput import solve_and_print_results as results
 
 
@@ -50,11 +49,11 @@ def main(args=None, debug=False):
     input_string = readfile(input_filename)
     start_time = time.time()
     user_equations = EquationsClass(input_string)
-    solve = user_equations.check()
+    solve = user_equations.check_for_errors()
 
     if solve is True:
-        execute_list, results_list = Solver(user_equations.equations, debug).solve()
-        results_out = results(user_equations.entered_equations,execute_list, results_list)
+        execute_list, results_list = user_equations.solve
+        results_out = results(user_equations.equations_list,execute_list, results_list)
         # print('**************************************************')
         # print('Number of Equations = ', len(user_equations.equation_dict()))
         # print('Number of Variables = ', len(user_equations.variables()))
